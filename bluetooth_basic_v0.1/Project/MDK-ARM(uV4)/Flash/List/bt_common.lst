@@ -1,0 +1,932 @@
+L 1 "..\..\Middleware\blue_angel\src\common\bt_common.c"
+N/******************************************************************************
+N  * @file           bt_common.c
+N  * @author         Yu-ZhongJun(124756828@qq.com)
+N  * @Taobao link    https://shop220811498.taobao.com/
+N  * @version        V0.0.1
+N  * @date           2020-4-14
+N  * @brief          bt common source file
+N******************************************************************************/
+N
+N#include "bt_common.h"
+L 1 "..\..\Middleware\blue_angel\src\common\bt_common.h" 1
+N/******************************************************************************
+N  * @file           bt_common.h
+N  * @author         Yu-ZhongJun(124756828@qq.com)
+N  * @Taobao link    https://shop220811498.taobao.com/
+N  * @version        V0.0.1
+N  * @date           2020-4-14
+N  * @brief          bt common header file
+N******************************************************************************/
+N
+N#ifndef COMMON_H_H_H
+N#define COMMON_H_H_H
+N//#include "bt_config.h"
+N#include "stdint.h"
+L 1 "C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h" 1
+N/* Copyright (C) ARM Ltd., 1999,2014 */
+N/* All rights reserved */
+N
+N/*
+N * RCS $Revision$
+N * Checkin $Date$
+N * Revising $Author: agrant $
+N */
+N
+N#ifndef __stdint_h
+N#define __stdint_h
+N#define __ARMCLIB_VERSION 5060019
+N
+N  #ifdef __INT64_TYPE__
+S    /* armclang predefines '__INT64_TYPE__' and '__INT64_C_SUFFIX__' */
+S    #define __INT64 __INT64_TYPE__
+N  #else
+N    /* armcc has builtin '__int64' which can be used in --strict mode */
+N    #define __INT64 __int64
+N    #define __INT64_C_SUFFIX__ ll
+N  #endif
+N  #define __PASTE2(x, y) x ## y
+N  #define __PASTE(x, y) __PASTE2(x, y)
+N  #define __INT64_C(x)  __ESCAPE__(__PASTE(x, __INT64_C_SUFFIX__))
+N  #define __UINT64_C(x)  __ESCAPE__(__PASTE(x ## u, __INT64_C_SUFFIX__))
+N  #if defined(__clang__) || (defined(__ARMCC_VERSION) && !defined(__STRICT_ANSI__))
+X  #if 0L || (1L && !0L)
+N    /* armclang and non-strict armcc allow 'long long' in system headers */
+N    #define __LONGLONG long long
+N  #else
+S    /* strict armcc has '__int64' */
+S    #define __LONGLONG __int64
+N  #endif
+N
+N  #ifndef __STDINT_DECLS
+N  #define __STDINT_DECLS
+N
+N    #undef __CLIBNS
+N
+N    #ifdef __cplusplus
+S      namespace std {
+S          #define __CLIBNS std::
+S          extern "C" {
+N    #else
+N      #define __CLIBNS
+N    #endif  /* __cplusplus */
+N
+N
+N/*
+N * 'signed' is redundant below, except for 'signed char' and if
+N * the typedef is used to declare a bitfield.
+N */
+N
+N    /* 7.18.1.1 */
+N
+N    /* exact-width signed integer types */
+Ntypedef   signed          char int8_t;
+Ntypedef   signed short     int int16_t;
+Ntypedef   signed           int int32_t;
+Ntypedef   signed       __INT64 int64_t;
+Xtypedef   signed       __int64 int64_t;
+N
+N    /* exact-width unsigned integer types */
+Ntypedef unsigned          char uint8_t;
+Ntypedef unsigned short     int uint16_t;
+Ntypedef unsigned           int uint32_t;
+Ntypedef unsigned       __INT64 uint64_t;
+Xtypedef unsigned       __int64 uint64_t;
+N
+N    /* 7.18.1.2 */
+N
+N    /* smallest type of at least n bits */
+N    /* minimum-width signed integer types */
+Ntypedef   signed          char int_least8_t;
+Ntypedef   signed short     int int_least16_t;
+Ntypedef   signed           int int_least32_t;
+Ntypedef   signed       __INT64 int_least64_t;
+Xtypedef   signed       __int64 int_least64_t;
+N
+N    /* minimum-width unsigned integer types */
+Ntypedef unsigned          char uint_least8_t;
+Ntypedef unsigned short     int uint_least16_t;
+Ntypedef unsigned           int uint_least32_t;
+Ntypedef unsigned       __INT64 uint_least64_t;
+Xtypedef unsigned       __int64 uint_least64_t;
+N
+N    /* 7.18.1.3 */
+N
+N    /* fastest minimum-width signed integer types */
+Ntypedef   signed           int int_fast8_t;
+Ntypedef   signed           int int_fast16_t;
+Ntypedef   signed           int int_fast32_t;
+Ntypedef   signed       __INT64 int_fast64_t;
+Xtypedef   signed       __int64 int_fast64_t;
+N
+N    /* fastest minimum-width unsigned integer types */
+Ntypedef unsigned           int uint_fast8_t;
+Ntypedef unsigned           int uint_fast16_t;
+Ntypedef unsigned           int uint_fast32_t;
+Ntypedef unsigned       __INT64 uint_fast64_t;
+Xtypedef unsigned       __int64 uint_fast64_t;
+N
+N    /* 7.18.1.4 integer types capable of holding object pointers */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+Stypedef   signed       __INT64 intptr_t;
+Stypedef unsigned       __INT64 uintptr_t;
+N#else
+Ntypedef   signed           int intptr_t;
+Ntypedef unsigned           int uintptr_t;
+N#endif
+N
+N    /* 7.18.1.5 greatest-width integer types */
+Ntypedef   signed     __LONGLONG intmax_t;
+Xtypedef   signed     long long intmax_t;
+Ntypedef unsigned     __LONGLONG uintmax_t;
+Xtypedef unsigned     long long uintmax_t;
+N
+N
+N#if !defined(__cplusplus) || defined(__STDC_LIMIT_MACROS)
+X#if !0L || 0L
+N
+N    /* 7.18.2.1 */
+N
+N    /* minimum values of exact-width signed integer types */
+N#define INT8_MIN                   -128
+N#define INT16_MIN                -32768
+N#define INT32_MIN          (~0x7fffffff)   /* -2147483648 is unsigned */
+N#define INT64_MIN  __INT64_C(~0x7fffffffffffffff) /* -9223372036854775808 is unsigned */
+N
+N    /* maximum values of exact-width signed integer types */
+N#define INT8_MAX                    127
+N#define INT16_MAX                 32767
+N#define INT32_MAX            2147483647
+N#define INT64_MAX  __INT64_C(9223372036854775807)
+N
+N    /* maximum values of exact-width unsigned integer types */
+N#define UINT8_MAX                   255
+N#define UINT16_MAX                65535
+N#define UINT32_MAX           4294967295u
+N#define UINT64_MAX __UINT64_C(18446744073709551615)
+N
+N    /* 7.18.2.2 */
+N
+N    /* minimum values of minimum-width signed integer types */
+N#define INT_LEAST8_MIN                   -128
+N#define INT_LEAST16_MIN                -32768
+N#define INT_LEAST32_MIN          (~0x7fffffff)
+N#define INT_LEAST64_MIN  __INT64_C(~0x7fffffffffffffff)
+N
+N    /* maximum values of minimum-width signed integer types */
+N#define INT_LEAST8_MAX                    127
+N#define INT_LEAST16_MAX                 32767
+N#define INT_LEAST32_MAX            2147483647
+N#define INT_LEAST64_MAX  __INT64_C(9223372036854775807)
+N
+N    /* maximum values of minimum-width unsigned integer types */
+N#define UINT_LEAST8_MAX                   255
+N#define UINT_LEAST16_MAX                65535
+N#define UINT_LEAST32_MAX           4294967295u
+N#define UINT_LEAST64_MAX __UINT64_C(18446744073709551615)
+N
+N    /* 7.18.2.3 */
+N
+N    /* minimum values of fastest minimum-width signed integer types */
+N#define INT_FAST8_MIN           (~0x7fffffff)
+N#define INT_FAST16_MIN          (~0x7fffffff)
+N#define INT_FAST32_MIN          (~0x7fffffff)
+N#define INT_FAST64_MIN  __INT64_C(~0x7fffffffffffffff)
+N
+N    /* maximum values of fastest minimum-width signed integer types */
+N#define INT_FAST8_MAX             2147483647
+N#define INT_FAST16_MAX            2147483647
+N#define INT_FAST32_MAX            2147483647
+N#define INT_FAST64_MAX  __INT64_C(9223372036854775807)
+N
+N    /* maximum values of fastest minimum-width unsigned integer types */
+N#define UINT_FAST8_MAX            4294967295u
+N#define UINT_FAST16_MAX           4294967295u
+N#define UINT_FAST32_MAX           4294967295u
+N#define UINT_FAST64_MAX __UINT64_C(18446744073709551615)
+N
+N    /* 7.18.2.4 */
+N
+N    /* minimum value of pointer-holding signed integer type */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define INTPTR_MIN INT64_MIN
+N#else
+N#define INTPTR_MIN INT32_MIN
+N#endif
+N
+N    /* maximum value of pointer-holding signed integer type */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define INTPTR_MAX INT64_MAX
+N#else
+N#define INTPTR_MAX INT32_MAX
+N#endif
+N
+N    /* maximum value of pointer-holding unsigned integer type */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define UINTPTR_MAX UINT64_MAX
+N#else
+N#define UINTPTR_MAX UINT32_MAX
+N#endif
+N
+N    /* 7.18.2.5 */
+N
+N    /* minimum value of greatest-width signed integer type */
+N#define INTMAX_MIN  __ESCAPE__(~0x7fffffffffffffffll)
+N
+N    /* maximum value of greatest-width signed integer type */
+N#define INTMAX_MAX  __ESCAPE__(9223372036854775807ll)
+N
+N    /* maximum value of greatest-width unsigned integer type */
+N#define UINTMAX_MAX __ESCAPE__(18446744073709551615ull)
+N
+N    /* 7.18.3 */
+N
+N    /* limits of ptrdiff_t */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define PTRDIFF_MIN INT64_MIN
+S#define PTRDIFF_MAX INT64_MAX
+N#else
+N#define PTRDIFF_MIN INT32_MIN
+N#define PTRDIFF_MAX INT32_MAX
+N#endif
+N
+N    /* limits of sig_atomic_t */
+N#define SIG_ATOMIC_MIN (~0x7fffffff)
+N#define SIG_ATOMIC_MAX   2147483647
+N
+N    /* limit of size_t */
+N#if __sizeof_ptr == 8
+X#if 4 == 8
+S#define SIZE_MAX UINT64_MAX
+N#else
+N#define SIZE_MAX UINT32_MAX
+N#endif
+N
+N    /* limits of wchar_t */
+N    /* NB we have to undef and redef because they're defined in both
+N     * stdint.h and wchar.h */
+N#undef WCHAR_MIN
+N#undef WCHAR_MAX
+N
+N#if defined(__WCHAR32) || (defined(__ARM_SIZEOF_WCHAR_T) && __ARM_SIZEOF_WCHAR_T == 4)
+X#if 0L || (0L && __ARM_SIZEOF_WCHAR_T == 4)
+S  #define WCHAR_MIN   0
+S  #define WCHAR_MAX   0xffffffffU
+N#else
+N  #define WCHAR_MIN   0
+N  #define WCHAR_MAX   65535
+N#endif
+N
+N    /* limits of wint_t */
+N#define WINT_MIN (~0x7fffffff)
+N#define WINT_MAX 2147483647
+N
+N#endif /* __STDC_LIMIT_MACROS */
+N
+N#if !defined(__cplusplus) || defined(__STDC_CONSTANT_MACROS)
+X#if !0L || 0L
+N
+N    /* 7.18.4.1 macros for minimum-width integer constants */
+N#define INT8_C(x)   (x)
+N#define INT16_C(x)  (x)
+N#define INT32_C(x)  (x)
+N#define INT64_C(x)  __INT64_C(x)
+N
+N#define UINT8_C(x)  (x ## u)
+N#define UINT16_C(x) (x ## u)
+N#define UINT32_C(x) (x ## u)
+N#define UINT64_C(x) __UINT64_C(x)
+N
+N    /* 7.18.4.2 macros for greatest-width integer constants */
+N#define INTMAX_C(x)  __ESCAPE__(x ## ll)
+N#define UINTMAX_C(x) __ESCAPE__(x ## ull)
+N
+N#endif /* __STDC_CONSTANT_MACROS */
+N
+N    #ifdef __cplusplus
+S         }  /* extern "C" */
+S      }  /* namespace std */
+N    #endif /* __cplusplus */
+N  #endif /* __STDINT_DECLS */
+N
+N  #ifdef __cplusplus
+S    #ifndef __STDINT_NO_EXPORTS
+S      using ::std::int8_t;
+S      using ::std::int16_t;
+S      using ::std::int32_t;
+S      using ::std::int64_t;
+S      using ::std::uint8_t;
+S      using ::std::uint16_t;
+S      using ::std::uint32_t;
+S      using ::std::uint64_t;
+S      using ::std::int_least8_t;
+S      using ::std::int_least16_t;
+S      using ::std::int_least32_t;
+S      using ::std::int_least64_t;
+S      using ::std::uint_least8_t;
+S      using ::std::uint_least16_t;
+S      using ::std::uint_least32_t;
+S      using ::std::uint_least64_t;
+S      using ::std::int_fast8_t;
+S      using ::std::int_fast16_t;
+S      using ::std::int_fast32_t;
+S      using ::std::int_fast64_t;
+S      using ::std::uint_fast8_t;
+S      using ::std::uint_fast16_t;
+S      using ::std::uint_fast32_t;
+S      using ::std::uint_fast64_t;
+S      using ::std::intptr_t;
+S      using ::std::uintptr_t;
+S      using ::std::intmax_t;
+S      using ::std::uintmax_t;
+S    #endif
+N  #endif /* __cplusplus */
+N
+N#undef __INT64
+N#undef __LONGLONG
+N
+N#endif /* __stdint_h */
+N
+N/* end of stdint.h */
+L 14 "..\..\Middleware\blue_angel\src\common\bt_common.h" 2
+N
+N#ifndef err_t
+N    typedef int8_t err_t;
+N#endif
+N
+N/** Definitions for error constants. */
+Ntypedef enum {
+N    /** No error, everything OK. */
+N    BT_ERR_OK         = 0,
+N    /** Out of memory error.     */
+N    BT_ERR_MEM        = -1,
+N    /** Buffer error.            */
+N    BT_ERR_BUF        = -2,
+N    /** Timeout.                 */
+N    BT_SERR_TIMEOUT    = -3,
+N    /** Routing problem.         */
+N    BT_ERR_RTE        = -4,
+N    /** Operation in progress    */
+N    BT_ERR_INPROGRESS = -5,
+N    /** Illegal value.           */
+N    BT_ERR_VAL        = -6,
+N    /** Operation would block.   */
+N    BT_ERR_WOULDBLOCK = -7,
+N    /** Address in use.          */
+N    BT_ERR_USE        = -8,
+N    /** Already connecting.      */
+N    BT_ERR_ALREADY    = -9,
+N    /** Conn already established.*/
+N    BT_ERR_ISCONN     = -10,
+N    /** Not connected.           */
+N    BT_ERR_CONN       = -11,
+N    /** Low-level netif error    */
+N    BT_ERR_IF         = -12,
+N    /** Connection aborted.      */
+N    BT_ERR_ABRT       = -13,
+N    /** Connection reset.        */
+N    BT_ERR_RST        = -14,
+N    /** Connection closed.       */
+N    BT_ERR_CLSD       = -15,
+N    /** Illegal argument.        */
+N    BT_ERR_ARG        = -16,
+N} bt_err_enum_t;
+N
+N
+N#define MEM_ALIGN_SIZE(size) (((size) + MEM_ALIGNMENT - 1) & ~(MEM_ALIGNMENT-1))
+N#define MEM_ALIGN(addr) ((void *)(((mem_ptr_t)(addr) + MEM_ALIGNMENT - 1) & ~(mem_ptr_t)(MEM_ALIGNMENT-1)))
+N#define BT_CONST_CAST(target_type, val) ((target_type)((ptrdiff_t)val))
+N#define BT_UNUSED_ARG(x) (void)(x=x)
+N
+N#define BT_MAX(x , y)  (((x) > (y)) ? (x) : (y))
+N#define BT_MIN(x , y)  (((x) < (y)) ? (x) : (y))
+N
+N#define bt_htons(x) ((((x) & 0x00ffUL) << 8) | (((x) & 0xff00UL) >> 8))
+N#define bt_ntohs(x) ((((x) & 0x00ffUL) << 8) | (((x) & 0xff00UL) >> 8))
+N#define bt_htonl(x) ((((x) & 0x000000ffUL) << 24) | \
+N                     (((x) & 0x0000ff00UL) <<  8) | \
+N                     (((x) & 0x00ff0000UL) >>  8) | \
+N                     (((x) & 0xff000000UL) >> 24))
+X#define bt_htonl(x) ((((x) & 0x000000ffUL) << 24) |                      (((x) & 0x0000ff00UL) <<  8) |                      (((x) & 0x00ff0000UL) >>  8) |                      (((x) & 0xff000000UL) >> 24))
+N#define bt_ntohl(x) ((((x) & 0x000000ffUL) << 24) | \
+N                     (((x) & 0x0000ff00UL) <<  8) | \
+N                     (((x) & 0x00ff0000UL) >>  8) | \
+N                     (((x) & 0xff000000UL) >> 24))
+X#define bt_ntohl(x) ((((x) & 0x000000ffUL) << 24) |                      (((x) & 0x0000ff00UL) <<  8) |                      (((x) & 0x00ff0000UL) >>  8) |                      (((x) & 0xff000000UL) >> 24))
+N
+N#define bt_htonll(x) ((((uint64_t)bt_htonl(x)) << 32) + bt_htonl((x) >> 32))
+N
+N#define SYS_ARCH_INC(var, val) do { \
+N        var += val; \
+N    } while(0)
+X#define SYS_ARCH_INC(var, val) do {         var += val;     } while(0)
+N
+N#define SYS_ARCH_DEC(var, val) do { \
+N        var -= val; \
+N    } while(0)
+X#define SYS_ARCH_DEC(var, val) do {         var -= val;     } while(0)
+N
+N#define SYS_ARCH_GET(var, ret) do { \
+N        ret = var; \
+N    } while(0)
+X#define SYS_ARCH_GET(var, ret) do {         ret = var;     } while(0)
+N
+N#define SYS_ARCH_SET(var, val) do { \
+N        var = val; \
+N    } while(0)
+X#define SYS_ARCH_SET(var, val) do {         var = val;     } while(0)
+N
+N#define BT_LE_U16_TO_ARRAY(u16) (u16&0xff),(u16>>8&0xff)
+N
+N
+Nstruct bd_addr_t {
+N    uint8_t addr[6];
+N};
+N
+N#define BD_ADDR_LEN 6
+N
+N#define BD_ADDR(bdaddr, a, b, c, d, e, f) do{ \
+N        bdaddr->addr[0] = a; \
+N        bdaddr ->addr[1] = b; \
+N        bdaddr->addr[2] = c; \
+N        bdaddr->addr[3] = d; \
+N        bdaddr->addr[4] = e; \
+N        bdaddr->addr[5] = f; }while(0)
+X#define BD_ADDR(bdaddr, a, b, c, d, e, f) do{         bdaddr->addr[0] = a;         bdaddr ->addr[1] = b;         bdaddr->addr[2] = c;         bdaddr->addr[3] = d;         bdaddr->addr[4] = e;         bdaddr->addr[5] = f; }while(0)
+N
+N#define bd_addr_cmp(addr1, addr2) (((addr1)->addr[0] == (addr2)->addr[0]) && \
+N                                   ((addr1)->addr[1] == (addr2)->addr[1]) && \
+N                                   ((addr1)->addr[2] == (addr2)->addr[2]) && \
+N                                   ((addr1)->addr[3] == (addr2)->addr[3]) && \
+N                                   ((addr1)->addr[4] == (addr2)->addr[4]) && \
+N                                   ((addr1)->addr[5] == (addr2)->addr[5]))
+X#define bd_addr_cmp(addr1, addr2) (((addr1)->addr[0] == (addr2)->addr[0]) &&                                    ((addr1)->addr[1] == (addr2)->addr[1]) &&                                    ((addr1)->addr[2] == (addr2)->addr[2]) &&                                    ((addr1)->addr[3] == (addr2)->addr[3]) &&                                    ((addr1)->addr[4] == (addr2)->addr[4]) &&                                    ((addr1)->addr[5] == (addr2)->addr[5]))
+N
+N#define bd_addr_set(addr1, addr2) do { \
+N        (addr1)->addr[0] = (addr2)->addr[0]; \
+N        (addr1)->addr[1] = (addr2)->addr[1]; \
+N        (addr1)->addr[2] = (addr2)->addr[2]; \
+N        (addr1)->addr[3] = (addr2)->addr[3]; \
+N        (addr1)->addr[4] = (addr2)->addr[4]; \
+N        (addr1)->addr[5] = (addr2)->addr[5]; }while(0)
+X#define bd_addr_set(addr1, addr2) do {         (addr1)->addr[0] = (addr2)->addr[0];         (addr1)->addr[1] = (addr2)->addr[1];         (addr1)->addr[2] = (addr2)->addr[2];         (addr1)->addr[3] = (addr2)->addr[3];         (addr1)->addr[4] = (addr2)->addr[4];         (addr1)->addr[5] = (addr2)->addr[5]; }while(0)
+N
+N#define bd_addr_debug_print(bdaddr) printf("0x%x:0x%x:0x%x:0x%x:0x%x:0x%x\n", \
+N        (bdaddr)->addr[0], \
+N        (bdaddr)->addr[1], \
+N        (bdaddr)->addr[2], \
+N        (bdaddr)->addr[3], \
+N        (bdaddr)->addr[4], \
+N        (bdaddr)->addr[5])
+X#define bd_addr_debug_print(bdaddr) printf("0x%x:0x%x:0x%x:0x%x:0x%x:0x%x\n",         (bdaddr)->addr[0],         (bdaddr)->addr[1],         (bdaddr)->addr[2],         (bdaddr)->addr[3],         (bdaddr)->addr[4],         (bdaddr)->addr[5])
+N
+N
+N#define BT_DT_FLAGS	0x01
+N#define BT_DT_INCOMPLETE_LIST_OF_16_BIT_SERVICE_CLASS_UUIDS      0x02
+N#define BT_DT_COMPLETE_LIST_OF_16_BIT_SERVICE_CLASS_UUIDS        0x03
+N#define BT_DT_INCOMPLETE_LIST_OF_32_BIT_SERVICE_CLASS_UUIDS      0x04
+N#define BT_DT_COMPLETE_LIST_OF_32_BIT_SERVICE_CLASS_UUIDS        0x05
+N#define BT_DT_INCOMPLETE_LIST_OF_128_BIT_SERVICE_CLASS_UUIDS     0x06
+N#define BT_DT_COMPLETE_LIST_OF_128_BIT_SERVICE_CLASS_UUIDS       0x07
+N#define BT_DT_SHORTENED_LOCAL_NAME                               0x08
+N#define BT_DT_COMPLETE_LOCAL_NAME                                0x09
+N#define BT_DT_TX_POWER_LEVEL                                     0x0A
+N#define BT_DT_CLASS_OF_DEVICE                                    0x0D
+N#define BT_DT_SIMPLE_PAIRING_HASH_C                              0x0E
+N#define BT_DT_SIMPLE_PAIRING_HASH_C_192                          0x0E
+N#define BT_DT_SIMPLE_PAIRING_RANDOMIZER_R                        0x0F
+N#define BT_DT_SIMPLE_PAIRING_RANDOMIZER_R_192                    0x0F
+N#define BT_DT_DEVICE_ID                                          0x10
+N#define BT_DT_SECURITY_MANAGER_TK_VALUE                          0x10
+N#define BT_DT_SECURITY_MANAGER_OUT_OF_BAND_FLAGS                 0x11
+N#define BT_DT_SLAVE_CONNECTION_INTERVAL_RANGE                    0x12
+N#define BT_DT_LIST_OF_16_BIT_SERVICE_SOLICITATION_UUIDS          0x14
+N#define BT_DT_LIST_OF_32_BIT_SERVICE_SOLICITATION_UUIDS          0x1F
+N#define BT_DT_LIST_OF_128_BIT_SERVICE_SOLICITATION_UUIDS         0x15
+N#define BT_DT_SERVICE_DATA                                       0x16
+N#define BT_DT_SERVICE_DATA_16_BIT_UUID                           0x16
+N#define BT_DT_SERVICE_DATA_32_BIT_UUID                           0x20
+N#define BT_DT_SERVICE_DATA_128_BIT_UUID                          0x21
+N#define BT_DT_LE_SECURE_CONNECTIONS_CONFIRMATION_VALUE           0x22
+N#define BT_DT_LE_SECURE_CONNECTIONS_RANDOM_VALUE                 0x23
+N#define BT_DT_URI                                                0x24
+N#define BT_DT_INDOOR_POSITIONING                                 0x25
+N#define BT_DT_TRANSPORT_DISCOVERY_DATA                           0x26
+N#define BT_DT_PUBLIC_TARGET_ADDRESS                              0x17
+N#define BT_DT_RANDOM_TARGET_ADDRESS                              0x18
+N#define BT_DT_APPEARANCE                                         0x19
+N#define BT_DT_ADVERTISING_INTERVAL                               0x1A
+N#define BT_DT_LE_BLUETOOTH_DEVICE_ADDRESS                        0x1B
+N#define BT_DT_LE_ROLE                                            0x1C
+N#define BT_DT_SIMPLE_PAIRING_HASH_C_256                          0x1D
+N#define BT_DT_SIMPLE_PAIRING_RANDOMIZER_R_256                    0x1E
+N#define BT_DT_3D_INFORMATION_DATA                                0x3D
+N#define BT_DT_MANUFACTURER_SPECIFIC_DATA                         0xFF
+N
+N
+N/*********************************
+N *** Class of Device constants ***
+N *********************************/
+N#define BT_FORMAT_TYPE_1 0x00
+N
+N/****************************
+N * minor device class field
+N ****************************/
+N
+N/* 0x00 is used as unclassified for all minor device classes */
+N#define BT_COD_MINOR_UNCLASSIFIED 0x00
+N
+N/* minor device class field for Computer Major Class */
+N/* #define BTM_COD_MINOR_UNCLASSIFIED       0x00    */
+N#define BT_COD_MINOR_DESKTOP_WORKSTATION 0x04
+N#define BT_COD_MINOR_SERVER_COMPUTER 0x08
+N#define BT_COD_MINOR_LAPTOP 0x0C
+N#define BT_COD_MINOR_HANDHELD_PC_PDA 0x10 /* clam shell */
+N#define BT_COD_MINOR_PALM_SIZE_PC_PDA 0x14
+N#define BT_COD_MINOR_WEARABLE_COMPUTER 0x18 /* watch sized */
+N
+N/* minor device class field for Phone Major Class */
+N/* #define BTM_COD_MINOR_UNCLASSIFIED       0x00    */
+N#define BT_COD_MINOR_CELLULAR 0x04
+N#define BT_COD_MINOR_CORDLESS 0x08
+N#define BT_COD_MINOR_SMART_PHONE 0x0C
+N/* wired modem or voice gatway */
+N#define BT_COD_MINOR_WIRED_MDM_V_GTWY 0x10
+N#define BT_COD_MINOR_ISDN_ACCESS 0x14
+N
+N/* minor device class field for LAN Access Point Major Class */
+N/* Load Factor Field bit 5-7 */
+N#define BT_COD_MINOR_FULLY_AVAILABLE 0x00
+N#define BT_COD_MINOR_1_17_UTILIZED 0x20
+N#define BT_COD_MINOR_17_33_UTILIZED 0x40
+N#define BT_COD_MINOR_33_50_UTILIZED 0x60
+N#define BT_COD_MINOR_50_67_UTILIZED 0x80
+N#define BT_COD_MINOR_67_83_UTILIZED 0xA0
+N#define BT_COD_MINOR_83_99_UTILIZED 0xC0
+N#define BT_COD_MINOR_NO_SERVICE_AVAILABLE 0xE0
+N/* sub-Field bit 2-4 */
+N/* #define BTM_COD_MINOR_UNCLASSIFIED       0x00    */
+N
+N/* minor device class field for Audio/Video Major Class */
+N/* #define BTM_COD_MINOR_UNCLASSIFIED       0x00    */
+N#define BT_COD_MINOR_CONFM_HEADSET 0x04
+N#define BT_COD_MINOR_CONFM_HANDSFREE 0x08
+N#define BT_COD_MINOR_MICROPHONE 0x10
+N#define BT_COD_MINOR_LOUDSPEAKER 0x14
+N#define BT_COD_MINOR_HEADPHONES 0x18
+N#define BT_COD_MINOR_PORTABLE_AUDIO 0x1C
+N#define BT_COD_MINOR_CAR_AUDIO 0x20
+N#define BT_COD_MINOR_SET_TOP_BOX 0x24
+N#define BT_COD_MINOR_HIFI_AUDIO 0x28
+N#define BT_COD_MINOR_VCR 0x2C
+N#define BT_COD_MINOR_VIDEO_CAMERA 0x30
+N#define BT_COD_MINOR_CAMCORDER 0x34
+N#define BT_COD_MINOR_VIDEO_MONITOR 0x38
+N#define BT_COD_MINOR_VIDDISP_LDSPKR 0x3C
+N#define BT_COD_MINOR_VIDEO_CONFERENCING 0x40
+N#define BT_COD_MINOR_GAMING_TOY 0x48
+N
+N/* minor device class field for Peripheral Major Class */
+N/* Bits 6-7 independently specify mouse, keyboard, or combo mouse/keyboard */
+N#define BT_COD_MINOR_KEYBOARD 0x40
+N#define BT_COD_MINOR_POINTING 0x80
+N#define BT_COD_MINOR_COMBO 0xC0
+N/* Bits 2-5 OR'd with selection from bits 6-7 */
+N/* #define BTM_COD_MINOR_UNCLASSIFIED       0x00    */
+N#define BT_COD_MINOR_JOYSTICK 0x04
+N#define BT_COD_MINOR_GAMEPAD 0x08
+N#define BT_COD_MINOR_REMOTE_CONTROL 0x0C
+N#define BT_COD_MINOR_SENSING_DEVICE 0x10
+N#define BT_COD_MINOR_DIGITIZING_TABLET 0x14
+N#define BT_COD_MINOR_CARD_READER 0x18 /* e.g. SIM card reader */
+N#define BT_COD_MINOR_DIGITAL_PAN 0x1C
+N#define BT_COD_MINOR_HAND_SCANNER 0x20
+N#define BT_COD_MINOR_HAND_GESTURAL_INPUT 0x24
+N
+N/* minor device class field for Imaging Major Class */
+N/* Bits 5-7 independently specify display, camera, scanner, or printer */
+N#define BT_COD_MINOR_DISPLAY 0x10
+N#define BT_COD_MINOR_CAMERA 0x20
+N#define BT_COD_MINOR_SCANNER 0x40
+N#define BT_COD_MINOR_PRINTER 0x80
+N/* Bits 2-3 Reserved */
+N/* #define BTM_COD_MINOR_UNCLASSIFIED       0x00    */
+N
+N/* minor device class field for Wearable Major Class */
+N/* Bits 2-7 meaningful    */
+N#define BT_COD_MINOR_WRIST_WATCH 0x04
+N#define BT_COD_MINOR_PAGER 0x08
+N#define BT_COD_MINOR_JACKET 0x0C
+N#define BT_COD_MINOR_HELMET 0x10
+N#define BT_COD_MINOR_GLASSES 0x14
+N
+N/* minor device class field for Toy Major Class */
+N/* Bits 2-7 meaningful    */
+N#define BT_COD_MINOR_ROBOT 0x04
+N#define BT_COD_MINOR_VEHICLE 0x08
+N#define BT_COD_MINOR_DOLL_ACTION_FIGURE 0x0C
+N#define BT_COD_MINOR_CONTROLLER 0x10
+N#define BT_COD_MINOR_GAME 0x14
+N
+N/* minor device class field for Health Major Class */
+N/* Bits 2-7 meaningful    */
+N#define BT_COD_MINOR_BLOOD_MONITOR 0x04
+N#define BT_COD_MINOR_THERMOMETER 0x08
+N#define BT_COD_MINOR_WEIGHING_SCALE 0x0C
+N#define BT_COD_MINOR_GLUCOSE_METER 0x10
+N#define BT_COD_MINOR_PULSE_OXIMETER 0x14
+N#define BT_COD_MINOR_HEART_PULSE_MONITOR 0x18
+N#define BT_COD_MINOR_HEALTH_DATA_DISPLAY 0x1C
+N#define BT_COD_MINOR_STEP_COUNTER 0x20
+N#define BT_COD_MINOR_BODY_COM_ANALYZER 0x24
+N#define BT_COD_MINOR_PEAK_FLOW_MONITOR 0x28
+N#define BT_COD_MINOR_MEDICATION_MONITOR 0x2C
+N#define BT_COD_MINOR_KNEE_PROSTHESIS 0x30
+N#define BT_COD_MINOR_ANKLE_PROSTHESIS 0x34
+N
+N/***************************
+N * major device class field
+N ***************************/
+N#define BT_COD_MAJOR_MISCELLANEOUS 0x00
+N#define BT_COD_MAJOR_COMPUTER 0x01
+N#define BT_COD_MAJOR_PHONE 0x02
+N#define BT_COD_MAJOR_LAN_ACCESS_PT 0x03
+N#define BT_COD_MAJOR_AUDIO 0x04
+N#define BT_COD_MAJOR_PERIPHERAL 0x05
+N#define BT_COD_MAJOR_IMAGING 0x06
+N#define BT_COD_MAJOR_WEARABLE 0x07
+N#define BT_COD_MAJOR_TOY 0x08
+N#define BT_COD_MAJOR_HEALTH 0x09
+N#define BT_COD_MAJOR_UNCLASSIFIED 0x1F
+N
+N/***************************
+N * service class fields
+N ***************************/
+N#define BT_COD_SERVICE_LMTD_DISCOVER 0x0020
+N#define BT_COD_SERVICE_POSITIONING 0x0100
+N#define BT_COD_SERVICE_NETWORKING 0x0200
+N#define BT_COD_SERVICE_RENDERING 0x0400
+N#define BT_COD_SERVICE_CAPTURING 0x0800
+N#define BT_COD_SERVICE_OBJ_TRANSFER 0x1000
+N#define BT_COD_SERVICE_AUDIO 0x2000
+N#define BT_COD_SERVICE_TELEPHONY 0x4000
+N#define BT_COD_SERVICE_INFORMATION 0x8000
+N
+N/* class of device field macros */
+N#define BT_COD_FORMAT_TYPE(u8, pd) \
+N    { (u8) = (pd)[2] & 0x03; }
+X#define BT_COD_FORMAT_TYPE(u8, pd)     { (u8) = (pd)[2] & 0x03; }
+N#define BT_COD_MINOR_CLASS(u8, pd) \
+N    { (u8) = (pd)[2] & 0xFC; }
+X#define BT_COD_MINOR_CLASS(u8, pd)     { (u8) = (pd)[2] & 0xFC; }
+N#define BT_COD_MAJOR_CLASS(u8, pd) \
+N    { (u8) = (pd)[1] & 0x1F; }
+X#define BT_COD_MAJOR_CLASS(u8, pd)     { (u8) = (pd)[1] & 0x1F; }
+N#define BT_COD_SERVICE_CLASS(u16, pd) \
+N    {                                    \
+N        (u16) = (pd)[0];                   \
+N        (u16) <<= 8;                       \
+N        (u16) += (pd)[1] & 0xE0;           \
+N    }
+X#define BT_COD_SERVICE_CLASS(u16, pd)     {                                            (u16) = (pd)[0];                           (u16) <<= 8;                               (u16) += (pd)[1] & 0xE0;               }
+N
+N/* to set the fields (assumes that format type is always 0) */
+N#define FIELDS_TO_COD(pd, mn, mj, sv)                   \
+N    {                                                     \
+N        (pd)[2] = mn;                                       \
+N        (pd)[1] = (mj) + ((sv)&BTM_COD_SERVICE_CLASS_LO_B); \
+N        (pd)[0] = (sv) >> 8;                                \
+N    }
+X#define FIELDS_TO_COD(pd, mn, mj, sv)                       {                                                             (pd)[2] = mn;                                               (pd)[1] = (mj) + ((sv)&BTM_COD_SERVICE_CLASS_LO_B);         (pd)[0] = (sv) >> 8;                                    }
+N
+N/* the COD masks */
+N#define BT_COD_FORMAT_TYPE_MASK 0x03
+N#define BT_COD_MINOR_CLASS_MASK 0xFC
+N#define BT_COD_MAJOR_CLASS_MASK 0x1F
+N#define BT_COD_SERVICE_CLASS_LO_B 0x00E0
+N#define BT_COD_SERVICE_CLASS_MASK 0xFFE0
+N
+N#define BT_COD_TYPE_UNKNOW 0x00
+N#define BT_COD_TYPE_HEADSET 0x01
+N
+Nuint16_t bt_le_read_16(const uint8_t *buffer, int pos);
+Nuint32_t bt_le_read_24(const uint8_t *buffer, int pos);
+Nuint32_t bt_le_read_32(const uint8_t *buffer, int pos);
+Nvoid bt_le_store_16(uint8_t *buffer, uint16_t pos, uint16_t value);
+Nvoid bt_le_store_24(uint8_t *buffer, uint16_t pos, uint32_t value);
+Nvoid bt_le_store_32(uint8_t *buffer, uint16_t pos, uint32_t value);
+Nuint32_t bt_be_read_16(const uint8_t *buffer, int pos);
+Nuint32_t bt_be_read_24(const uint8_t *buffer, int pos);
+Nuint32_t bt_be_read_32(const uint8_t *buffer, int pos);
+Nvoid bt_be_store_16(uint8_t *buffer, uint16_t pos, uint16_t value);
+Nvoid bt_be_store_24(uint8_t *buffer, uint16_t pos, uint32_t value);
+Nvoid bt_be_store_32(uint8_t *buffer, uint16_t pos, uint32_t value);
+Nvoid bt_be_store_64(uint8_t *buffer, uint16_t pos, uint64_t value);
+Nuint32_t bt_atoi_spec_size(const uint8_t *str, uint8_t size);
+Nuint32_t bt_atoi(const uint8_t *str);
+Nvoid bt_hex_dump(uint8_t *data, uint32_t len);
+Nvoid bt_addr_dump(uint8_t *addr);
+Nuint8_t bt_parse_cod(uint8_t cod[3], uint16_t *device_service, uint16_t *device_major, uint16_t *device_minor);
+N#endif
+N
+L 11 "..\..\Middleware\blue_angel\src\common\bt_common.c" 2
+N
+N#if 0
+Svoid bt_reverse_bytes(uint8_t *src, uint8_t *dst, int len)
+S{
+S    int i;
+S    for (i = 0; i < len; i++)
+S        dst[len - 1 - i] = src[i];
+S}
+S
+S
+Suint16_t bt_le_read_16(const uint8_t * buffer, int pos)
+S{
+S    return (uint16_t)(((uint16_t) buffer[pos]) | (((uint16_t)buffer[(pos)+1]) << 8));
+S}
+Suint32_t bt_le_read_24(const uint8_t * buffer, int pos)
+S{
+S    return ((uint32_t) buffer[pos]) | (((uint32_t)buffer[(pos)+1]) << 8) | (((uint32_t)buffer[(pos)+2]) << 16);
+S}
+Suint32_t bt_le_read_32(const uint8_t * buffer, int pos)
+S{
+S    return ((uint32_t) buffer[pos]) | (((uint32_t)buffer[(pos)+1]) << 8) | (((uint32_t)buffer[(pos)+2]) << 16) | (((uint32_t) buffer[(pos)+3]) << 24);
+S}
+S
+Svoid bt_le_store_16(uint8_t *buffer, uint16_t pos, uint16_t value)
+S{
+S    buffer[pos++] = (uint8_t)value;
+S    buffer[pos++] = (uint8_t)(value >> 8);
+S}
+S
+Svoid bt_le_store_24(uint8_t *buffer, uint16_t pos, uint32_t value)
+S{
+S    buffer[pos++] = (uint8_t)(value);
+S    buffer[pos++] = (uint8_t)(value >> 8);
+S    buffer[pos++] = (uint8_t)(value >> 16);
+S}
+S
+Svoid bt_le_store_32(uint8_t *buffer, uint16_t pos, uint32_t value)
+S{
+S    buffer[pos++] = (uint8_t)(value);
+S    buffer[pos++] = (uint8_t)(value >> 8);
+S    buffer[pos++] = (uint8_t)(value >> 16);
+S    buffer[pos++] = (uint8_t)(value >> 24);
+S}
+S
+Suint32_t bt_be_read_16( const uint8_t * buffer, int pos)
+S{
+S    return (uint16_t)(((uint16_t) buffer[(pos)+1]) | (((uint16_t)buffer[ pos]) << 8));
+S}
+S
+Suint32_t bt_be_read_24( const uint8_t * buffer, int pos)
+S{
+S    return ( ((uint32_t)buffer[(pos)+2]) | (((uint32_t)buffer[(pos)+1]) << 8) | (((uint32_t) buffer[pos]) << 16));
+S}
+S
+Suint32_t bt_be_read_32( const uint8_t * buffer, int pos)
+S{
+S    return ((uint32_t) buffer[(pos)+3]) | (((uint32_t)buffer[(pos)+2]) << 8) | (((uint32_t)buffer[(pos)+1]) << 16) | (((uint32_t) buffer[pos]) << 24);
+S}
+S
+Svoid bt_be_store_16(uint8_t *buffer, uint16_t pos, uint16_t value)
+S{
+S    buffer[pos++] = (uint8_t)(value >> 8);
+S    buffer[pos++] = (uint8_t)(value);
+S}
+S
+Svoid bt_be_store_24(uint8_t *buffer, uint16_t pos, uint32_t value)
+S{
+S    buffer[pos++] = (uint8_t)(value >> 16);
+S    buffer[pos++] = (uint8_t)(value >> 8);
+S    buffer[pos++] = (uint8_t)(value);
+S}
+S
+Svoid bt_be_store_32(uint8_t *buffer, uint16_t pos, uint32_t value)
+S{
+S    buffer[pos++] = (uint8_t)(value >> 24);
+S    buffer[pos++] = (uint8_t)(value >> 16);
+S    buffer[pos++] = (uint8_t)(value >> 8);
+S    buffer[pos++] = (uint8_t)(value);
+S}
+S
+Svoid bt_be_store_64(uint8_t *buffer,uint16_t pos,uint64_t value)
+S{
+S    buffer[pos++] = (uint8_t)(value >> 56);
+S    buffer[pos++] = (uint8_t)(value >> 48);
+S    buffer[pos++] = (uint8_t)(value >> 40);
+S    buffer[pos++] = (uint8_t)(value >> 32);
+S    buffer[pos++] = (uint8_t)(value >> 24);
+S    buffer[pos++] = (uint8_t)(value >> 16);
+S    buffer[pos++] = (uint8_t)(value >> 8);
+S    buffer[pos++] = (uint8_t)(value);
+S}
+S
+Suint32_t bt_atoi_spec_size(const uint8_t *str,uint8_t size)
+S{
+S    uint32_t val = 0;
+S    uint8_t temp_size = size;
+S    while (temp_size--)
+S    {
+S        char chr = *str;
+S        if (!chr || chr < '0' || chr > '9')
+S        {
+S            str++;
+S            continue;
+S        }
+S        val = (val * 10) + (chr - '0');
+S        str++;
+S    }
+S    return val;
+S}
+S
+Suint32_t bt_atoi(const uint8_t *str)
+S{
+S    uint32_t val = 0;
+S    while (1)
+S    {
+S        char chr = *str;
+S        if (!chr || chr < '0' || chr > '9')
+S            return val;
+S        val = (val * 10) + (chr - '0');
+S        str++;
+S    }
+S}
+S
+S#define MAX_COL 16
+S#define SHOW_LINE_SIZE 16
+Svoid bt_hex_dump(uint8_t *data,uint32_t len)
+S{
+S    uint32_t line;
+S    uint32_t curline = 0;
+S    uint32_t curcol = 0;
+S    char showline[SHOW_LINE_SIZE];
+S    uint32_t data_pos = 0;
+S
+S    if(len % MAX_COL)
+S    {
+S        line = len/MAX_COL+1;
+S    }
+S    else
+S    {
+S        line = len/MAX_COL;
+S    }
+S
+S    for(curline = 0; curline < line; curline++)
+S    {
+S        sprintf(showline,"%08xh:",curline*MAX_COL);
+S        BT_HEX_TRACE_DEBUG("%s",showline);
+S        for(curcol = 0; curcol < MAX_COL; curcol++)
+S        {
+S            if(data_pos < len)
+S            {
+S                BT_HEX_TRACE_DEBUG("%02x ",data[data_pos]);
+S                data_pos++;
+S                continue;
+S            }
+S            else
+S            {
+S                break;
+S            }
+S        }
+S        BT_HEX_TRACE_DEBUG("\n");
+S    }
+S}
+S
+Svoid bt_addr_dump(uint8_t *addr)
+S{
+S	uint8_t addr_buff[32];
+S	sprintf((char*)addr_buff,"BT ADDR:%02x:%02x:%02x:%02x:%02x:%02x\n",addr[0],addr[1],addr[2],addr[3],addr[5],addr[5]);
+S	BT_HEX_TRACE_DEBUG((char*)addr_buff);
+S}
+S
+S
+Suint8_t bt_parse_cod(uint8_t cod[3],uint16_t *device_service,uint16_t * device_major,uint16_t *device_minor)
+S{
+S	uint8_t device_type = BT_COD_TYPE_UNKNOW;
+S	BT_COD_SERVICE_CLASS(*device_service,cod);
+S	BT_COD_MAJOR_CLASS(*device_major,cod);
+S	BT_COD_MINOR_CLASS(*device_minor,cod);
+S
+S	if(*device_major == BT_COD_MAJOR_AUDIO)
+S	{
+S		switch(*device_minor)
+S		{
+S			case BT_COD_MINOR_CONFM_HEADSET:
+S				device_type = BT_COD_TYPE_HEADSET;
+S				break;
+S			default:
+S				break;
+S		}
+S	}
+S
+S	return device_type;
+S	
+S}
+S
+N#endif
