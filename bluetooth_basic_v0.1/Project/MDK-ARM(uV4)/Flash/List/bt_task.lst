@@ -28993,10 +28993,11 @@ N
 N	//BT_ASSERT(cunit_status == cunit_add_test_case("bt_linknode_test", bt_linknode_test));
 N	BT_ASSERT(cunit_status == cunit_add_test_case("bt_memory_test", bt_memory_test));
 X	((cunit_status == cunit_add_test_case("bt_memory_test", bt_memory_test)) ? (void)0 : assert_failed((uint8_t *)"..\\..\\Middleware\\blue_angel\\platform\\rtos\\bt_task.c", 16));
-N	//BT_ASSERT(cunit_status == cunit_add_test_case("bt_timer_test", bt_timer_test));
+N	BT_ASSERT(cunit_status == cunit_add_test_case("bt_timer_test", bt_timer_test));
+X	((cunit_status == cunit_add_test_case("bt_timer_test", bt_timer_test)) ? (void)0 : assert_failed((uint8_t *)"..\\..\\Middleware\\blue_angel\\platform\\rtos\\bt_task.c", 17));
+N	cunit_status = cunit_test_start();
 N    while(1)
 N    {
-N		cunit_status = cunit_test_start();
 N		BT_ASSERT(cunit_status == CUNIT_SUCCESS);
 X		((cunit_status == CUNIT_SUCCESS) ? (void)0 : assert_failed((uint8_t *)"..\\..\\Middleware\\blue_angel\\platform\\rtos\\bt_task.c", 21));
 N		bt_task_take_semaphore();

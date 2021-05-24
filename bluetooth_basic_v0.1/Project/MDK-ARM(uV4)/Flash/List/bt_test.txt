@@ -5,70 +5,70 @@
                           AREA ||i.bt_linknode_test||, CODE, READONLY, ALIGN=2
 
                   bt_linknode_test PROC
-;;;17     
-;;;18     void bt_linknode_test(void) 
+;;;19     
+;;;20     void bt_linknode_test(void) 
 000000  b530              PUSH     {r4,r5,lr}
-;;;19     { 
+;;;21     { 
 000002  b08f              SUB      sp,sp,#0x3c
-;;;20     	bt_linknode_t head;
-;;;21     	uint32_t timer_id = 0xFFFF;
+;;;22     	bt_linknode_t head;
+;;;23     	uint32_t timer_id = 0xFFFF;
 000004  f64f70ff          MOV      r0,#0xffff
 000008  900d              STR      r0,[sp,#0x34]
-;;;22     	bt_timer_t timer = {
+;;;24     	bt_timer_t timer = {
 00000a  2214              MOVS     r2,#0x14
 00000c  4968              LDR      r1,|L1.432|
 00000e  a808              ADD      r0,sp,#0x20
 000010  f7fffffe          BL       __aeabi_memcpy4
-;;;23     		NULL,
-;;;24     		0xFFFF,
-;;;25     		0x1234,
-;;;26     		0x100,
-;;;27     		NULL
-;;;28     		};
-;;;29     	bt_timer_t timer1 = {
+;;;25     		NULL,
+;;;26     		0xFFFF,
+;;;27     		0x1234,
+;;;28     		0x100,
+;;;29     		NULL
+;;;30     		};
+;;;31     	bt_timer_t timer1 = {
 000014  2214              MOVS     r2,#0x14
 000016  4966              LDR      r1,|L1.432|
 000018  3114              ADDS     r1,r1,#0x14
 00001a  a803              ADD      r0,sp,#0xc
 00001c  f7fffffe          BL       __aeabi_memcpy4
-;;;30     		NULL,
-;;;31     		0xFFFE,
-;;;32     		0x1233,
-;;;33     		0x101,
-;;;34     		NULL
-;;;35     		};
-;;;36     	bt_linknode_t *tmp_node = NULL;
+;;;32     		NULL,
+;;;33     		0xFFFE,
+;;;34     		0x1233,
+;;;35     		0x101,
+;;;36     		NULL
+;;;37     		};
+;;;38     	bt_linknode_t *tmp_node = NULL;
 000020  2500              MOVS     r5,#0
-;;;37     	bt_timer_t *tmp_timer = NULL;
+;;;39     	bt_timer_t *tmp_timer = NULL;
 000022  2400              MOVS     r4,#0
-;;;38     	bt_linknode_insert_node(&head, (bt_linknode_t *)&timer, BT_NODE_FRONT);
+;;;40     	bt_linknode_insert_node(&head, (bt_linknode_t *)&timer, BT_NODE_FRONT);
 000024  2201              MOVS     r2,#1
 000026  a908              ADD      r1,sp,#0x20
 000028  a80e              ADD      r0,sp,#0x38
 00002a  f7fffffe          BL       bt_linknode_insert_node
-;;;39     	bt_linknode_insert_node(&head, (bt_linknode_t *)&timer1, BT_NODE_FRONT);	
+;;;41     	bt_linknode_insert_node(&head, (bt_linknode_t *)&timer1, BT_NODE_FRONT);	
 00002e  2201              MOVS     r2,#1
 000030  a903              ADD      r1,sp,#0xc
 000032  a80e              ADD      r0,sp,#0x38
 000034  f7fffffe          BL       bt_linknode_insert_node
-;;;40     	/*tmp_node = bt_linknode_delete_node(&head, BT_NODE_FRONT);
-;;;41     	CU_ASSERT(tmp_node == (bt_linknode_t *)&timer); 
-;;;42     	tmp_timer = (bt_timer_t *)(tmp_node);
-;;;43     	CU_ASSERT(tmp_timer->next == NULL);
-;;;44     	CU_ASSERT(tmp_timer->timer_id == 0xFFFF);
-;;;45     	CU_ASSERT(tmp_timer->data == 0x1234);
-;;;46     	CU_ASSERT(tmp_timer->time_ms == 0x100);
-;;;47     	CU_ASSERT(tmp_timer->timeout_cb == NULL);
-;;;48     	CU_ASSERT(head.next == NULL);*/
-;;;49     	tmp_node = bt_linknode_travel_node(&head, bt_timer_cmp_by_timerid, &timer_id);
+;;;42     	/*tmp_node = bt_linknode_delete_node(&head, BT_NODE_FRONT);
+;;;43     	CU_ASSERT(tmp_node == (bt_linknode_t *)&timer); 
+;;;44     	tmp_timer = (bt_timer_t *)(tmp_node);
+;;;45     	CU_ASSERT(tmp_timer->next == NULL);
+;;;46     	CU_ASSERT(tmp_timer->timer_id == 0xFFFF);
+;;;47     	CU_ASSERT(tmp_timer->data == 0x1234);
+;;;48     	CU_ASSERT(tmp_timer->time_ms == 0x100);
+;;;49     	CU_ASSERT(tmp_timer->timeout_cb == NULL);
+;;;50     	CU_ASSERT(head.next == NULL);*/
+;;;51     	tmp_node = bt_linknode_travel_node(&head, bt_timer_cmp_by_timerid, &timer_id);
 000038  aa0d              ADD      r2,sp,#0x34
 00003a  495e              LDR      r1,|L1.436|
 00003c  a80e              ADD      r0,sp,#0x38
 00003e  f7fffffe          BL       bt_linknode_travel_node
 000042  4605              MOV      r5,r0
-;;;50     	tmp_timer = (bt_timer_t *)(tmp_node->next);
+;;;52     	tmp_timer = (bt_timer_t *)(tmp_node->next);
 000044  682c              LDR      r4,[r5,#0]
-;;;51     	CU_ASSERT(tmp_timer == &timer);
+;;;53     	CU_ASSERT(tmp_timer == &timer);
 000046  2000              MOVS     r0,#0
 000048  a15b              ADR      r1,|L1.440|
 00004a  e9cd1000          STRD     r1,r0,[sp,#0]
@@ -83,9 +83,9 @@
 00005a  4608              MOV      r0,r1
 00005c  a357              ADR      r3,|L1.444|
 00005e  a264              ADR      r2,|L1.496|
-000060  2133              MOVS     r1,#0x33
+000060  2135              MOVS     r1,#0x35
 000062  f7fffffe          BL       CU_assertImplementation
-;;;52     	CU_ASSERT(tmp_timer->timer_id == 0xFFFF);
+;;;54     	CU_ASSERT(tmp_timer->timer_id == 0xFFFF);
 000066  2000              MOVS     r0,#0
 000068  a153              ADR      r1,|L1.440|
 00006a  e9cd1000          STRD     r1,r0,[sp,#0]
@@ -101,9 +101,9 @@
 00007e  4608              MOV      r0,r1
 000080  a34e              ADR      r3,|L1.444|
 000082  a260              ADR      r2,|L1.516|
-000084  2134              MOVS     r1,#0x34
+000084  2136              MOVS     r1,#0x36
 000086  f7fffffe          BL       CU_assertImplementation
-;;;53     	CU_ASSERT(tmp_timer->data == 0x1234);
+;;;55     	CU_ASSERT(tmp_timer->data == 0x1234);
 00008a  2000              MOVS     r0,#0
 00008c  a14a              ADR      r1,|L1.440|
 00008e  e9cd1000          STRD     r1,r0,[sp,#0]
@@ -119,9 +119,9 @@
 0000a2  4608              MOV      r0,r1
 0000a4  a345              ADR      r3,|L1.444|
 0000a6  a25f              ADR      r2,|L1.548|
-0000a8  2135              MOVS     r1,#0x35
+0000a8  2137              MOVS     r1,#0x37
 0000aa  f7fffffe          BL       CU_assertImplementation
-;;;54     	CU_ASSERT(tmp_timer->time_ms == 0x100);
+;;;56     	CU_ASSERT(tmp_timer->time_ms == 0x100);
 0000ae  2000              MOVS     r0,#0
 0000b0  a141              ADR      r1,|L1.440|
 0000b2  e9cd1000          STRD     r1,r0,[sp,#0]
@@ -136,9 +136,9 @@
 0000c4  4608              MOV      r0,r1
 0000c6  a33d              ADR      r3,|L1.444|
 0000c8  a25d              ADR      r2,|L1.576|
-0000ca  2136              MOVS     r1,#0x36
+0000ca  2138              MOVS     r1,#0x38
 0000cc  f7fffffe          BL       CU_assertImplementation
-;;;55     	CU_ASSERT(tmp_timer->timeout_cb == NULL);
+;;;57     	CU_ASSERT(tmp_timer->timeout_cb == NULL);
 0000d0  2000              MOVS     r0,#0
 0000d2  a139              ADR      r1,|L1.440|
 0000d4  e9cd1000          STRD     r1,r0,[sp,#0]
@@ -152,21 +152,21 @@
 0000e2  4608              MOV      r0,r1
 0000e4  a335              ADR      r3,|L1.444|
 0000e6  a25d              ADR      r2,|L1.604|
-0000e8  2137              MOVS     r1,#0x37
+0000e8  2139              MOVS     r1,#0x39
 0000ea  f7fffffe          BL       CU_assertImplementation
-;;;56     
-;;;57     	timer_id = 0xFFFE;
+;;;58     
+;;;59     	timer_id = 0xFFFE;
 0000ee  f64f70fe          MOV      r0,#0xfffe
 0000f2  900d              STR      r0,[sp,#0x34]
-;;;58     	tmp_node = bt_linknode_travel_node(&head, bt_timer_cmp_by_timerid, &timer_id);
+;;;60     	tmp_node = bt_linknode_travel_node(&head, bt_timer_cmp_by_timerid, &timer_id);
 0000f4  aa0d              ADD      r2,sp,#0x34
 0000f6  492f              LDR      r1,|L1.436|
 0000f8  a80e              ADD      r0,sp,#0x38
 0000fa  f7fffffe          BL       bt_linknode_travel_node
 0000fe  4605              MOV      r5,r0
-;;;59     	tmp_timer = (bt_timer_t *)(tmp_node->next);
+;;;61     	tmp_timer = (bt_timer_t *)(tmp_node->next);
 000100  682c              LDR      r4,[r5,#0]
-;;;60     	CU_ASSERT(tmp_timer == &timer1);
+;;;62     	CU_ASSERT(tmp_timer == &timer1);
 000102  2000              MOVS     r0,#0
 000104  a12c              ADR      r1,|L1.440|
 000106  e9cd1000          STRD     r1,r0,[sp,#0]
@@ -181,9 +181,9 @@
 000116  4608              MOV      r0,r1
 000118  a328              ADR      r3,|L1.444|
 00011a  a258              ADR      r2,|L1.636|
-00011c  213c              MOVS     r1,#0x3c
+00011c  213e              MOVS     r1,#0x3e
 00011e  f7fffffe          BL       CU_assertImplementation
-;;;61     	CU_ASSERT(tmp_timer->timer_id == 0xFFFE);
+;;;63     	CU_ASSERT(tmp_timer->timer_id == 0xFFFE);
 000122  2000              MOVS     r0,#0
 000124  a124              ADR      r1,|L1.440|
 000126  e9cd1000          STRD     r1,r0,[sp,#0]
@@ -199,9 +199,9 @@
 00013a  4608              MOV      r0,r1
 00013c  a31f              ADR      r3,|L1.444|
 00013e  a255              ADR      r2,|L1.660|
-000140  213d              MOVS     r1,#0x3d
+000140  213f              MOVS     r1,#0x3f
 000142  f7fffffe          BL       CU_assertImplementation
-;;;62     	CU_ASSERT(tmp_timer->data == 0x1233);
+;;;64     	CU_ASSERT(tmp_timer->data == 0x1233);
 000146  2000              MOVS     r0,#0
 000148  a11b              ADR      r1,|L1.440|
 00014a  e9cd1000          STRD     r1,r0,[sp,#0]
@@ -217,9 +217,9 @@
 00015e  4608              MOV      r0,r1
 000160  a316              ADR      r3,|L1.444|
 000162  a254              ADR      r2,|L1.692|
-000164  213e              MOVS     r1,#0x3e
+000164  2140              MOVS     r1,#0x40
 000166  f7fffffe          BL       CU_assertImplementation
-;;;63     	CU_ASSERT(tmp_timer->time_ms == 0x101);
+;;;65     	CU_ASSERT(tmp_timer->time_ms == 0x101);
 00016a  2000              MOVS     r0,#0
 00016c  a112              ADR      r1,|L1.440|
 00016e  e9cd1000          STRD     r1,r0,[sp,#0]
@@ -235,9 +235,9 @@
 000182  4608              MOV      r0,r1
 000184  a30d              ADR      r3,|L1.444|
 000186  a252              ADR      r2,|L1.720|
-000188  213f              MOVS     r1,#0x3f
+000188  2141              MOVS     r1,#0x41
 00018a  f7fffffe          BL       CU_assertImplementation
-;;;64     	CU_ASSERT(tmp_timer->timeout_cb == NULL);
+;;;66     	CU_ASSERT(tmp_timer->timeout_cb == NULL);
 00018e  2000              MOVS     r0,#0
 000190  a109              ADR      r1,|L1.440|
 000192  e9cd1000          STRD     r1,r0,[sp,#0]
@@ -251,12 +251,12 @@
 0001a0  4608              MOV      r0,r1
 0001a2  a306              ADR      r3,|L1.444|
 0001a4  a22d              ADR      r2,|L1.604|
-0001a6  2140              MOVS     r1,#0x40
+0001a6  2142              MOVS     r1,#0x42
 0001a8  f7fffffe          BL       CU_assertImplementation
-;;;65     }
+;;;67     }
 0001ac  b00f              ADD      sp,sp,#0x3c
 0001ae  bd30              POP      {r4,r5,pc}
-;;;66     
+;;;68     
                           ENDP
 
                   |L1.432|
@@ -372,23 +372,24 @@
                           AREA ||i.bt_memory_test||, CODE, READONLY, ALIGN=2
 
                   bt_memory_test PROC
-;;;66     
-;;;67     void bt_memory_test(void) 
-000000  b51c              PUSH     {r2-r4,lr}
-;;;68     { 
-;;;69     	bt_timer_t *timer;
-;;;70     	bt_fixed_memory_init(BT_FIXED_MM_TIMER, bt_timer_fixed_memory, sizeof(bt_timer_fixed_memory));
+;;;68     
+;;;69     void bt_memory_test(void) 
+000000  b57c              PUSH     {r2-r6,lr}
+;;;70     { 
+;;;71     	bt_timer_t *timer;
+;;;72     	uint8_t *tx_buf, *rx_buf;
+;;;73     	bt_fixed_memory_init(BT_FIXED_MM_TIMER, bt_timer_fixed_memory, sizeof(bt_timer_fixed_memory));
 000002  228c              MOVS     r2,#0x8c
-000004  493a              LDR      r1,|L2.240|
+000004  4953              LDR      r1,|L2.340|
 000006  2000              MOVS     r0,#0
 000008  f7fffffe          BL       bt_fixed_memory_init
-;;;71     	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
+;;;74     	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
 00000c  2000              MOVS     r0,#0
 00000e  f7fffffe          BL       bt_fixed_memory_allocate
 000012  4604              MOV      r4,r0
-;;;72     	CU_ASSERT(timer != NULL);
+;;;75     	CU_ASSERT(timer != NULL);
 000014  2000              MOVS     r0,#0
-000016  a137              ADR      r1,|L2.244|
+000016  a150              ADR      r1,|L2.344|
 000018  e9cd1000          STRD     r1,r0,[sp,#0]
 00001c  b10c              CBZ      r4,|L2.34|
 00001e  2101              MOVS     r1,#1
@@ -397,220 +398,690 @@
 000022  2100              MOVS     r1,#0
                   |L2.36|
 000024  4608              MOV      r0,r1
-000026  a334              ADR      r3,|L2.248|
-000028  a240              ADR      r2,|L2.300|
-00002a  2148              MOVS     r1,#0x48
+000026  a34d              ADR      r3,|L2.348|
+000028  a259              ADR      r2,|L2.400|
+00002a  214b              MOVS     r1,#0x4b
 00002c  f7fffffe          BL       CU_assertImplementation
-;;;73     	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
-000030  2000              MOVS     r0,#0
-000032  f7fffffe          BL       bt_fixed_memory_allocate
-000036  4604              MOV      r4,r0
-;;;74     	CU_ASSERT(timer != NULL);
+;;;76     	bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);
+000030  4621              MOV      r1,r4
+000032  2000              MOVS     r0,#0
+000034  f7fffffe          BL       bt_fixed_memory_free
+;;;77     	
+;;;78     	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
 000038  2000              MOVS     r0,#0
-00003a  a12e              ADR      r1,|L2.244|
-00003c  e9cd1000          STRD     r1,r0,[sp,#0]
-000040  b10c              CBZ      r4,|L2.70|
-000042  2101              MOVS     r1,#1
-000044  e000              B        |L2.72|
-                  |L2.70|
-000046  2100              MOVS     r1,#0
-                  |L2.72|
-000048  4608              MOV      r0,r1
-00004a  a32b              ADR      r3,|L2.248|
-00004c  a237              ADR      r2,|L2.300|
-00004e  214a              MOVS     r1,#0x4a
-000050  f7fffffe          BL       CU_assertImplementation
-;;;75     	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
-000054  2000              MOVS     r0,#0
-000056  f7fffffe          BL       bt_fixed_memory_allocate
-00005a  4604              MOV      r4,r0
-;;;76     	CU_ASSERT(timer != NULL);
-00005c  2000              MOVS     r0,#0
-00005e  a125              ADR      r1,|L2.244|
-000060  e9cd1000          STRD     r1,r0,[sp,#0]
-000064  b10c              CBZ      r4,|L2.106|
-000066  2101              MOVS     r1,#1
-000068  e000              B        |L2.108|
-                  |L2.106|
-00006a  2100              MOVS     r1,#0
-                  |L2.108|
-00006c  4608              MOV      r0,r1
-00006e  a322              ADR      r3,|L2.248|
-000070  a22e              ADR      r2,|L2.300|
-000072  214c              MOVS     r1,#0x4c
-000074  f7fffffe          BL       CU_assertImplementation
-;;;77     	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
-000078  2000              MOVS     r0,#0
-00007a  f7fffffe          BL       bt_fixed_memory_allocate
-00007e  4604              MOV      r4,r0
-;;;78     	CU_ASSERT(timer != NULL);
-000080  2000              MOVS     r0,#0
-000082  a11c              ADR      r1,|L2.244|
-000084  e9cd1000          STRD     r1,r0,[sp,#0]
-000088  b10c              CBZ      r4,|L2.142|
-00008a  2101              MOVS     r1,#1
-00008c  e000              B        |L2.144|
-                  |L2.142|
-00008e  2100              MOVS     r1,#0
-                  |L2.144|
-000090  4608              MOV      r0,r1
-000092  a319              ADR      r3,|L2.248|
-000094  a225              ADR      r2,|L2.300|
-000096  214e              MOVS     r1,#0x4e
-000098  f7fffffe          BL       CU_assertImplementation
-;;;79     	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
-00009c  2000              MOVS     r0,#0
-00009e  f7fffffe          BL       bt_fixed_memory_allocate
-0000a2  4604              MOV      r4,r0
-;;;80     	CU_ASSERT(timer != NULL);
-0000a4  2000              MOVS     r0,#0
-0000a6  a113              ADR      r1,|L2.244|
-0000a8  e9cd1000          STRD     r1,r0,[sp,#0]
-0000ac  b10c              CBZ      r4,|L2.178|
-0000ae  2101              MOVS     r1,#1
-0000b0  e000              B        |L2.180|
-                  |L2.178|
-0000b2  2100              MOVS     r1,#0
-                  |L2.180|
-0000b4  4608              MOV      r0,r1
-0000b6  a310              ADR      r3,|L2.248|
-0000b8  a21c              ADR      r2,|L2.300|
-0000ba  2150              MOVS     r1,#0x50
-0000bc  f7fffffe          BL       CU_assertImplementation
-;;;81     	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
-0000c0  2000              MOVS     r0,#0
-0000c2  f7fffffe          BL       bt_fixed_memory_allocate
-0000c6  4604              MOV      r4,r0
-;;;82     	CU_ASSERT(timer != NULL);
-0000c8  2000              MOVS     r0,#0
-0000ca  a10a              ADR      r1,|L2.244|
-0000cc  e9cd1000          STRD     r1,r0,[sp,#0]
-0000d0  b10c              CBZ      r4,|L2.214|
-0000d2  2101              MOVS     r1,#1
-0000d4  e000              B        |L2.216|
-                  |L2.214|
-0000d6  2100              MOVS     r1,#0
-                  |L2.216|
-0000d8  4608              MOV      r0,r1
-0000da  a307              ADR      r3,|L2.248|
-0000dc  a213              ADR      r2,|L2.300|
-0000de  2152              MOVS     r1,#0x52
-0000e0  f7fffffe          BL       CU_assertImplementation
-;;;83     	bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);
-0000e4  4621              MOV      r1,r4
-0000e6  2000              MOVS     r0,#0
-0000e8  f7fffffe          BL       bt_fixed_memory_free
-;;;84     	//bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);
-;;;85     }
-0000ec  bd1c              POP      {r2-r4,pc}
-;;;86     
+00003a  f7fffffe          BL       bt_fixed_memory_allocate
+00003e  4604              MOV      r4,r0
+;;;79     	CU_ASSERT(timer != NULL);
+000040  2000              MOVS     r0,#0
+000042  a145              ADR      r1,|L2.344|
+000044  e9cd1000          STRD     r1,r0,[sp,#0]
+000048  b10c              CBZ      r4,|L2.78|
+00004a  2101              MOVS     r1,#1
+00004c  e000              B        |L2.80|
+                  |L2.78|
+00004e  2100              MOVS     r1,#0
+                  |L2.80|
+000050  4608              MOV      r0,r1
+000052  a342              ADR      r3,|L2.348|
+000054  a24e              ADR      r2,|L2.400|
+000056  214f              MOVS     r1,#0x4f
+000058  f7fffffe          BL       CU_assertImplementation
+;;;80     	bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);
+00005c  4621              MOV      r1,r4
+00005e  2000              MOVS     r0,#0
+000060  f7fffffe          BL       bt_fixed_memory_free
+;;;81     	
+;;;82     	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
+000064  2000              MOVS     r0,#0
+000066  f7fffffe          BL       bt_fixed_memory_allocate
+00006a  4604              MOV      r4,r0
+;;;83     	CU_ASSERT(timer != NULL);
+00006c  2000              MOVS     r0,#0
+00006e  a13a              ADR      r1,|L2.344|
+000070  e9cd1000          STRD     r1,r0,[sp,#0]
+000074  b10c              CBZ      r4,|L2.122|
+000076  2101              MOVS     r1,#1
+000078  e000              B        |L2.124|
+                  |L2.122|
+00007a  2100              MOVS     r1,#0
+                  |L2.124|
+00007c  4608              MOV      r0,r1
+00007e  a337              ADR      r3,|L2.348|
+000080  a243              ADR      r2,|L2.400|
+000082  2153              MOVS     r1,#0x53
+000084  f7fffffe          BL       CU_assertImplementation
+;;;84     	bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);	
+000088  4621              MOV      r1,r4
+00008a  2000              MOVS     r0,#0
+00008c  f7fffffe          BL       bt_fixed_memory_free
+;;;85     
+;;;86     	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
+000090  2000              MOVS     r0,#0
+000092  f7fffffe          BL       bt_fixed_memory_allocate
+000096  4604              MOV      r4,r0
+;;;87     	CU_ASSERT(timer != NULL);
+000098  2000              MOVS     r0,#0
+00009a  a12f              ADR      r1,|L2.344|
+00009c  e9cd1000          STRD     r1,r0,[sp,#0]
+0000a0  b10c              CBZ      r4,|L2.166|
+0000a2  2101              MOVS     r1,#1
+0000a4  e000              B        |L2.168|
+                  |L2.166|
+0000a6  2100              MOVS     r1,#0
+                  |L2.168|
+0000a8  4608              MOV      r0,r1
+0000aa  a32c              ADR      r3,|L2.348|
+0000ac  a238              ADR      r2,|L2.400|
+0000ae  2157              MOVS     r1,#0x57
+0000b0  f7fffffe          BL       CU_assertImplementation
+;;;88     	bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);	
+0000b4  4621              MOV      r1,r4
+0000b6  2000              MOVS     r0,#0
+0000b8  f7fffffe          BL       bt_fixed_memory_free
+;;;89     
+;;;90     	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
+0000bc  2000              MOVS     r0,#0
+0000be  f7fffffe          BL       bt_fixed_memory_allocate
+0000c2  4604              MOV      r4,r0
+;;;91     	CU_ASSERT(timer != NULL);
+0000c4  2000              MOVS     r0,#0
+0000c6  a124              ADR      r1,|L2.344|
+0000c8  e9cd1000          STRD     r1,r0,[sp,#0]
+0000cc  b10c              CBZ      r4,|L2.210|
+0000ce  2101              MOVS     r1,#1
+0000d0  e000              B        |L2.212|
+                  |L2.210|
+0000d2  2100              MOVS     r1,#0
+                  |L2.212|
+0000d4  4608              MOV      r0,r1
+0000d6  a321              ADR      r3,|L2.348|
+0000d8  a22d              ADR      r2,|L2.400|
+0000da  215b              MOVS     r1,#0x5b
+0000dc  f7fffffe          BL       CU_assertImplementation
+;;;92     	bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);
+0000e0  4621              MOV      r1,r4
+0000e2  2000              MOVS     r0,#0
+0000e4  f7fffffe          BL       bt_fixed_memory_free
+;;;93     
+;;;94     	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
+0000e8  2000              MOVS     r0,#0
+0000ea  f7fffffe          BL       bt_fixed_memory_allocate
+0000ee  4604              MOV      r4,r0
+;;;95     	CU_ASSERT(timer != NULL);
+0000f0  2000              MOVS     r0,#0
+0000f2  a119              ADR      r1,|L2.344|
+0000f4  e9cd1000          STRD     r1,r0,[sp,#0]
+0000f8  b10c              CBZ      r4,|L2.254|
+0000fa  2101              MOVS     r1,#1
+0000fc  e000              B        |L2.256|
+                  |L2.254|
+0000fe  2100              MOVS     r1,#0
+                  |L2.256|
+000100  4608              MOV      r0,r1
+000102  a316              ADR      r3,|L2.348|
+000104  a222              ADR      r2,|L2.400|
+000106  215f              MOVS     r1,#0x5f
+000108  f7fffffe          BL       CU_assertImplementation
+;;;96     	bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);
+00010c  4621              MOV      r1,r4
+00010e  2000              MOVS     r0,#0
+000110  f7fffffe          BL       bt_fixed_memory_free
+;;;97     	//bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);
+;;;98     	
+;;;99     	bt_memory_init(BT_MEMORY_TX, bt_tx_buf, sizeof(bt_tx_buf));
+000114  f44f5280          MOV      r2,#0x1000
+000118  4921              LDR      r1,|L2.416|
+00011a  2000              MOVS     r0,#0
+00011c  f7fffffe          BL       bt_memory_init
+;;;100    	bt_memory_init(BT_MEMORY_RX, bt_rx_buf, sizeof(bt_rx_buf));
+000120  f44f5280          MOV      r2,#0x1000
+000124  491f              LDR      r1,|L2.420|
+000126  2001              MOVS     r0,#1
+000128  f7fffffe          BL       bt_memory_init
+;;;101    	
+;;;102    	tx_buf = bt_memory_allocate_packet(BT_MEMORY_TX, 8);
+00012c  2108              MOVS     r1,#8
+00012e  2000              MOVS     r0,#0
+000130  f7fffffe          BL       bt_memory_allocate_packet
+000134  4605              MOV      r5,r0
+;;;103    	rx_buf = bt_memory_allocate_packet(BT_MEMORY_RX, 16);
+000136  2110              MOVS     r1,#0x10
+000138  2001              MOVS     r0,#1
+00013a  f7fffffe          BL       bt_memory_allocate_packet
+00013e  4606              MOV      r6,r0
+;;;104    	bt_memory_free_packet(BT_MEMORY_TX, tx_buf);
+000140  4629              MOV      r1,r5
+000142  2000              MOVS     r0,#0
+000144  f7fffffe          BL       bt_memory_free_packet
+;;;105    	bt_memory_free_packet(BT_MEMORY_RX, rx_buf);
+000148  4631              MOV      r1,r6
+00014a  2001              MOVS     r0,#1
+00014c  f7fffffe          BL       bt_memory_free_packet
+;;;106    	//bt_memory_free_packet(BT_MEMORY_TX, tx_buf);
+;;;107    	//bt_memory_free_packet(BT_MEMORY_RX, rx_buf);
+;;;108    }
+000150  bd7c              POP      {r2-r6,pc}
+;;;109    
                           ENDP
 
-0000ee  0000              DCW      0x0000
-                  |L2.240|
+000152  0000              DCW      0x0000
+                  |L2.340|
                           DCD      bt_timer_fixed_memory
-                  |L2.244|
-0000f4  00                DCB      0
-0000f5  00                DCB      0
-0000f6  00                DCB      0
-0000f7  00                DCB      0
-                  |L2.248|
-0000f8  2e2e5c2e          DCB      "..\\..\\Middleware\\blue_angel\\platform\\test\\bt_test"
-0000fc  2e5c4d69
-000100  64646c65
-000104  77617265
-000108  5c626c75
-00010c  655f616e
-000110  67656c5c
-000114  706c6174
-000118  666f726d
-00011c  5c746573
-000120  745c6274
-000124  5f746573
-000128  74      
-000129  2e6300            DCB      ".c",0
-                  |L2.300|
-00012c  74696d65          DCB      "timer != NULL",0
-000130  7220213d
-000134  204e554c
-000138  4c00    
-00013a  00                DCB      0
-00013b  00                DCB      0
+                  |L2.344|
+000158  00                DCB      0
+000159  00                DCB      0
+00015a  00                DCB      0
+00015b  00                DCB      0
+                  |L2.348|
+00015c  2e2e5c2e          DCB      "..\\..\\Middleware\\blue_angel\\platform\\test\\bt_test"
+000160  2e5c4d69
+000164  64646c65
+000168  77617265
+00016c  5c626c75
+000170  655f616e
+000174  67656c5c
+000178  706c6174
+00017c  666f726d
+000180  5c746573
+000184  745c6274
+000188  5f746573
+00018c  74      
+00018d  2e6300            DCB      ".c",0
+                  |L2.400|
+000190  74696d65          DCB      "timer != NULL",0
+000194  7220213d
+000198  204e554c
+00019c  4c00    
+00019e  00                DCB      0
+00019f  00                DCB      0
+                  |L2.416|
+                          DCD      bt_tx_buf
+                  |L2.420|
+                          DCD      bt_rx_buf
 
                           AREA ||i.bt_timer_test||, CODE, READONLY, ALIGN=2
 
                   bt_timer_test PROC
-;;;86     
-;;;87     void bt_timer_test(void) 
-000000  b51c              PUSH     {r2-r4,lr}
-;;;88     { 
-;;;89     	CU_ASSERT_STRING_EQUAL_FATAL("abc", "123"); 
-000002  a10a              ADR      r1,|L3.44|
-000004  a00a              ADR      r0,|L3.48|
-000006  f7fffffe          BL       strcmp
-00000a  b908              CBNZ     r0,|L3.16|
-00000c  2001              MOVS     r0,#1
-00000e  e000              B        |L3.18|
-                  |L3.16|
-000010  2000              MOVS     r0,#0
-                  |L3.18|
-000012  4604              MOV      r4,r0
-000014  2001              MOVS     r0,#1
-000016  a107              ADR      r1,|L3.52|
-000018  a307              ADR      r3,|L3.56|
-00001a  a214              ADR      r2,|L3.108|
-00001c  e9cd1000          STRD     r1,r0,[sp,#0]
-000020  2159              MOVS     r1,#0x59
-000022  4620              MOV      r0,r4
-000024  f7fffffe          BL       CU_assertImplementation
-;;;90     }
-000028  bd1c              POP      {r2-r4,pc}
+;;;138    
+;;;139    void bt_timer_test(void) 
+000000  b57c              PUSH     {r2-r6,lr}
+;;;140    { 
+;;;141    	uint32_t timer_id = (BT_MODULE_HCI | 0x0C03);
+000002  4c23              LDR      r4,|L3.144|
+;;;142    	start_tick = bt_os_layer_get_system_tick();
+000004  f7fffffe          BL       bt_os_layer_get_system_tick
+000008  4922              LDR      r1,|L3.148|
+00000a  6008              STR      r0,[r1,#0]  ; start_tick
+;;;143    	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id, 200, 0, timeout));
+00000c  4b22              LDR      r3,|L3.152|
+00000e  2200              MOVS     r2,#0
+000010  21c8              MOVS     r1,#0xc8
+000012  4620              MOV      r0,r4
+000014  f7fffffe          BL       bt_timer_start
+000018  2801              CMP      r0,#1
+00001a  d100              BNE      |L3.30|
+00001c  e000              B        |L3.32|
+                  |L3.30|
+00001e  2000              MOVS     r0,#0
+                  |L3.32|
+000020  4605              MOV      r5,r0
+000022  2000              MOVS     r0,#0
+000024  a11d              ADR      r1,|L3.156|
+000026  a31e              ADR      r3,|L3.160|
+000028  a22a              ADR      r2,|L3.212|
+00002a  e9cd1000          STRD     r1,r0,[sp,#0]
+00002e  218f              MOVS     r1,#0x8f
+000030  4628              MOV      r0,r5
+000032  f7fffffe          BL       CU_assertImplementation
+;;;144    	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id+1, 100, 0, timeout1));
+000036  4b37              LDR      r3,|L3.276|
+000038  2200              MOVS     r2,#0
+00003a  2164              MOVS     r1,#0x64
+00003c  1c60              ADDS     r0,r4,#1
+00003e  f7fffffe          BL       bt_timer_start
+000042  2801              CMP      r0,#1
+000044  d100              BNE      |L3.72|
+000046  e000              B        |L3.74|
+                  |L3.72|
+000048  2000              MOVS     r0,#0
+                  |L3.74|
+00004a  4605              MOV      r5,r0
+00004c  2000              MOVS     r0,#0
+00004e  a113              ADR      r1,|L3.156|
+000050  a313              ADR      r3,|L3.160|
+000052  4a31              LDR      r2,|L3.280|
+000054  e9cd1000          STRD     r1,r0,[sp,#0]
+000058  2190              MOVS     r1,#0x90
+00005a  4628              MOV      r0,r5
+00005c  f7fffffe          BL       CU_assertImplementation
+;;;145    	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id+2, 300, 0, timeout2));
+000060  4b2e              LDR      r3,|L3.284|
+000062  2200              MOVS     r2,#0
+000064  f44f7196          MOV      r1,#0x12c
+000068  1ca0              ADDS     r0,r4,#2
+00006a  f7fffffe          BL       bt_timer_start
+00006e  2801              CMP      r0,#1
+000070  d100              BNE      |L3.116|
+000072  e000              B        |L3.118|
+                  |L3.116|
+000074  2000              MOVS     r0,#0
+                  |L3.118|
+000076  4605              MOV      r5,r0
+000078  2000              MOVS     r0,#0
+00007a  a108              ADR      r1,|L3.156|
+00007c  a308              ADR      r3,|L3.160|
+00007e  4a28              LDR      r2,|L3.288|
+000080  e9cd1000          STRD     r1,r0,[sp,#0]
+000084  2191              MOVS     r1,#0x91
+000086  4628              MOV      r0,r5
+000088  f7fffffe          BL       CU_assertImplementation
+;;;146    }
+00008c  bd7c              POP      {r2-r6,pc}
                           ENDP
 
-00002a  0000              DCW      0x0000
-                  |L3.44|
-00002c  31323300          DCB      "123",0
-                  |L3.48|
-000030  61626300          DCB      "abc",0
-                  |L3.52|
-000034  00                DCB      0
-000035  00                DCB      0
-000036  00                DCB      0
-000037  00                DCB      0
-                  |L3.56|
-000038  2e2e5c2e          DCB      "..\\..\\Middleware\\blue_angel\\platform\\test\\bt_test"
-00003c  2e5c4d69
-000040  64646c65
-000044  77617265
-000048  5c626c75
-00004c  655f616e
-000050  67656c5c
-000054  706c6174
-000058  666f726d
-00005c  5c746573
-000060  745c6274
-000064  5f746573
-000068  74      
-000069  2e6300            DCB      ".c",0
-                  |L3.108|
-00006c  43555f41          DCB      "CU_ASSERT_STRING_EQUAL_FATAL(""abc"",""123"")",0
-000070  53534552
-000074  545f5354
-000078  52494e47
-00007c  5f455155
-000080  414c5f46
-000084  4154414c
-000088  28226162
-00008c  63222c22
-000090  31323322
-000094  2900    
-000096  00                DCB      0
-000097  00                DCB      0
+00008e  0000              DCW      0x0000
+                  |L3.144|
+                          DCD      0x20000c03
+                  |L3.148|
+                          DCD      start_tick
+                  |L3.152|
+                          DCD      timeout
+                  |L3.156|
+00009c  00                DCB      0
+00009d  00                DCB      0
+00009e  00                DCB      0
+00009f  00                DCB      0
+                  |L3.160|
+0000a0  2e2e5c2e          DCB      "..\\..\\Middleware\\blue_angel\\platform\\test\\bt_test"
+0000a4  2e5c4d69
+0000a8  64646c65
+0000ac  77617265
+0000b0  5c626c75
+0000b4  655f616e
+0000b8  67656c5c
+0000bc  706c6174
+0000c0  666f726d
+0000c4  5c746573
+0000c8  745c6274
+0000cc  5f746573
+0000d0  74      
+0000d1  2e6300            DCB      ".c",0
+                  |L3.212|
+0000d4  42545f53          DCB      "BT_STATUS_SUCCESS == bt_timer_start(timer_id, 200, 0, t"
+0000d8  54415455
+0000dc  535f5355
+0000e0  43434553
+0000e4  53203d3d
+0000e8  2062745f
+0000ec  74696d65
+0000f0  725f7374
+0000f4  61727428
+0000f8  74696d65
+0000fc  725f6964
+000100  2c203230
+000104  302c2030
+000108  2c2074  
+00010b  696d656f          DCB      "imeout)",0
+00010f  75742900
+000113  00                DCB      0
+                  |L3.276|
+                          DCD      timeout1
+                  |L3.280|
+                          DCD      ||.conststring||
+                  |L3.284|
+                          DCD      timeout2
+                  |L3.288|
+                          DCD      ||.conststring||+0x44
+
+                          AREA ||i.timeout||, CODE, READONLY, ALIGN=2
+
+                          REQUIRE _printf_percent
+                          REQUIRE _printf_d
+                          REQUIRE _printf_int_dec
+                  timeout PROC
+;;;111    //typedef bt_status_t (*bt_timer_timeout_callback_t)(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param);
+;;;112    bt_status_t timeout(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param)
+000000  e92d41fc          PUSH     {r2-r8,lr}
+;;;113    {
+000004  4605              MOV      r5,r0
+000006  460c              MOV      r4,r1
+000008  4616              MOV      r6,r2
+00000a  461f              MOV      r7,r3
+;;;114    	CU_ASSERT(is_timeout);
+00000c  2000              MOVS     r0,#0
+00000e  a114              ADR      r1,|L4.96|
+000010  a314              ADR      r3,|L4.100|
+000012  a221              ADR      r2,|L4.152|
+000014  e9cd1000          STRD     r1,r0,[sp,#0]
+000018  2172              MOVS     r1,#0x72
+00001a  4628              MOV      r0,r5
+00001c  f7fffffe          BL       CU_assertImplementation
+;;;115    	CU_ASSERT(timer_id == (BT_MODULE_HCI | 0x0C03));
+000020  2000              MOVS     r0,#0
+000022  a10f              ADR      r1,|L4.96|
+000024  e9cd1000          STRD     r1,r0,[sp,#0]
+000028  491e              LDR      r1,|L4.164|
+00002a  428c              CMP      r4,r1
+00002c  d101              BNE      |L4.50|
+00002e  2101              MOVS     r1,#1
+000030  e000              B        |L4.52|
+                  |L4.50|
+000032  2100              MOVS     r1,#0
+                  |L4.52|
+000034  4608              MOV      r0,r1
+000036  a30b              ADR      r3,|L4.100|
+000038  a21b              ADR      r2,|L4.168|
+00003a  2173              MOVS     r1,#0x73
+00003c  f7fffffe          BL       CU_assertImplementation
+;;;116    	end_tick = bt_os_layer_get_system_tick();
+000040  f7fffffe          BL       bt_os_layer_get_system_tick
+000044  4922              LDR      r1,|L4.208|
+000046  6008              STR      r0,[r1,#0]  ; end_tick
+;;;117    	printf("time_length = %d", end_tick-start_tick);
+000048  4608              MOV      r0,r1
+00004a  6800              LDR      r0,[r0,#0]  ; end_tick
+00004c  4a21              LDR      r2,|L4.212|
+00004e  6812              LDR      r2,[r2,#0]  ; start_tick
+000050  1a81              SUBS     r1,r0,r2
+000052  a021              ADR      r0,|L4.216|
+000054  f7fffffe          BL       __2printf
+;;;118    	return BT_STATUS_SUCCESS;
+000058  2001              MOVS     r0,#1
+;;;119    }
+00005a  e8bd81fc          POP      {r2-r8,pc}
+;;;120    
+                          ENDP
+
+00005e  0000              DCW      0x0000
+                  |L4.96|
+000060  00                DCB      0
+000061  00                DCB      0
+000062  00                DCB      0
+000063  00                DCB      0
+                  |L4.100|
+000064  2e2e5c2e          DCB      "..\\..\\Middleware\\blue_angel\\platform\\test\\bt_test"
+000068  2e5c4d69
+00006c  64646c65
+000070  77617265
+000074  5c626c75
+000078  655f616e
+00007c  67656c5c
+000080  706c6174
+000084  666f726d
+000088  5c746573
+00008c  745c6274
+000090  5f746573
+000094  74      
+000095  2e6300            DCB      ".c",0
+                  |L4.152|
+000098  69735f74          DCB      "is_timeout",0
+00009c  696d656f
+0000a0  757400  
+0000a3  00                DCB      0
+                  |L4.164|
+                          DCD      0x20000c03
+                  |L4.168|
+0000a8  74696d65          DCB      "timer_id == (BT_MODULE_HCI | 0x0C03)",0
+0000ac  725f6964
+0000b0  203d3d20
+0000b4  2842545f
+0000b8  4d4f4455
+0000bc  4c455f48
+0000c0  4349207c
+0000c4  20307830
+0000c8  43303329
+0000cc  00      
+0000cd  00                DCB      0
+0000ce  00                DCB      0
+0000cf  00                DCB      0
+                  |L4.208|
+                          DCD      end_tick
+                  |L4.212|
+                          DCD      start_tick
+                  |L4.216|
+0000d8  74696d65          DCB      "time_length = %d",0
+0000dc  5f6c656e
+0000e0  67746820
+0000e4  3d202564
+0000e8  00      
+0000e9  00                DCB      0
+0000ea  00                DCB      0
+0000eb  00                DCB      0
+
+                          AREA ||i.timeout1||, CODE, READONLY, ALIGN=2
+
+                          REQUIRE _printf_percent
+                          REQUIRE _printf_d
+                          REQUIRE _printf_int_dec
+                  timeout1 PROC
+;;;120    
+;;;121    bt_status_t timeout1(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param)
+000000  e92d41fc          PUSH     {r2-r8,lr}
+;;;122    {
+000004  4605              MOV      r5,r0
+000006  460c              MOV      r4,r1
+000008  4616              MOV      r6,r2
+00000a  461f              MOV      r7,r3
+;;;123    	CU_ASSERT(is_timeout);
+00000c  2000              MOVS     r0,#0
+00000e  a114              ADR      r1,|L5.96|
+000010  a314              ADR      r3,|L5.100|
+000012  a221              ADR      r2,|L5.152|
+000014  e9cd1000          STRD     r1,r0,[sp,#0]
+000018  217b              MOVS     r1,#0x7b
+00001a  4628              MOV      r0,r5
+00001c  f7fffffe          BL       CU_assertImplementation
+;;;124    	CU_ASSERT(timer_id == ((BT_MODULE_HCI | 0x0C03) + 1));
+000020  2000              MOVS     r0,#0
+000022  a10f              ADR      r1,|L5.96|
+000024  e9cd1000          STRD     r1,r0,[sp,#0]
+000028  491e              LDR      r1,|L5.164|
+00002a  428c              CMP      r4,r1
+00002c  d101              BNE      |L5.50|
+00002e  2101              MOVS     r1,#1
+000030  e000              B        |L5.52|
+                  |L5.50|
+000032  2100              MOVS     r1,#0
+                  |L5.52|
+000034  4608              MOV      r0,r1
+000036  a30b              ADR      r3,|L5.100|
+000038  a21b              ADR      r2,|L5.168|
+00003a  217c              MOVS     r1,#0x7c
+00003c  f7fffffe          BL       CU_assertImplementation
+;;;125    	end_tick = bt_os_layer_get_system_tick();
+000040  f7fffffe          BL       bt_os_layer_get_system_tick
+000044  4923              LDR      r1,|L5.212|
+000046  6008              STR      r0,[r1,#0]  ; end_tick
+;;;126    	printf("time_length1 = %d", end_tick-start_tick);
+000048  4608              MOV      r0,r1
+00004a  6800              LDR      r0,[r0,#0]  ; end_tick
+00004c  4a22              LDR      r2,|L5.216|
+00004e  6812              LDR      r2,[r2,#0]  ; start_tick
+000050  1a81              SUBS     r1,r0,r2
+000052  a022              ADR      r0,|L5.220|
+000054  f7fffffe          BL       __2printf
+;;;127    	return BT_STATUS_SUCCESS;
+000058  2001              MOVS     r0,#1
+;;;128    }
+00005a  e8bd81fc          POP      {r2-r8,pc}
+;;;129    
+                          ENDP
+
+00005e  0000              DCW      0x0000
+                  |L5.96|
+000060  00                DCB      0
+000061  00                DCB      0
+000062  00                DCB      0
+000063  00                DCB      0
+                  |L5.100|
+000064  2e2e5c2e          DCB      "..\\..\\Middleware\\blue_angel\\platform\\test\\bt_test"
+000068  2e5c4d69
+00006c  64646c65
+000070  77617265
+000074  5c626c75
+000078  655f616e
+00007c  67656c5c
+000080  706c6174
+000084  666f726d
+000088  5c746573
+00008c  745c6274
+000090  5f746573
+000094  74      
+000095  2e6300            DCB      ".c",0
+                  |L5.152|
+000098  69735f74          DCB      "is_timeout",0
+00009c  696d656f
+0000a0  757400  
+0000a3  00                DCB      0
+                  |L5.164|
+                          DCD      0x20000c04
+                  |L5.168|
+0000a8  74696d65          DCB      "timer_id == ((BT_MODULE_HCI | 0x0C03) + 1)",0
+0000ac  725f6964
+0000b0  203d3d20
+0000b4  28284254
+0000b8  5f4d4f44
+0000bc  554c455f
+0000c0  48434920
+0000c4  7c203078
+0000c8  30433033
+0000cc  29202b20
+0000d0  312900  
+0000d3  00                DCB      0
+                  |L5.212|
+                          DCD      end_tick
+                  |L5.216|
+                          DCD      start_tick
+                  |L5.220|
+0000dc  74696d65          DCB      "time_length1 = %d",0
+0000e0  5f6c656e
+0000e4  67746831
+0000e8  203d2025
+0000ec  6400    
+0000ee  00                DCB      0
+0000ef  00                DCB      0
+
+                          AREA ||i.timeout2||, CODE, READONLY, ALIGN=2
+
+                          REQUIRE _printf_percent
+                          REQUIRE _printf_d
+                          REQUIRE _printf_int_dec
+                  timeout2 PROC
+;;;129    
+;;;130    bt_status_t timeout2(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param)
+000000  e92d41fc          PUSH     {r2-r8,lr}
+;;;131    {
+000004  4605              MOV      r5,r0
+000006  460c              MOV      r4,r1
+000008  4616              MOV      r6,r2
+00000a  461f              MOV      r7,r3
+;;;132    	CU_ASSERT(is_timeout);
+00000c  2000              MOVS     r0,#0
+00000e  a114              ADR      r1,|L6.96|
+000010  a314              ADR      r3,|L6.100|
+000012  a221              ADR      r2,|L6.152|
+000014  e9cd1000          STRD     r1,r0,[sp,#0]
+000018  2184              MOVS     r1,#0x84
+00001a  4628              MOV      r0,r5
+00001c  f7fffffe          BL       CU_assertImplementation
+;;;133    	CU_ASSERT(timer_id == ((BT_MODULE_HCI | 0x0C03) + 2));
+000020  2000              MOVS     r0,#0
+000022  a10f              ADR      r1,|L6.96|
+000024  e9cd1000          STRD     r1,r0,[sp,#0]
+000028  491e              LDR      r1,|L6.164|
+00002a  428c              CMP      r4,r1
+00002c  d101              BNE      |L6.50|
+00002e  2101              MOVS     r1,#1
+000030  e000              B        |L6.52|
+                  |L6.50|
+000032  2100              MOVS     r1,#0
+                  |L6.52|
+000034  4608              MOV      r0,r1
+000036  a30b              ADR      r3,|L6.100|
+000038  a21b              ADR      r2,|L6.168|
+00003a  2185              MOVS     r1,#0x85
+00003c  f7fffffe          BL       CU_assertImplementation
+;;;134    	end_tick = bt_os_layer_get_system_tick();
+000040  f7fffffe          BL       bt_os_layer_get_system_tick
+000044  4923              LDR      r1,|L6.212|
+000046  6008              STR      r0,[r1,#0]  ; end_tick
+;;;135    	printf("time_length2 = %d", end_tick-start_tick);
+000048  4608              MOV      r0,r1
+00004a  6800              LDR      r0,[r0,#0]  ; end_tick
+00004c  4a22              LDR      r2,|L6.216|
+00004e  6812              LDR      r2,[r2,#0]  ; start_tick
+000050  1a81              SUBS     r1,r0,r2
+000052  a022              ADR      r0,|L6.220|
+000054  f7fffffe          BL       __2printf
+;;;136    	return BT_STATUS_SUCCESS;
+000058  2001              MOVS     r0,#1
+;;;137    }
+00005a  e8bd81fc          POP      {r2-r8,pc}
+;;;138    
+                          ENDP
+
+00005e  0000              DCW      0x0000
+                  |L6.96|
+000060  00                DCB      0
+000061  00                DCB      0
+000062  00                DCB      0
+000063  00                DCB      0
+                  |L6.100|
+000064  2e2e5c2e          DCB      "..\\..\\Middleware\\blue_angel\\platform\\test\\bt_test"
+000068  2e5c4d69
+00006c  64646c65
+000070  77617265
+000074  5c626c75
+000078  655f616e
+00007c  67656c5c
+000080  706c6174
+000084  666f726d
+000088  5c746573
+00008c  745c6274
+000090  5f746573
+000094  74      
+000095  2e6300            DCB      ".c",0
+                  |L6.152|
+000098  69735f74          DCB      "is_timeout",0
+00009c  696d656f
+0000a0  757400  
+0000a3  00                DCB      0
+                  |L6.164|
+                          DCD      0x20000c05
+                  |L6.168|
+0000a8  74696d65          DCB      "timer_id == ((BT_MODULE_HCI | 0x0C03) + 2)",0
+0000ac  725f6964
+0000b0  203d3d20
+0000b4  28284254
+0000b8  5f4d4f44
+0000bc  554c455f
+0000c0  48434920
+0000c4  7c203078
+0000c8  30433033
+0000cc  29202b20
+0000d0  322900  
+0000d3  00                DCB      0
+                  |L6.212|
+                          DCD      end_tick
+                  |L6.216|
+                          DCD      start_tick
+                  |L6.220|
+0000dc  74696d65          DCB      "time_length2 = %d",0
+0000e0  5f6c656e
+0000e4  67746832
+0000e8  203d2025
+0000ec  6400    
+0000ee  00                DCB      0
+0000ef  00                DCB      0
 
                           AREA ||.bss||, DATA, NOINIT, ALIGN=2
 
                   bt_timer_fixed_memory
                           %        140
+                  bt_tx_buf
+                          %        4096
+                  bt_rx_buf
+                          %        4096
 
                           AREA ||.constdata||, DATA, READONLY, ALIGN=2
 
@@ -625,14 +1096,60 @@
                           DCD      0x00000101
                           DCD      0x00000000
 
+                          AREA ||.conststring||, DATA, READONLY, MERGE=1, STRINGS, ALIGN=2
+
+000000  42545f53          DCB      "BT_STATUS_SUCCESS == bt_timer_start(timer_id+1, 100, 0,"
+000004  54415455
+000008  535f5355
+00000c  43434553
+000010  53203d3d
+000014  2062745f
+000018  74696d65
+00001c  725f7374
+000020  61727428
+000024  74696d65
+000028  725f6964
+00002c  2b312c20
+000030  3130302c
+000034  20302c  
+000037  2074696d          DCB      " timeout1)",0
+00003b  656f7574
+00003f  312900  
+000042  00                DCB      0
+000043  00                DCB      0
+000044  42545f53          DCB      "BT_STATUS_SUCCESS == bt_timer_start(timer_id+2, 300, 0,"
+000048  54415455
+00004c  535f5355
+000050  43434553
+000054  53203d3d
+000058  2062745f
+00005c  74696d65
+000060  725f7374
+000064  61727428
+000068  74696d65
+00006c  725f6964
+000070  2b322c20
+000074  3330302c
+000078  20302c  
+00007b  2074696d          DCB      " timeout2)",0
+00007f  656f7574
+000083  322900  
+
+                          AREA ||.data||, DATA, ALIGN=2
+
+                  start_tick
+                          DCD      0x00000000
+                  end_tick
+                          DCD      0x00000000
+
 ;*** Start embedded assembler ***
 
 #line 1 "..\\..\\Middleware\\blue_angel\\platform\\test\\bt_test.c"
 	AREA ||.rev16_text||, CODE
 	THUMB
-	EXPORT |__asm___9_bt_test_c_2bc6ae8e____REV16|
+	EXPORT |__asm___9_bt_test_c_5c20b3a4____REV16|
 #line 114 "..\\..\\Libraries\\CMSIS\\Include\\core_cmInstr.h"
-|__asm___9_bt_test_c_2bc6ae8e____REV16| PROC
+|__asm___9_bt_test_c_5c20b3a4____REV16| PROC
 #line 115
 
  rev16 r0, r0
@@ -640,9 +1157,9 @@
 	ENDP
 	AREA ||.revsh_text||, CODE
 	THUMB
-	EXPORT |__asm___9_bt_test_c_2bc6ae8e____REVSH|
+	EXPORT |__asm___9_bt_test_c_5c20b3a4____REVSH|
 #line 128
-|__asm___9_bt_test_c_2bc6ae8e____REVSH| PROC
+|__asm___9_bt_test_c_5c20b3a4____REVSH| PROC
 #line 129
 
  revsh r0, r0

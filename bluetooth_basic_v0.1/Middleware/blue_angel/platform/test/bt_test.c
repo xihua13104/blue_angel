@@ -13,7 +13,9 @@
 #include "bt_timer.h"
 
 #define BT_TIMER_BLOCK_SIZE (MEMORY_ALIGN_SIZE(sizeof(bt_timer_t)) + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE)
-__align(4) uint8_t bt_timer_fixed_memory[BT_TIMER_BLOCK_SIZE * 5] = {0};
+__align(4) static uint8_t bt_timer_fixed_memory[BT_TIMER_BLOCK_SIZE * 5] = {0};
+__align(4) static uint8_t bt_tx_buf[1024 *4] = {0};
+__align(4) static uint8_t bt_rx_buf[1024 *4] = {0};
 
 void bt_linknode_test(void) 
 { 
@@ -67,24 +69,78 @@ void bt_linknode_test(void)
 void bt_memory_test(void) 
 { 
 	bt_timer_t *timer;
+	uint8_t *tx_buf, *rx_buf;
 	bt_fixed_memory_init(BT_FIXED_MM_TIMER, bt_timer_fixed_memory, sizeof(bt_timer_fixed_memory));
 	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
 	CU_ASSERT(timer != NULL);
+	bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);
+	
 	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
 	CU_ASSERT(timer != NULL);
+	bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);
+	
 	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
 	CU_ASSERT(timer != NULL);
+	bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);	
+
 	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
 	CU_ASSERT(timer != NULL);
+	bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);	
+
 	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
 	CU_ASSERT(timer != NULL);
+	bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);
+
 	timer = (bt_timer_t *)bt_fixed_memory_allocate(BT_FIXED_MM_TIMER); 
 	CU_ASSERT(timer != NULL);
 	bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);
 	//bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);
+	
+	bt_memory_init(BT_MEMORY_TX, bt_tx_buf, sizeof(bt_tx_buf));
+	bt_memory_init(BT_MEMORY_RX, bt_rx_buf, sizeof(bt_rx_buf));
+	
+	tx_buf = bt_memory_allocate_packet(BT_MEMORY_TX, 8);
+	rx_buf = bt_memory_allocate_packet(BT_MEMORY_RX, 16);
+	bt_memory_free_packet(BT_MEMORY_TX, tx_buf);
+	bt_memory_free_packet(BT_MEMORY_RX, rx_buf);
+	//bt_memory_free_packet(BT_MEMORY_TX, tx_buf);
+	//bt_memory_free_packet(BT_MEMORY_RX, rx_buf);
+}
+
+uint32_t start_tick, end_tick;
+//typedef bt_status_t (*bt_timer_timeout_callback_t)(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param);
+bt_status_t timeout(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param)
+{
+	CU_ASSERT(is_timeout);
+	CU_ASSERT(timer_id == (BT_MODULE_HCI | 0x0C03));
+	end_tick = bt_os_layer_get_system_tick();
+	printf("time_length = %d", end_tick-start_tick);
+	return BT_STATUS_SUCCESS;
+}
+
+bt_status_t timeout1(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param)
+{
+	CU_ASSERT(is_timeout);
+	CU_ASSERT(timer_id == ((BT_MODULE_HCI | 0x0C03) + 1));
+	end_tick = bt_os_layer_get_system_tick();
+	printf("time_length1 = %d", end_tick-start_tick);
+	return BT_STATUS_SUCCESS;
+}
+
+bt_status_t timeout2(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param)
+{
+	CU_ASSERT(is_timeout);
+	CU_ASSERT(timer_id == ((BT_MODULE_HCI | 0x0C03) + 2));
+	end_tick = bt_os_layer_get_system_tick();
+	printf("time_length2 = %d", end_tick-start_tick);
+	return BT_STATUS_SUCCESS;
 }
 
 void bt_timer_test(void) 
 { 
-	CU_ASSERT_STRING_EQUAL_FATAL("abc", "123"); 
+	uint32_t timer_id = (BT_MODULE_HCI | 0x0C03);
+	start_tick = bt_os_layer_get_system_tick();
+	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id, 200, 0, timeout));
+	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id+1, 100, 0, timeout1));
+	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id+2, 300, 0, timeout2));
 }

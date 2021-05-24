@@ -132,8 +132,8 @@ static void bt_memory_check_and_merge(bt_memory_type_t type)
 
 void bt_fixed_memory_init(bt_fixed_memory_type_t type, uint8_t *buf, uint32_t size)
 {
-	uint32_t fixed_buf_size = MEMORY_ALIGN_SIZE(bt_fixed_mm_size_table[type]);//(bt_fixed_mm_size_table[type] + 3) & 0xFFFC; //4 byte align
-	uint32_t num = size / (fixed_buf_size + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE);
+	//uint32_t fixed_buf_size = MEMORY_ALIGN_SIZE(bt_fixed_mm_size_table[type]);//4 byte align
+	uint32_t num = size / (bt_fixed_mm_size_table[type] + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE);
 	uint32_t i = 0;
 	bt_mm_header_t *header = NULL;
 	uint32_t *footer = NULL;
@@ -142,9 +142,9 @@ void bt_fixed_memory_init(bt_fixed_memory_type_t type, uint8_t *buf, uint32_t si
 	bt_fixed_mm_cb_list[type].end = (const uint8_t *)(buf + size);
 
 	for (i = 0; i < num; i++) {
-		header = (bt_mm_header_t *)(buf + i * (fixed_buf_size + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE));
+		header = (bt_mm_header_t *)(buf + i * (bt_fixed_mm_size_table[type] + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE));
 		BT_MM_SET_INFO(header->info, BT_MM_STATE_FREE, bt_fixed_mm_size_table[type]);
-		footer = (uint32_t *)(buf + i * fixed_buf_size + BT_MM_HEADER_SIZE);
+		footer = (uint32_t *)((uint8_t *)header + bt_fixed_mm_size_table[type] + BT_MM_HEADER_SIZE);
 		*footer = BT_MM_FOOTER;
 		bt_linknode_insert_node(&bt_fixed_mm_cb_list[type].head, (bt_linknode_t *)((uint8_t *)header + sizeof(bt_mm_header_t)), BT_NODE_TAIL);
 	}

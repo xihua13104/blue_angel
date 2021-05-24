@@ -172,50 +172,34 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>70</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134233926</Address>
+          <LineNumber>154</LineNumber>
+          <EnabledFlag>0</EnabledFlag>
+          <Address>134236198</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>F:\宸ヤ綔\椤圭洰\钃濈墮鍗忚鏍堝紑鍙?blue-angel\blue_angel\bluetooth_basic_v0.1\Middleware\blue_angel\platform\test\bt_test.c</Filename>
+          <Filename>F:\宸ヤ綔\椤圭洰\钃濈墮鍗忚鏍堝紑鍙?blue-angel\blue_angel\bluetooth_basic_v0.1\Middleware\blue_angel\src\common\bt_timer.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\output\../../Middleware/blue_angel/platform/test/bt_test.c\70</Expression>
+          <Expression>\\output\../../Middleware/blue_angel/src/common/bt_timer.c\154</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>73</LineNumber>
+          <LineNumber>26</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134233972</Address>
+          <Address>134236054</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>F:\宸ヤ綔\椤圭洰\钃濈墮鍗忚鏍堝紑鍙?blue-angel\blue_angel\bluetooth_basic_v0.1\Middleware\blue_angel\platform\test\bt_test.c</Filename>
+          <Filename>F:\宸ヤ綔\椤圭洰\钃濈墮鍗忚鏍堝紑鍙?blue-angel\blue_angel\bluetooth_basic_v0.1\Middleware\blue_angel\platform\rtos\bt_platform.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\output\../../Middleware/blue_angel/platform/test/bt_test.c\73</Expression>
-        </Bp>
-        <Bp>
-          <Number>2</Number>
-          <Type>0</Type>
-          <LineNumber>174</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>134232984</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>F:\宸ヤ綔\椤圭洰\钃濈墮鍗忚鏍堝紑鍙?blue-angel\blue_angel\bluetooth_basic_v0.1\Middleware\blue_angel\src\common\bt_memory.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\output\../../Middleware/blue_angel/src/common/bt_memory.c\174</Expression>
+          <Expression>\\output\../../Middleware/blue_angel/platform/rtos/bt_platform.c\26</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -239,6 +223,16 @@
           <WinNumber>1</WinNumber>
           <ItemText>bt_fixed_mm_cb_list</ItemText>
         </Ww>
+        <Ww>
+          <count>4</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>bt_tx_buf</ItemText>
+        </Ww>
+        <Ww>
+          <count>5</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>bt_timer_list</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -251,7 +245,7 @@
         <Mm>
           <WinNumber>1</WinNumber>
           <SubType>0</SubType>
-          <ItemText>0x20004f9c</ItemText>
+          <ItemText>(bt_timer_t *)0x20004FCC</ItemText>
           <AccSizeX>0</AccSizeX>
         </Mm>
       </MemoryWindow1>

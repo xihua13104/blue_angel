@@ -24,7 +24,7 @@ bool bt_timer_cmp_by_timerid(const bt_linknode_t *node, const void *data)
 	
 	timer = (bt_timer_t *)node->next;
 	if (timer == NULL) {
-		return false;
+		return true;
 	}
 	timer_id = *(uint32_t *)data;
 	return timer->timer_id == timer_id;
@@ -41,7 +41,7 @@ bool bt_timer_cmp_by_timer_duration(const bt_linknode_t *node, const void *data)
 	duration = (bt_timer_duration_t *)data;
 	timer = (bt_timer_t *)(node->next);
 	if (timer == NULL) {
-		return false;
+		return true;
 	}
 
 	is_timeout = timer->time_ms - duration->current_tick;
@@ -76,8 +76,8 @@ bt_status_t bt_timer_start(uint32_t timer_id, uint32_t timer_length, uint32_t da
 			/*update for the first timer*/
 			bt_timer_stop_timer();
 			bt_timer_start_timer(timer_length);
-			return BT_STATUS_SUCCESS;
 		}
+		return BT_STATUS_SUCCESS;
 	}
 
 	return BT_STATUS_FAIL;
@@ -152,7 +152,7 @@ void bt_timer_stop_all_timer()
 void bt_timer_check_timeout_handler()
 {
 	bt_timer_t *timer = NULL;
-	uint32_t current_tick = 0;
+	uint32_t current_tick = bt_timer_get_current_tick();
 	int32_t diff = 0;
 	bt_linknode_t expired_node_header = {NULL};
 	bt_linknode_t *tmp = NULL;
@@ -174,7 +174,7 @@ void bt_timer_check_timeout_handler()
 
 	tmp = expired_node_header.next;
 	/*到期的是第一个timer，则需要更新timer*/
-	if (tmp == bt_timer_list.next) {
+	/*if (tmp == bt_timer_list.next) {
 		bt_timer_stop_timer();
 		if (bt_timer_list.next) {
 			current_tick = bt_timer_get_current_tick();
@@ -184,7 +184,7 @@ void bt_timer_check_timeout_handler()
 			}
 			bt_timer_start_timer(diff);
 		}
-	}
+	}*/
 	while (tmp != NULL) {
 		/*到期的是第一个timer，则需要更新timer*/
 		/*if (tmp == bt_timer_list.next) {
@@ -208,6 +208,16 @@ void bt_timer_check_timeout_handler()
 		}
 		bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)tmp);
 		tmp = tmp->next;
+	}
+	/*到期的是第一个timer，则需要更新timer*/
+	if (bt_timer_list.next) {
+		bt_timer_stop_timer();
+		current_tick = bt_timer_get_current_tick();
+		diff = ((bt_timer_t *)(bt_timer_list.next))->time_ms - current_tick;
+		if (diff < 0) {
+			diff = 0;
+		}
+		bt_timer_start_timer(diff);
 	}
 }
 

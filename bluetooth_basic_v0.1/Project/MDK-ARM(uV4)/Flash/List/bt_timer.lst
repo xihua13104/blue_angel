@@ -31461,8 +31461,8 @@ N
 N	timer = (bt_timer_t *)node->next;
 N	if (timer == NULL) {
 X	if (timer == 0) {
-N		return false;
-X		return 0;
+N		return true;
+X		return 1;
 N	}
 N	timer_id = *(uint32_t *)data;
 N	return timer->timer_id == timer_id;
@@ -31484,8 +31484,8 @@ N	duration = (bt_timer_duration_t *)data;
 N	timer = (bt_timer_t *)(node->next);
 N	if (timer == NULL) {
 X	if (timer == 0) {
-N		return false;
-X		return 0;
+N		return true;
+X		return 1;
 N	}
 N
 N	is_timeout = timer->time_ms - duration->current_tick;
@@ -31528,9 +31528,9 @@ N		if (pre == &bt_timer_list) {
 N			/*update for the first timer*/
 N			bt_timer_stop_timer();
 N			bt_timer_start_timer(timer_length);
-N			return BT_STATUS_SUCCESS;
-X			return ((0x00 << 27) | (1 << 0));
 N		}
+N		return BT_STATUS_SUCCESS;
+X		return ((0x00 << 27) | (1 << 0));
 N	}
 N
 N	return BT_STATUS_FAIL;
@@ -31622,7 +31622,7 @@ Nvoid bt_timer_check_timeout_handler()
 N{
 N	bt_timer_t *timer = NULL;
 X	bt_timer_t *timer = 0;
-N	uint32_t current_tick = 0;
+N	uint32_t current_tick = bt_timer_get_current_tick();
 N	int32_t diff = 0;
 N	bt_linknode_t expired_node_header = {NULL};
 X	bt_linknode_t expired_node_header = {0};
@@ -31650,7 +31650,7 @@ N	}
 N
 N	tmp = expired_node_header.next;
 N	/*到期的是第一个timer，则需要更新timer*/
-N	if (tmp == bt_timer_list.next) {
+N	/*if (tmp == bt_timer_list.next) {
 N		bt_timer_stop_timer();
 N		if (bt_timer_list.next) {
 N			current_tick = bt_timer_get_current_tick();
@@ -31660,7 +31660,7 @@ N				diff = 0;
 N			}
 N			bt_timer_start_timer(diff);
 N		}
-N	}
+N	}*/
 N	while (tmp != NULL) {
 X	while (tmp != 0) {
 N		/*到期的是第一个timer，则需要更新timer*/
@@ -31687,6 +31687,16 @@ X			local_timer_buf.timeout_cb(1, local_timer_buf.timer_id, local_timer_buf.data
 N		}
 N		bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)tmp);
 N		tmp = tmp->next;
+N	}
+N	/*到期的是第一个timer，则需要更新timer*/
+N	if (bt_timer_list.next) {
+N		bt_timer_stop_timer();
+N		current_tick = bt_timer_get_current_tick();
+N		diff = ((bt_timer_t *)(bt_timer_list.next))->time_ms - current_tick;
+N		if (diff < 0) {
+N			diff = 0;
+N		}
+N		bt_timer_start_timer(diff);
 N	}
 N}
 N

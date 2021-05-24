@@ -168,58 +168,59 @@
 000004  b086              SUB      sp,sp,#0x18
 ;;;154    	bt_timer_t *timer = NULL;
 000006  2700              MOVS     r7,#0
-;;;155    	uint32_t current_tick = 0;
-000008  2500              MOVS     r5,#0
+;;;155    	uint32_t current_tick = bt_timer_get_current_tick();
+000008  f7fffffe          BL       bt_timer_get_current_tick
+00000c  4605              MOV      r5,r0
 ;;;156    	int32_t diff = 0;
-00000a  2600              MOVS     r6,#0
+00000e  2600              MOVS     r6,#0
 ;;;157    	bt_linknode_t expired_node_header = {NULL};
-00000c  2000              MOVS     r0,#0
-00000e  9005              STR      r0,[sp,#0x14]
+000010  2000              MOVS     r0,#0
+000012  9005              STR      r0,[sp,#0x14]
 ;;;158    	bt_linknode_t *tmp = NULL;
-000010  2400              MOVS     r4,#0
+000014  2400              MOVS     r4,#0
 ;;;159    	bt_linknode_t *pre = NULL;
-000012  4680              MOV      r8,r0
+000016  4680              MOV      r8,r0
 ;;;160    	bt_timer_t local_timer_buf = {0};
-000014  2114              MOVS     r1,#0x14
-000016  4668              MOV      r0,sp
-000018  f7fffffe          BL       __aeabi_memclr4
+000018  2114              MOVS     r1,#0x14
+00001a  4668              MOV      r0,sp
+00001c  f7fffffe          BL       __aeabi_memclr4
 ;;;161    
 ;;;162    	tmp = bt_timer_list.next;
-00001c  4826              LDR      r0,|L3.184|
-00001e  6804              LDR      r4,[r0,#0]  ; bt_timer_list
+000020  4824              LDR      r0,|L3.180|
+000022  6804              LDR      r4,[r0,#0]  ; bt_timer_list
 ;;;163    	while (tmp != NULL) {
-000020  e009              B        |L3.54|
-                  |L3.34|
+000024  e009              B        |L3.58|
+                  |L3.38|
 ;;;164    		timer = (bt_timer_t *)tmp;
-000022  4627              MOV      r7,r4
+000026  4627              MOV      r7,r4
 ;;;165    		if (timer->time_ms <= current_tick) {
-000024  68f8              LDR      r0,[r7,#0xc]
-000026  42a8              CMP      r0,r5
-000028  d804              BHI      |L3.52|
+000028  68f8              LDR      r0,[r7,#0xc]
+00002a  42a8              CMP      r0,r5
+00002c  d804              BHI      |L3.56|
 ;;;166    			bt_linknode_insert_node(&expired_node_header, tmp, BT_NODE_TAIL);
-00002a  2202              MOVS     r2,#2
-00002c  4621              MOV      r1,r4
-00002e  a805              ADD      r0,sp,#0x14
-000030  f7fffffe          BL       bt_linknode_insert_node
-                  |L3.52|
+00002e  2202              MOVS     r2,#2
+000030  4621              MOV      r1,r4
+000032  a805              ADD      r0,sp,#0x14
+000034  f7fffffe          BL       bt_linknode_insert_node
+                  |L3.56|
 ;;;167    		}
 ;;;168    		tmp = tmp->next;
-000034  6824              LDR      r4,[r4,#0]
-                  |L3.54|
-000036  2c00              CMP      r4,#0                 ;163
-000038  d1f3              BNE      |L3.34|
+000038  6824              LDR      r4,[r4,#0]
+                  |L3.58|
+00003a  2c00              CMP      r4,#0                 ;163
+00003c  d1f3              BNE      |L3.38|
 ;;;169    	}
 ;;;170    	/*没有timer到期*/
 ;;;171    	if (expired_node_header.next == NULL) {
-00003a  9805              LDR      r0,[sp,#0x14]
-00003c  b910              CBNZ     r0,|L3.68|
-                  |L3.62|
+00003e  9805              LDR      r0,[sp,#0x14]
+000040  b910              CBNZ     r0,|L3.72|
+                  |L3.66|
 ;;;172    		return;
 ;;;173    	}
 ;;;174    
 ;;;175    	tmp = expired_node_header.next;
 ;;;176    	/*到期的是第一个timer，则需要更新timer*/
-;;;177    	if (tmp == bt_timer_list.next) {
+;;;177    	/*if (tmp == bt_timer_list.next) {
 ;;;178    		bt_timer_stop_timer();
 ;;;179    		if (bt_timer_list.next) {
 ;;;180    			current_tick = bt_timer_get_current_tick();
@@ -229,7 +230,7 @@
 ;;;184    			}
 ;;;185    			bt_timer_start_timer(diff);
 ;;;186    		}
-;;;187    	}
+;;;187    	}*/
 ;;;188    	while (tmp != NULL) {
 ;;;189    		/*到期的是第一个timer，则需要更新timer*/
 ;;;190    		/*if (tmp == bt_timer_list.next) {
@@ -254,70 +255,76 @@
 ;;;209    		bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)tmp);
 ;;;210    		tmp = tmp->next;
 ;;;211    	}
-;;;212    }
-00003e  b006              ADD      sp,sp,#0x18
-000040  e8bd81f0          POP      {r4-r8,pc}
-                  |L3.68|
-000044  9c05              LDR      r4,[sp,#0x14]         ;175
-000046  481c              LDR      r0,|L3.184|
-000048  6800              LDR      r0,[r0,#0]            ;177  ; bt_timer_list
-00004a  42a0              CMP      r0,r4                 ;177
-00004c  d111              BNE      |L3.114|
-00004e  f7fffffe          BL       bt_timer_stop_timer
-000052  4819              LDR      r0,|L3.184|
-000054  6800              LDR      r0,[r0,#0]            ;179  ; bt_timer_list
-000056  b160              CBZ      r0,|L3.114|
-000058  f7fffffe          BL       bt_timer_get_current_tick
-00005c  4605              MOV      r5,r0                 ;180
-00005e  4816              LDR      r0,|L3.184|
-000060  6800              LDR      r0,[r0,#0]            ;181  ; bt_timer_list
-000062  68c0              LDR      r0,[r0,#0xc]          ;181
-000064  1b46              SUBS     r6,r0,r5              ;181
-000066  2e00              CMP      r6,#0                 ;182
-000068  da00              BGE      |L3.108|
-00006a  2600              MOVS     r6,#0                 ;183
-                  |L3.108|
-00006c  4630              MOV      r0,r6                 ;185
-00006e  f7fffffe          BL       bt_timer_start_timer
-                  |L3.114|
-000072  e01c              B        |L3.174|
-                  |L3.116|
-000074  4622              MOV      r2,r4                 ;203
-000076  4911              LDR      r1,|L3.188|
-000078  480f              LDR      r0,|L3.184|
-00007a  f7fffffe          BL       bt_linknode_travel_node
-00007e  4680              MOV      r8,r0                 ;203
-000080  2101              MOVS     r1,#1                 ;204
-000082  4640              MOV      r0,r8                 ;204
-000084  f7fffffe          BL       bt_linknode_delete_node
-000088  2214              MOVS     r2,#0x14              ;205
-00008a  4621              MOV      r1,r4                 ;205
-00008c  4668              MOV      r0,sp                 ;205
-00008e  f7fffffe          BL       bt_memcpy
-000092  9804              LDR      r0,[sp,#0x10]         ;206
-000094  b130              CBZ      r0,|L3.164|
-000096  2300              MOVS     r3,#0                 ;207
-000098  2001              MOVS     r0,#1                 ;207
-00009a  f8ddc010          LDR      r12,[sp,#0x10]        ;207
-00009e  e9dd1201          LDRD     r1,r2,[sp,#4]         ;207
-0000a2  47e0              BLX      r12                   ;207
-                  |L3.164|
-0000a4  4621              MOV      r1,r4                 ;209
-0000a6  2000              MOVS     r0,#0                 ;209
-0000a8  f7fffffe          BL       bt_fixed_memory_free
-0000ac  6824              LDR      r4,[r4,#0]            ;210
+;;;212    	/*到期的是第一个timer，则需要更新timer*/
+;;;213    	if (bt_timer_list.next) {
+;;;214    		bt_timer_stop_timer();
+;;;215    		current_tick = bt_timer_get_current_tick();
+;;;216    		diff = ((bt_timer_t *)(bt_timer_list.next))->time_ms - current_tick;
+;;;217    		if (diff < 0) {
+;;;218    			diff = 0;
+;;;219    		}
+;;;220    		bt_timer_start_timer(diff);
+;;;221    	}
+;;;222    }
+000042  b006              ADD      sp,sp,#0x18
+000044  e8bd81f0          POP      {r4-r8,pc}
+                  |L3.72|
+000048  9c05              LDR      r4,[sp,#0x14]         ;175
+00004a  e01c              B        |L3.134|
+                  |L3.76|
+00004c  4622              MOV      r2,r4                 ;203
+00004e  491a              LDR      r1,|L3.184|
+000050  4818              LDR      r0,|L3.180|
+000052  f7fffffe          BL       bt_linknode_travel_node
+000056  4680              MOV      r8,r0                 ;203
+000058  2101              MOVS     r1,#1                 ;204
+00005a  4640              MOV      r0,r8                 ;204
+00005c  f7fffffe          BL       bt_linknode_delete_node
+000060  2214              MOVS     r2,#0x14              ;205
+000062  4621              MOV      r1,r4                 ;205
+000064  4668              MOV      r0,sp                 ;205
+000066  f7fffffe          BL       bt_memcpy
+00006a  9804              LDR      r0,[sp,#0x10]         ;206
+00006c  b130              CBZ      r0,|L3.124|
+00006e  2300              MOVS     r3,#0                 ;207
+000070  2001              MOVS     r0,#1                 ;207
+000072  f8ddc010          LDR      r12,[sp,#0x10]        ;207
+000076  e9dd1201          LDRD     r1,r2,[sp,#4]         ;207
+00007a  47e0              BLX      r12                   ;207
+                  |L3.124|
+00007c  4621              MOV      r1,r4                 ;209
+00007e  2000              MOVS     r0,#0                 ;209
+000080  f7fffffe          BL       bt_fixed_memory_free
+000084  6824              LDR      r4,[r4,#0]            ;210
+                  |L3.134|
+000086  2c00              CMP      r4,#0                 ;188
+000088  d1e0              BNE      |L3.76|
+00008a  480a              LDR      r0,|L3.180|
+00008c  6800              LDR      r0,[r0,#0]            ;213  ; bt_timer_list
+00008e  b170              CBZ      r0,|L3.174|
+000090  f7fffffe          BL       bt_timer_stop_timer
+000094  f7fffffe          BL       bt_timer_get_current_tick
+000098  4605              MOV      r5,r0                 ;215
+00009a  4806              LDR      r0,|L3.180|
+00009c  6800              LDR      r0,[r0,#0]            ;216  ; bt_timer_list
+00009e  68c0              LDR      r0,[r0,#0xc]          ;216
+0000a0  1b46              SUBS     r6,r0,r5              ;216
+0000a2  2e00              CMP      r6,#0                 ;217
+0000a4  da00              BGE      |L3.168|
+0000a6  2600              MOVS     r6,#0                 ;218
+                  |L3.168|
+0000a8  4630              MOV      r0,r6                 ;220
+0000aa  f7fffffe          BL       bt_timer_start_timer
                   |L3.174|
-0000ae  2c00              CMP      r4,#0                 ;188
-0000b0  d1e0              BNE      |L3.116|
-0000b2  bf00              NOP      
-0000b4  e7c3              B        |L3.62|
-;;;213    
+0000ae  bf00              NOP      
+0000b0  e7c7              B        |L3.66|
+;;;223    
                           ENDP
 
-0000b6  0000              DCW      0x0000
-                  |L3.184|
+0000b2  0000              DCW      0x0000
+                  |L3.180|
                           DCD      bt_timer_list
-                  |L3.188|
+                  |L3.184|
                           DCD      bt_linknode_cmp_backward
 
                           AREA ||i.bt_timer_cmp_by_timer_duration||, CODE, READONLY, ALIGN=2
@@ -353,8 +360,8 @@
 000020  6827              LDR      r7,[r4,#0]
 ;;;43     	if (timer == NULL) {
 000022  b917              CBNZ     r7,|L4.42|
-;;;44     		return false;
-000024  2000              MOVS     r0,#0
+;;;44     		return true;
+000024  2001              MOVS     r0,#1
                   |L4.38|
 ;;;45     	}
 ;;;46     
@@ -430,8 +437,8 @@
 00001a  6826              LDR      r6,[r4,#0]
 ;;;26     	if (timer == NULL) {
 00001c  b916              CBNZ     r6,|L5.36|
-;;;27     		return false;
-00001e  2000              MOVS     r0,#0
+;;;27     		return true;
+00001e  2001              MOVS     r0,#1
                   |L5.32|
 ;;;28     	}
 ;;;29     	timer_id = *(uint32_t *)data;
@@ -551,8 +558,8 @@
 ;;;76     			/*update for the first timer*/
 ;;;77     			bt_timer_stop_timer();
 ;;;78     			bt_timer_start_timer(timer_length);
-;;;79     			return BT_STATUS_SUCCESS;
-;;;80     		}
+;;;79     		}
+;;;80     		return BT_STATUS_SUCCESS;
 ;;;81     	}
 ;;;82     
 ;;;83     	return BT_STATUS_FAIL;
@@ -587,11 +594,12 @@
 000060  f7fffffe          BL       bt_linknode_insert_node
 000064  4806              LDR      r0,|L7.128|
 000066  4286              CMP      r6,r0                 ;75
-000068  d106              BNE      |L7.120|
+000068  d104              BNE      |L7.116|
 00006a  f7fffffe          BL       bt_timer_stop_timer
 00006e  4628              MOV      r0,r5                 ;78
 000070  f7fffffe          BL       bt_timer_start_timer
-000074  2001              MOVS     r0,#1                 ;79
+                  |L7.116|
+000074  2001              MOVS     r0,#1                 ;80
 000076  e7d3              B        |L7.32|
                   |L7.120|
 000078  2002              MOVS     r0,#2                 ;83

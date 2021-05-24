@@ -29326,10 +29326,9 @@ N}
 N
 Nvoid bt_fixed_memory_init(bt_fixed_memory_type_t type, uint8_t *buf, uint32_t size)
 N{
-N	uint32_t fixed_buf_size = MEMORY_ALIGN_SIZE(bt_fixed_mm_size_table[type]);//(bt_fixed_mm_size_table[type] + 3) & 0xFFFC; //4 byte align
-X	uint32_t fixed_buf_size = (((bt_fixed_mm_size_table[type]) + (4) - 1) & ~((4)-1));
-N	uint32_t num = size / (fixed_buf_size + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE);
-X	uint32_t num = size / (fixed_buf_size + (sizeof(bt_mm_header_t)) + (4));
+N	//uint32_t fixed_buf_size = MEMORY_ALIGN_SIZE(bt_fixed_mm_size_table[type]);//4 byte align
+N	uint32_t num = size / (bt_fixed_mm_size_table[type] + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE);
+X	uint32_t num = size / (bt_fixed_mm_size_table[type] + (sizeof(bt_mm_header_t)) + (4));
 N	uint32_t i = 0;
 N	bt_mm_header_t *header = NULL;
 X	bt_mm_header_t *header = 0;
@@ -29341,12 +29340,12 @@ N	bt_fixed_mm_cb_list[type].start = (const uint8_t *)buf;
 N	bt_fixed_mm_cb_list[type].end = (const uint8_t *)(buf + size);
 N
 N	for (i = 0; i < num; i++) {
-N		header = (bt_mm_header_t *)(buf + i * (fixed_buf_size + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE));
-X		header = (bt_mm_header_t *)(buf + i * (fixed_buf_size + (sizeof(bt_mm_header_t)) + (4)));
+N		header = (bt_mm_header_t *)(buf + i * (bt_fixed_mm_size_table[type] + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE));
+X		header = (bt_mm_header_t *)(buf + i * (bt_fixed_mm_size_table[type] + (sizeof(bt_mm_header_t)) + (4)));
 N		BT_MM_SET_INFO(header->info, BT_MM_STATE_FREE, bt_fixed_mm_size_table[type]);
 X		((header->info) = (((((0U)) << (30)) & (0xC0000000)) | ((bt_fixed_mm_size_table[type]) & (0x3FFFFFFF))));
-N		footer = (uint32_t *)(buf + i * fixed_buf_size + BT_MM_HEADER_SIZE);
-X		footer = (uint32_t *)(buf + i * fixed_buf_size + (sizeof(bt_mm_header_t)));
+N		footer = (uint32_t *)((uint8_t *)header + bt_fixed_mm_size_table[type] + BT_MM_HEADER_SIZE);
+X		footer = (uint32_t *)((uint8_t *)header + bt_fixed_mm_size_table[type] + (sizeof(bt_mm_header_t)));
 N		*footer = BT_MM_FOOTER;
 X		*footer = (0xABCDABCD);
 N		bt_linknode_insert_node(&bt_fixed_mm_cb_list[type].head, (bt_linknode_t *)((uint8_t *)header + sizeof(bt_mm_header_t)), BT_NODE_TAIL);

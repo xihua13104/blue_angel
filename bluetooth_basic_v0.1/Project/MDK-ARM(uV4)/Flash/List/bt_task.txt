@@ -7,72 +7,93 @@
                   vBT_Task PROC
 ;;;10     
 ;;;11     void vBT_Task(void *pvParameters)
-000000  490c              LDR      r1,|L1.52|
+000000  4912              LDR      r1,|L1.76|
 ;;;12     {
 ;;;13     	cunit_status_t cunit_status;
 ;;;14     
 ;;;15     	//BT_ASSERT(cunit_status == cunit_add_test_case("bt_linknode_test", bt_linknode_test));
 ;;;16     	BT_ASSERT(cunit_status == cunit_add_test_case("bt_memory_test", bt_memory_test));
-000002  a00d              ADR      r0,|L1.56|
+000002  a013              ADR      r0,|L1.80|
 000004  f7fffffe          BL       cunit_add_test_case
 000008  42a0              CMP      r0,r4
 00000a  d100              BNE      |L1.14|
 00000c  e003              B        |L1.22|
                   |L1.14|
 00000e  2110              MOVS     r1,#0x10
-000010  a00d              ADR      r0,|L1.72|
+000010  a013              ADR      r0,|L1.96|
 000012  f7fffffe          BL       assert_failed
                   |L1.22|
-;;;17     	//BT_ASSERT(cunit_status == cunit_add_test_case("bt_timer_test", bt_timer_test));
-;;;18         while(1)
-000016  e00c              B        |L1.50|
-                  |L1.24|
-;;;19         {
-;;;20     		cunit_status = cunit_test_start();
-000018  f7fffffe          BL       cunit_test_start
-00001c  4604              MOV      r4,r0
+;;;17     	BT_ASSERT(cunit_status == cunit_add_test_case("bt_timer_test", bt_timer_test));
+000016  491f              LDR      r1,|L1.148|
+000018  a01f              ADR      r0,|L1.152|
+00001a  f7fffffe          BL       cunit_add_test_case
+00001e  42a0              CMP      r0,r4
+000020  d100              BNE      |L1.36|
+000022  e003              B        |L1.44|
+                  |L1.36|
+000024  2111              MOVS     r1,#0x11
+000026  a00e              ADR      r0,|L1.96|
+000028  f7fffffe          BL       assert_failed
+                  |L1.44|
+;;;18     	cunit_status = cunit_test_start();
+00002c  f7fffffe          BL       cunit_test_start
+000030  4604              MOV      r4,r0
+;;;19         while(1)
+000032  e009              B        |L1.72|
+                  |L1.52|
+;;;20         {
 ;;;21     		BT_ASSERT(cunit_status == CUNIT_SUCCESS);
-00001e  b904              CBNZ     r4,|L1.34|
-000020  e003              B        |L1.42|
-                  |L1.34|
-000022  2115              MOVS     r1,#0x15
-000024  a008              ADR      r0,|L1.72|
-000026  f7fffffe          BL       assert_failed
-                  |L1.42|
+000034  b904              CBNZ     r4,|L1.56|
+000036  e003              B        |L1.64|
+                  |L1.56|
+000038  2115              MOVS     r1,#0x15
+00003a  a009              ADR      r0,|L1.96|
+00003c  f7fffffe          BL       assert_failed
+                  |L1.64|
 ;;;22     		bt_task_take_semaphore();
-00002a  f7fffffe          BL       bt_task_take_semaphore
+000040  f7fffffe          BL       bt_task_take_semaphore
 ;;;23     		bt_task_event_handler();
-00002e  f7fffffe          BL       bt_task_event_handler
-                  |L1.50|
-000032  e7f1              B        |L1.24|
+000044  f7fffffe          BL       bt_task_event_handler
+                  |L1.72|
+000048  e7f4              B        |L1.52|
 ;;;24     	}
 ;;;25     }
 ;;;26     
                           ENDP
 
-                  |L1.52|
+00004a  0000              DCW      0x0000
+                  |L1.76|
                           DCD      bt_memory_test
-                  |L1.56|
-000038  62745f6d          DCB      "bt_memory_test",0
-00003c  656d6f72
-000040  795f7465
-000044  737400  
-000047  00                DCB      0
-                  |L1.72|
-000048  2e2e5c2e          DCB      "..\\..\\Middleware\\blue_angel\\platform\\rtos\\bt_task"
-00004c  2e5c4d69
-000050  64646c65
-000054  77617265
-000058  5c626c75
-00005c  655f616e
-000060  67656c5c
-000064  706c6174
-000068  666f726d
-00006c  5c72746f
-000070  735c6274
-000074  5f746173
-000078  6b      
-000079  2e6300            DCB      ".c",0
+                  |L1.80|
+000050  62745f6d          DCB      "bt_memory_test",0
+000054  656d6f72
+000058  795f7465
+00005c  737400  
+00005f  00                DCB      0
+                  |L1.96|
+000060  2e2e5c2e          DCB      "..\\..\\Middleware\\blue_angel\\platform\\rtos\\bt_task"
+000064  2e5c4d69
+000068  64646c65
+00006c  77617265
+000070  5c626c75
+000074  655f616e
+000078  67656c5c
+00007c  706c6174
+000080  666f726d
+000084  5c72746f
+000088  735c6274
+00008c  5f746173
+000090  6b      
+000091  2e6300            DCB      ".c",0
+                  |L1.148|
+                          DCD      bt_timer_test
+                  |L1.152|
+000098  62745f74          DCB      "bt_timer_test",0
+00009c  696d6572
+0000a0  5f746573
+0000a4  7400    
+0000a6  00                DCB      0
+0000a7  00                DCB      0
 
 ;*** Start embedded assembler ***
 

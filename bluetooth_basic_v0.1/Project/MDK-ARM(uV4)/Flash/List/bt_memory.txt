@@ -226,79 +226,81 @@
                   bt_fixed_memory_init PROC
 ;;;132    
 ;;;133    void bt_fixed_memory_init(bt_fixed_memory_type_t type, uint8_t *buf, uint32_t size)
-000000  e92d5ff0          PUSH     {r4-r12,lr}
+000000  e92d47f0          PUSH     {r4-r10,lr}
 ;;;134    {
 000004  4604              MOV      r4,r0
 000006  460d              MOV      r5,r1
 000008  4616              MOV      r6,r2
-;;;135    	uint32_t fixed_buf_size = MEMORY_ALIGN_SIZE(bt_fixed_mm_size_table[type]);//(bt_fixed_mm_size_table[type] + 3) & 0xFFFC; //4 byte align
+;;;135    	//uint32_t fixed_buf_size = MEMORY_ALIGN_SIZE(bt_fixed_mm_size_table[type]);//4 byte align
+;;;136    	uint32_t num = size / (bt_fixed_mm_size_table[type] + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE);
 00000a  4822              LDR      r0,|L3.148|
 00000c  f8300014          LDRH     r0,[r0,r4,LSL #1]
-000010  1cc0              ADDS     r0,r0,#3
-000012  f0200803          BIC      r8,r0,#3
-;;;136    	uint32_t num = size / (fixed_buf_size + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE);
-000016  f1080008          ADD      r0,r8,#8
-00001a  fbb6faf0          UDIV     r10,r6,r0
+000010  3008              ADDS     r0,r0,#8
+000012  fbb6f9f0          UDIV     r9,r6,r0
 ;;;137    	uint32_t i = 0;
-00001e  2700              MOVS     r7,#0
+000016  2700              MOVS     r7,#0
 ;;;138    	bt_mm_header_t *header = NULL;
-000020  46b9              MOV      r9,r7
+000018  46b8              MOV      r8,r7
 ;;;139    	uint32_t *footer = NULL;
-000022  46bb              MOV      r11,r7
+00001a  46ba              MOV      r10,r7
 ;;;140    	BT_ASSERT(buf != NULL && size > 0 && type < BT_FIXED_MM_MAX);
-000024  b11d              CBZ      r5,|L3.46|
-000026  b116              CBZ      r6,|L3.46|
-000028  2c01              CMP      r4,#1
-00002a  da00              BGE      |L3.46|
-00002c  e003              B        |L3.54|
+00001c  b11d              CBZ      r5,|L3.38|
+00001e  b116              CBZ      r6,|L3.38|
+000020  2c01              CMP      r4,#1
+000022  da00              BGE      |L3.38|
+000024  e003              B        |L3.46|
+                  |L3.38|
+000026  218c              MOVS     r1,#0x8c
+000028  a01b              ADR      r0,|L3.152|
+00002a  f7fffffe          BL       assert_failed
                   |L3.46|
-00002e  218c              MOVS     r1,#0x8c
-000030  a019              ADR      r0,|L3.152|
-000032  f7fffffe          BL       assert_failed
-                  |L3.54|
 ;;;141    	bt_fixed_mm_cb_list[type].start = (const uint8_t *)buf;
-000036  eb040044          ADD      r0,r4,r4,LSL #1
-00003a  4924              LDR      r1,|L3.204|
-00003c  f8415020          STR      r5,[r1,r0,LSL #2]
+00002e  eb040044          ADD      r0,r4,r4,LSL #1
+000032  4926              LDR      r1,|L3.204|
+000034  f8415020          STR      r5,[r1,r0,LSL #2]
 ;;;142    	bt_fixed_mm_cb_list[type].end = (const uint8_t *)(buf + size);
-000040  19a8              ADDS     r0,r5,r6
-000042  eb040144          ADD      r1,r4,r4,LSL #1
-000046  4a21              LDR      r2,|L3.204|
-000048  eb020181          ADD      r1,r2,r1,LSL #2
-00004c  6048              STR      r0,[r1,#4]
+000038  19a8              ADDS     r0,r5,r6
+00003a  eb040144          ADD      r1,r4,r4,LSL #1
+00003e  4a23              LDR      r2,|L3.204|
+000040  eb020181          ADD      r1,r2,r1,LSL #2
+000044  6048              STR      r0,[r1,#4]
 ;;;143    
 ;;;144    	for (i = 0; i < num; i++) {
-00004e  2700              MOVS     r7,#0
-000050  e01c              B        |L3.140|
-                  |L3.82|
-;;;145    		header = (bt_mm_header_t *)(buf + i * (fixed_buf_size + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE));
-000052  f1080008          ADD      r0,r8,#8
-000056  fb075900          MLA      r9,r7,r0,r5
+000046  2700              MOVS     r7,#0
+000048  e020              B        |L3.140|
+                  |L3.74|
+;;;145    		header = (bt_mm_header_t *)(buf + i * (bt_fixed_mm_size_table[type] + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE));
+00004a  4812              LDR      r0,|L3.148|
+00004c  f8300014          LDRH     r0,[r0,r4,LSL #1]
+000050  3008              ADDS     r0,r0,#8
+000052  fb075800          MLA      r8,r7,r0,r5
 ;;;146    		BT_MM_SET_INFO(header->info, BT_MM_STATE_FREE, bt_fixed_mm_size_table[type]);
-00005a  480e              LDR      r0,|L3.148|
-00005c  f8300014          LDRH     r0,[r0,r4,LSL #1]
-000060  f8c90000          STR      r0,[r9,#0]
-;;;147    		footer = (uint32_t *)(buf + i * fixed_buf_size + BT_MM_HEADER_SIZE);
-000064  fb075008          MLA      r0,r7,r8,r5
-000068  f1000b04          ADD      r11,r0,#4
+000056  480f              LDR      r0,|L3.148|
+000058  f8300014          LDRH     r0,[r0,r4,LSL #1]
+00005c  f8c80000          STR      r0,[r8,#0]
+;;;147    		footer = (uint32_t *)((uint8_t *)header + bt_fixed_mm_size_table[type] + BT_MM_HEADER_SIZE);
+000060  480c              LDR      r0,|L3.148|
+000062  f8300014          LDRH     r0,[r0,r4,LSL #1]
+000066  4440              ADD      r0,r0,r8
+000068  f1000a04          ADD      r10,r0,#4
 ;;;148    		*footer = BT_MM_FOOTER;
 00006c  4818              LDR      r0,|L3.208|
-00006e  f8cb0000          STR      r0,[r11,#0]
+00006e  f8ca0000          STR      r0,[r10,#0]
 ;;;149    		bt_linknode_insert_node(&bt_fixed_mm_cb_list[type].head, (bt_linknode_t *)((uint8_t *)header + sizeof(bt_mm_header_t)), BT_NODE_TAIL);
 000072  eb040144          ADD      r1,r4,r4,LSL #1
 000076  4a15              LDR      r2,|L3.204|
 000078  eb020181          ADD      r1,r2,r1,LSL #2
 00007c  f1010008          ADD      r0,r1,#8
 000080  2202              MOVS     r2,#2
-000082  f1090104          ADD      r1,r9,#4
+000082  f1080104          ADD      r1,r8,#4
 000086  f7fffffe          BL       bt_linknode_insert_node
 00008a  1c7f              ADDS     r7,r7,#1              ;144
                   |L3.140|
-00008c  4557              CMP      r7,r10                ;144
-00008e  d3e0              BCC      |L3.82|
+00008c  454f              CMP      r7,r9                 ;144
+00008e  d3dc              BCC      |L3.74|
 ;;;150    	}
 ;;;151    }
-000090  e8bd9ff0          POP      {r4-r12,pc}
+000090  e8bd87f0          POP      {r4-r10,pc}
 ;;;152    
                           ENDP
 
