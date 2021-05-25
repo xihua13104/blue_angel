@@ -55,7 +55,7 @@ bool bt_os_layer_is_timer_active()
 
 void bt_os_layer_start_timer(uint32_t ms)
 {
-	uint32_t time = (ms / portTICK_PERIOD_MS)+1;
+	uint32_t time = ms / portTICK_PERIOD_MS;
 	BT_ASSERT(bt_rtos_timer);
 	if (bt_os_layer_is_timer_active()) {
 		bt_os_layer_stop_timer();

@@ -113,7 +113,7 @@ bt_status_t bt_timer_cancel(uint32_t timer_id)
 bt_timer_t *bt_timer_find(uint32_t timer_id)
 {
 	bt_linknode_t *pre = NULL;
-	pre = bt_linknode_travel_node(&bt_timer_list, bt_timer_cmp_by_timerid, (const void *)timer_id);
+	pre = bt_linknode_travel_node(&bt_timer_list, bt_timer_cmp_by_timerid, (const void *)&timer_id);
 	if (pre) {
 		return (bt_timer_t *)(pre->next);
 	}
@@ -156,60 +156,33 @@ void bt_timer_check_timeout_handler()
 	int32_t diff = 0;
 	bt_linknode_t expired_node_header = {NULL};
 	bt_linknode_t *tmp = NULL;
-	bt_linknode_t *pre = NULL;
 	bt_timer_t local_timer_buf = {0};
 
-	tmp = bt_timer_list.next;
+	tmp = &bt_timer_list;
 	while (tmp != NULL) {
-		timer = (bt_timer_t *)tmp;
-		if (timer->time_ms <= current_tick) {
-			bt_linknode_insert_node(&expired_node_header, tmp, BT_NODE_TAIL);
+		timer = (bt_timer_t *)(tmp->next);
+		if (timer != NULL && timer->time_ms <= current_tick) {
+			bt_linknode_insert_node(&expired_node_header, bt_linknode_delete_node(tmp, BT_NODE_FRONT), BT_NODE_TAIL);
+			tmp = &bt_timer_list;
+		} else {
+			tmp = tmp->next;	
 		}
-		tmp = tmp->next;
 	}
 	/*没有timer到期*/
 	if (expired_node_header.next == NULL) {
 		return;
 	}
 
-	tmp = expired_node_header.next;
-	/*到期的是第一个timer，则需要更新timer*/
-	/*if (tmp == bt_timer_list.next) {
-		bt_timer_stop_timer();
-		if (bt_timer_list.next) {
-			current_tick = bt_timer_get_current_tick();
-			diff = ((bt_timer_t *)(bt_timer_list.next))->time_ms - current_tick;
-			if (diff < 0) {
-				diff = 0;
-			}
-			bt_timer_start_timer(diff);
-		}
-	}*/
-	while (tmp != NULL) {
-		/*到期的是第一个timer，则需要更新timer*/
-		/*if (tmp == bt_timer_list.next) {
-			bt_timer_stop_timer();
-			pre = bt_linknode_travel_node(&bt_timer_list, bt_linknode_cmp_backward, (const void *) tmp);
-			bt_linknode_delete_node(pre, BT_NODE_FRONT);
-			if (bt_timer_list.next) {
-				current_tick = bt_timer_get_current_tick();
-				diff = ((bt_timer_t *)(bt_timer_list.next))->time_ms - current_tick;
-				if (diff < 0) {
-					diff = 0;
-				}
-				bt_timer_start_timer(diff);
-			}
-		}*/
-		pre = bt_linknode_travel_node(&bt_timer_list, bt_linknode_cmp_backward, (const void *) tmp);
-		bt_linknode_delete_node(pre, BT_NODE_FRONT);
-		bt_memcpy(&local_timer_buf, (bt_timer_t *)tmp, sizeof(bt_timer_t));
+	while (expired_node_header.next != NULL) {
+		timer = (bt_timer_t *)(expired_node_header.next);
+		bt_memcpy(&local_timer_buf, timer, sizeof(bt_timer_t));
 		if (local_timer_buf.timeout_cb) {
 			local_timer_buf.timeout_cb(true, local_timer_buf.timer_id, local_timer_buf.data, NULL);
 		}
-		bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)tmp);
-		tmp = tmp->next;
+		bt_linknode_delete_node(&expired_node_header, BT_NODE_FRONT);
+		bt_fixed_memory_free(BT_FIXED_MM_TIMER, (uint8_t *)timer);
 	}
-	/*到期的是第一个timer，则需要更新timer*/
+	/*到期的是第一个timer，则需要更新timer list*/
 	if (bt_timer_list.next) {
 		bt_timer_stop_timer();
 		current_tick = bt_timer_get_current_tick();
