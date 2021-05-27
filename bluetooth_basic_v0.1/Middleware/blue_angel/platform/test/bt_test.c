@@ -114,7 +114,11 @@ bt_status_t timeout(bool is_timeout, uint32_t timer_id, uint32_t data, const voi
 	CU_ASSERT(is_timeout);
 	CU_ASSERT(timer_id == (BT_MODULE_HCI | 0x0C03));
 	end_tick = bt_os_layer_get_system_tick();
-	printf("time_length0 = %d\r\n", end_tick-start_tick);
+	printf("time_length0 = %d, is_timeout = %d\r\n", end_tick-start_tick, is_timeout);
+	//bt_timer_stop_all_timer();
+	//CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_cancel_and_callback(timer_id+1, NULL));
+	//CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_cancel_and_callback(timer_id+2, NULL));
+	//bt_timer_stop_all_timer();
 	return BT_STATUS_SUCCESS;
 }
 
@@ -123,7 +127,7 @@ bt_status_t timeout1(bool is_timeout, uint32_t timer_id, uint32_t data, const vo
 	CU_ASSERT(is_timeout);
 	CU_ASSERT(timer_id == ((BT_MODULE_HCI | 0x0C03) + 1));
 	end_tick = bt_os_layer_get_system_tick();
-	printf("time_length1 = %d\r\n", end_tick-start_tick);
+	printf("time_length1 = %d, is_timeout = %d\r\n", end_tick-start_tick, is_timeout);
 	return BT_STATUS_SUCCESS;
 }
 
@@ -132,7 +136,7 @@ bt_status_t timeout2(bool is_timeout, uint32_t timer_id, uint32_t data, const vo
 	CU_ASSERT(is_timeout);
 	CU_ASSERT(timer_id == ((BT_MODULE_HCI | 0x0C03) + 2));
 	end_tick = bt_os_layer_get_system_tick();
-	printf("time_length2 = %d\r\n", end_tick-start_tick);
+	printf("time_length2 = %d, is_timeout = %d\r\n", end_tick-start_tick, is_timeout);
 	return BT_STATUS_SUCCESS;
 }
 
@@ -141,6 +145,6 @@ void bt_timer_test(void)
 	uint32_t timer_id = (BT_MODULE_HCI | 0x0C03);
 	start_tick = bt_os_layer_get_system_tick();
 	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id, 100, 0, timeout));
-	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id+1, 100, 0, timeout1));
-	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id+2, 99, 0, timeout2));
+	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id+1, 200, 0, timeout1));
+	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id+2, 300, 0, timeout2));
 }

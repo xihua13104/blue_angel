@@ -54,6 +54,7 @@ bt_status_t bt_timer_start(uint32_t timer_id, uint32_t timer_length, uint32_t da
 	bt_timer_t *timer = NULL;
 	bt_timer_duration_t duration = {0};
 	bt_linknode_t *pre = NULL;
+	BT_ASSERT(timer_length > 0);
 	if (NULL != bt_timer_find(timer_id)) {
 		return BT_STATUS_FAIL;
 	}
@@ -88,7 +89,7 @@ bt_status_t bt_timer_cancel(uint32_t timer_id)
 	bt_timer_t *timer = NULL;
 	uint32_t current_tick = 0;
 	int32_t diff = 0;
-	bt_linknode_t *pre = bt_linknode_travel_node(&bt_timer_list, bt_timer_cmp_by_timerid, (const void *)timer_id);
+	bt_linknode_t *pre = bt_linknode_travel_node(&bt_timer_list, bt_timer_cmp_by_timerid, (const void *)&timer_id);
 	if (pre == NULL) {
 		return BT_STATUS_TIMER_NOT_FOUND;
 	}
@@ -125,7 +126,7 @@ bt_status_t bt_timer_cancel_and_callback(uint32_t timer_id, const void *param)
 	bt_status_t status = BT_STATUS_SUCCESS;
 	bt_timer_t tmp = {0};
 	bt_timer_t *timer = NULL;
-	bt_linknode_t *pre = bt_linknode_travel_node(&bt_timer_list, bt_timer_cmp_by_timerid, (const void *)timer_id);
+	bt_linknode_t *pre = bt_linknode_travel_node(&bt_timer_list, bt_timer_cmp_by_timerid, (const void *)&timer_id);
 	if (pre == NULL) {
 		return BT_STATUS_TIMER_NOT_FOUND;
 	}
