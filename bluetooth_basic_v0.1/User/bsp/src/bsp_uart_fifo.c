@@ -77,9 +77,11 @@ void bsp_InitUart(void)
 	UartVarInit();		/* 必须先初始化全局变量,再配置硬件 */
 
 	InitHardUart();		/* 配置串口的硬件参数(波特率等) */
-
+	
+#if RS485_ENABLE
 	RS485_InitTXE();	/* 配置RS485芯片的发送使能硬件，配置为推挽输出 */
-
+#endif
+	
 	ConfigUartNVIC();	/* 配置串口中断 */
 }
 
@@ -418,6 +420,7 @@ void RS485_ReciveNew(uint8_t _byte)
 *	返 回 值: 无
 *********************************************************************************************************
 */
+extern void bt_driver_recieve_data_from_controller(uint8_t data);
 static void UartVarInit(void)
 {
 #if UART1_FIFO_EN == 1
@@ -451,7 +454,7 @@ static void UartVarInit(void)
 	g_tUart2.usTxCount = 0;						/* 待发送的数据个数 */
 	g_tUart2.SendBefor = 0;						/* 发送数据前的回调函数 */
 	g_tUart2.SendOver = 0;						/* 发送完毕后的回调函数 */
-	g_tUart2.ReciveNew = 0;						/* 接收到新数据后的回调函数 */
+	g_tUart2.ReciveNew = bt_driver_recieve_data_from_controller;/* 接收到新数据后的回调函数 */
 #endif
 
 #if UART3_FIFO_EN == 1
@@ -580,12 +583,15 @@ static void InitHardUart(void)
 #endif
 
 #if UART2_FIFO_EN == 1		/* 串口2 TX = PA2， RX = PA3  */
+/******************************************************************************
+ * description : Initialization of USART2.PA0->CTS PA1->RTS PA2->TX PA3->RX
+******************************************************************************/
 	/* 第1步：打开GPIO和USART部件的时钟 */
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_AFIO, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART2, ENABLE);
 
 	/* 第2步：将USART Tx的GPIO配置为推挽复用模式 */
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_2;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1|GPIO_Pin_2;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
@@ -594,7 +600,7 @@ static void InitHardUart(void)
 		由于CPU复位后，GPIO缺省都是浮空输入模式，因此下面这个步骤不是必须的
 		但是，我还是建议加上便于阅读，并且防止其它地方修改了这个口线的设置参数
 	*/
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_3;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0|GPIO_Pin_3;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	/*  第3步已经做了，因此这步可以不做
@@ -607,7 +613,7 @@ static void InitHardUart(void)
 	USART_InitStructure.USART_WordLength = USART_WordLength_8b;
 	USART_InitStructure.USART_StopBits = USART_StopBits_1;
 	USART_InitStructure.USART_Parity = USART_Parity_No ;
-	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+	USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_RTS_CTS;
 	USART_InitStructure.USART_Mode = USART_Mode_Tx | USART_Mode_Rx;		/* 仅选择接收模式 */
 	USART_Init(USART2, &USART_InitStructure);
 
@@ -627,6 +633,7 @@ static void InitHardUart(void)
 #if UART3_FIFO_EN == 1			/* 串口3 TX = PB10   RX = PB11 */
 
 	/* 配置 PB2为推挽输出，用于切换 RS485芯片的收发状态 */
+#if RS485_ENABLE
 	{
 		RCC_APB2PeriphClockCmd(RCC_RS485_TXEN, ENABLE);
 
@@ -635,7 +642,7 @@ static void InitHardUart(void)
 		GPIO_InitStructure.GPIO_Pin = PIN_RS485_TXEN;
 		GPIO_Init(PORT_RS485_TXEN, &GPIO_InitStructure);
 	}
-
+#endif
 	/* 第1步： 开启GPIO和UART时钟 */
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB | RCC_APB2Periph_AFIO, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_USART3, ENABLE);

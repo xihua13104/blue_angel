@@ -374,7 +374,7 @@
               <MiscControls>--diag_suppress=870</MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F10X_HD,NDEBUG</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Libraries\CMSIS\Device\ST\STM32F10x\Include;..\..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\..\User\bsp;..\..\User\bsp\inc;..\..\User;..\..\Libraries\CMSIS\Include;..\..\FreeRTOS\include;..\..\FreeRTOS\portable\RVDS\ARM_CM3;..\..\Middleware\blue_angel\inc;..\..\Middleware\bt_callback_manager;..\..\Middleware\blue_angel\btif;..\..\Middleware\blue_angel\common;..\..\Middleware\blue_angel\platform;..\..\Middleware\blue_angel\src\common;..\..\Middleware\blue_angel\src\inc;..\..\Middleware\blue_angel\platform;..\..\Middleware\blue_angel\platform\rtos;..\..\Middleware\blue_angel\platform;..\..\Middleware\ut_manager\Cunit\Headers;..\..\Middleware\ut_manager\Cunit\interface;..\..\Middleware\blue_angel\platform\test</IncludePath>
+              <IncludePath>..\..\Libraries\CMSIS\Device\ST\STM32F10x\Include;..\..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\..\User\bsp;..\..\User\bsp\inc;..\..\User;..\..\Libraries\CMSIS\Include;..\..\FreeRTOS\include;..\..\FreeRTOS\portable\RVDS\ARM_CM3;..\..\Middleware\blue_angel\inc;..\..\Middleware\bt_callback_manager;..\..\Middleware\blue_angel\btif;..\..\Middleware\blue_angel\common;..\..\Middleware\blue_angel\platform;..\..\Middleware\blue_angel\src\common;..\..\Middleware\blue_angel\src\inc;..\..\Middleware\blue_angel\platform;..\..\Middleware\blue_angel\platform\rtos;..\..\Middleware\blue_angel\platform;..\..\Middleware\ut_manager\Cunit\Headers;..\..\Middleware\ut_manager\Cunit\interface;..\..\Middleware\blue_angel\platform\test;..\..\Middleware\blue_angel\driver</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -609,11 +609,6 @@
               <FilePath>..\..\Middleware\blue_angel\platform\rtos\bt_os_layer_api.c</FilePath>
             </File>
             <File>
-              <FileName>bt_platform.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Middleware\blue_angel\platform\rtos\bt_platform.c</FilePath>
-            </File>
-            <File>
               <FileName>bt_task.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Middleware\blue_angel\platform\rtos\bt_task.c</FilePath>
@@ -622,6 +617,36 @@
               <FileName>bt_test.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\Middleware\blue_angel\platform\test\bt_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>bt_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middleware\blue_angel\driver\bt_driver.c</FilePath>
+            </File>
+            <File>
+              <FileName>bt_log.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middleware\blue_angel\platform\bt_log.c</FilePath>
+            </File>
+            <File>
+              <FileName>bt_platform.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middleware\blue_angel\platform\bt_platform.c</FilePath>
+            </File>
+            <File>
+              <FileName>bt_hci.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middleware\blue_angel\src\core\hci\bt_hci.c</FilePath>
+            </File>
+            <File>
+              <FileName>bt_system.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Middleware\blue_angel\btif\bt_system.h</FilePath>
+            </File>
+            <File>
+              <FileName>bt_config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\Middleware\blue_angel\btif\bt_config.h</FilePath>
             </File>
           </Files>
         </Group>

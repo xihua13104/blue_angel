@@ -1,9 +1,9 @@
 /******************************************************************************
-  * @file           bt_memory.h
+  * @file           bt_linknode.h
   * @author         Leonard-y.He(1027901556@qq.com)
   * @version        V0.0.1
   * @date           2020-12-05
-  * @brief          bt memory dynamic pool header file
+  * @brief
 ******************************************************************************/
 #ifndef __BT_LINKNODE_H__
 #define __BT_LINKNODE_H__

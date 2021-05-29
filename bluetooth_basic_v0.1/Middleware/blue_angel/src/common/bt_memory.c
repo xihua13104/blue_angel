@@ -7,6 +7,7 @@
 ******************************************************************************/
 #include "bt_memory.h"
 #include "bt_timer.h"
+#include "bt_common.h"
 
 typedef struct {
 	const uint8_t *start;
@@ -32,9 +33,11 @@ void bt_memory_init(bt_memory_type_t type, uint8_t *buf, uint32_t size)
 {
     BT_ASSERT(p_bt_mm_cb);
     BT_ASSERT(!(size % 4) && (size >= (sizeof(bt_mm_header_t) + BT_MM_FOOTER_SIZE)));
+	BT_SHARE_BUFFER_LOCK();
     bt_mm_cb.mm_poll_size[type] = size;
     bt_mm_cb.start_mm_h[type] = (bt_mm_header_t *)(buf);
     bt_mm_cb.search_mm_h[type] = bt_mm_cb.start_mm_h[type];
+	BT_SHARE_BUFFER_UNLOCK();
     /* add footer */
     memcpy((void *)(buf + size - BT_MM_FOOTER_SIZE), (void *)&bt_mm_footer, BT_MM_FOOTER_SIZE);
     /*info's length contains the size of footer*/
@@ -43,12 +46,16 @@ void bt_memory_init(bt_memory_type_t type, uint8_t *buf, uint32_t size)
 
 static bool bt_memory_is_allocatable_packet(bt_memory_type_t type, uint32_t size)
 {
+	bool ret;
     size += BT_MM_FOOTER_SIZE;
+	BT_SHARE_BUFFER_LOCK();
     if (bt_mm_cb.search_mm_h[type] != NULL && BT_MM_GET_SIZE(bt_mm_cb.search_mm_h[type]->info) > size) {
-        return true;
+        ret = true;
     } else {
-        return false;
+        ret = false;
     }
+	BT_SHARE_BUFFER_UNLOCK();
+	return ret;
 }
 
 uint8_t *bt_memory_allocate_packet(bt_memory_type_t type, uint32_t size)
@@ -68,6 +75,7 @@ uint8_t *bt_memory_allocate_packet(bt_memory_type_t type, uint32_t size)
 
     size += BT_MM_FOOTER_SIZE;
     size = MEMORY_ALIGN_SIZE(size);
+	BT_SHARE_BUFFER_LOCK();
     new_mm = bt_mm_cb.search_mm_h[type];
     BT_ASSERT("search_mm_h is invalid \r\n" && new_mm != NULL);
     /* update search_mm_h*/
@@ -79,7 +87,7 @@ uint8_t *bt_memory_allocate_packet(bt_memory_type_t type, uint32_t size)
         bt_mm_cb.search_mm_h[type] = NULL;
         new_mm_size = BT_MM_GET_SIZE(new_mm->info);
     }
-
+	BT_SHARE_BUFFER_UNLOCK();
     /*update new_mm*/
     memset((uint8_t *)new_mm + sizeof(bt_mm_header_t), 0, new_mm_size - BT_MM_FOOTER_SIZE);
     /*set header info*/
@@ -110,6 +118,8 @@ static void bt_memory_check_and_merge(bt_memory_type_t type)
     bt_mm_header_t *tmp_mm = bt_mm_cb.start_mm_h[type];
     bt_mm_header_t *free_mm = NULL;
     uint8_t mm_state;
+
+	BT_SHARE_BUFFER_LOCK();
     do {
         mm_state = BT_MM_GET_STATE(tmp_mm->info);
         if (mm_state == BT_MM_STATE_FREE) {
@@ -128,6 +138,8 @@ static void bt_memory_check_and_merge(bt_memory_type_t type)
         }
         tmp_mm = (bt_mm_header_t *)((uint8_t *)tmp_mm + BT_MM_GET_SIZE(tmp_mm->info) + BT_MM_HEADER_SIZE);
     } while ((uint32_t)((uint8_t *)tmp_mm - (uint8_t *)bt_mm_cb.start_mm_h[type]) < (bt_mm_cb.mm_poll_size[type]));
+	BT_SHARE_BUFFER_UNLOCK();
+
 }
 
 void bt_fixed_memory_init(bt_fixed_memory_type_t type, uint8_t *buf, uint32_t size)
@@ -138,6 +150,8 @@ void bt_fixed_memory_init(bt_fixed_memory_type_t type, uint8_t *buf, uint32_t si
 	bt_mm_header_t *header = NULL;
 	uint32_t *footer = NULL;
 	BT_ASSERT(buf != NULL && size > 0 && type < BT_FIXED_MM_MAX);
+
+	BT_SHARE_BUFFER_LOCK();
 	bt_fixed_mm_cb_list[type].start = (const uint8_t *)buf;
 	bt_fixed_mm_cb_list[type].end = (const uint8_t *)(buf + size);
 
@@ -148,6 +162,8 @@ void bt_fixed_memory_init(bt_fixed_memory_type_t type, uint8_t *buf, uint32_t si
 		*footer = BT_MM_FOOTER;
 		bt_linknode_insert_node(&bt_fixed_mm_cb_list[type].head, (bt_linknode_t *)((uint8_t *)header + sizeof(bt_mm_header_t)), BT_NODE_TAIL);
 	}
+	BT_SHARE_BUFFER_UNLOCK();
+
 }
 
 uint8_t *bt_fixed_memory_allocate(bt_fixed_memory_type_t type)
@@ -159,10 +175,12 @@ uint8_t *bt_fixed_memory_allocate(bt_fixed_memory_type_t type)
 	if (bt_fixed_mm_cb_list[type].head.next == NULL) {
 		return NULL;
 	}
+	BT_SHARE_BUFFER_LOCK();
 	node = bt_linknode_delete_node(&bt_fixed_mm_cb_list[type].head, BT_NODE_FRONT);
 	header = (bt_mm_header_t *)((uint8_t *)node - sizeof(bt_mm_header_t));
 	BT_MM_SET_STATE(header->info, BT_MM_STATE_USING);
 	bt_memset((void *)node, 0, bt_fixed_mm_size_table[type]);
+	BT_SHARE_BUFFER_UNLOCK();
 	return (uint8_t *)node;
 }
 
@@ -179,11 +197,14 @@ void bt_fixed_memory_free(bt_fixed_memory_type_t type, uint8_t *buf)
 	BT_ASSERT(BT_MM_STATE_USING == BT_MM_GET_STATE(header->info) && "double free");
 	BT_ASSERT(0 == bt_memcmp(footer, &f, BT_MM_FOOTER_SIZE));
 	BT_MM_SET_STATE(header->info, BT_MM_STATE_FREE);
-	
+
+	BT_SHARE_BUFFER_LOCK();	
 	pre = bt_linknode_travel_node(&bt_fixed_mm_cb_list[type].head, bt_linknode_cmp_backward, (void *)buf);
 	if (pre == NULL) {
 		bt_linknode_insert_node(&bt_fixed_mm_cb_list[type].head, (bt_linknode_t *)buf, BT_NODE_TAIL);
 	} else {
 		BT_ASSERT(0 && "fixed memory double free");
 	}
+	BT_SHARE_BUFFER_UNLOCK();
+
 }

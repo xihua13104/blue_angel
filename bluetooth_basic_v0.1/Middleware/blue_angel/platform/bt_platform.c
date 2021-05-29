@@ -71,6 +71,7 @@ void bt_init()
 		bt_task_semaphore = bt_os_layer_create_semaphore();
 		BT_ASSERT(bt_task_semaphore);
 	}
+	//bt_driver_init();
 }
 
 void bt_deinit()

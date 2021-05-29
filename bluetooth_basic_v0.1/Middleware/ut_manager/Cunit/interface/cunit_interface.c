@@ -84,7 +84,7 @@ cunit_status_t cunit_test_start()
 	CU_ErrorCode result = CUE_SUCCESS;
 	/*.¿ªÊ¼²âÊÔ*/
 	result = CU_basic_run_tests();
-	printf("\nTests completed with return value %d.\n", result);
+	printf("Tests completed with return value %d.\r\n", result);
 	if (result != CUE_SUCCESS) {
 		return CUNIT_FAIL;
 	}

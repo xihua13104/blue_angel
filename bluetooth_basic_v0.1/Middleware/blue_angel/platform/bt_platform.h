@@ -11,11 +11,14 @@
 
 #include "stm32f10x_conf.h"
 #include "core_cmfunc.h"
-#include "stdlib.h"
-#include "stdbool.h"
-#include "string.h"
 #include "cunit_interface.h"
-
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
+#include <string.h>
+#include <stddef.h>
+#include <stdbool.h>
 #define BT_ASSERT(expr) assert_param(expr)
 
 #define BT_TASK_EVENT_TIMER_EXPIRED	0x01

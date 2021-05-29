@@ -10,6 +10,7 @@
 #define __BT_OS_LAYER_API_H
 #include "bt_platform.h"
 #include "FreeRTOS.h"
+#include "task.h"
 
 typedef void (*bt_os_layer_timer_expire_callback_t)(void);
 

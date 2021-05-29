@@ -172,18 +172,50 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>118</LineNumber>
+          <LineNumber>26</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134241764</Address>
+          <Address>134244748</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>F:\宸ヤ綔\椤圭洰\钃濈墮鍗忚鏍堝紑鍙?blue-angel\blue_angel\bluetooth_basic_v0.1\Middleware\blue_angel\platform\test\bt_test.c</Filename>
+          <Filename>F:\宸ヤ綔\椤圭洰\钃濈墮鍗忚鏍堝紑鍙?blue-angel\blue_angel\bluetooth_basic_v0.1\Middleware\blue_angel\platform\rtos\bt_task.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\output\../../Middleware/blue_angel/platform/test/bt_test.c\118</Expression>
+          <Expression>\\output\../../Middleware/blue_angel/platform/rtos/bt_task.c\26</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>40</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134234866</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>F:\宸ヤ綔\椤圭洰\钃濈墮鍗忚鏍堝紑鍙?blue-angel\blue_angel\bluetooth_basic_v0.1\Middleware\blue_angel\platform\bt_log.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\output\../../Middleware/blue_angel/platform/bt_log.c\40</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>988</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134229170</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>F:\宸ヤ綔\椤圭洰\钃濈墮鍗忚鏍堝紑鍙?blue-angel\blue_angel\bluetooth_basic_v0.1\User\bsp\src\bsp_uart_fifo.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\output\../../User/bsp/src/bsp_uart_fifo.c\988</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -239,7 +271,7 @@
       <DebugFlag>
         <trace>0</trace>
         <periodic>0</periodic>
-        <aLwin>0</aLwin>
+        <aLwin>1</aLwin>
         <aCover>0</aCover>
         <aSer1>0</aSer1>
         <aSer2>0</aSer2>
@@ -275,7 +307,7 @@
 
   <Group>
     <GroupName>User</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -319,7 +351,7 @@
 
   <Group>
     <GroupName>BSP</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -519,7 +551,7 @@
 
   <Group>
     <GroupName>FreeRTOS/Source</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -599,7 +631,7 @@
 
   <Group>
     <GroupName>FreeRTOS/Ports</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
@@ -714,8 +746,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\Middleware\blue_angel\platform\rtos\bt_platform.c</PathWithFileName>
-      <FilenameWithoutPath>bt_platform.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\Middleware\blue_angel\platform\rtos\bt_task.c</PathWithFileName>
+      <FilenameWithoutPath>bt_task.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -726,8 +758,8 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\Middleware\blue_angel\platform\rtos\bt_task.c</PathWithFileName>
-      <FilenameWithoutPath>bt_task.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\Middleware\blue_angel\platform\test\bt_test.c</PathWithFileName>
+      <FilenameWithoutPath>bt_test.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -738,8 +770,68 @@
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\..\Middleware\blue_angel\platform\test\bt_test.c</PathWithFileName>
-      <FilenameWithoutPath>bt_test.c</FilenameWithoutPath>
+      <PathWithFileName>..\..\Middleware\blue_angel\driver\bt_driver.c</PathWithFileName>
+      <FilenameWithoutPath>bt_driver.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>8</GroupNumber>
+      <FileNumber>35</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middleware\blue_angel\platform\bt_log.c</PathWithFileName>
+      <FilenameWithoutPath>bt_log.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>8</GroupNumber>
+      <FileNumber>36</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middleware\blue_angel\platform\bt_platform.c</PathWithFileName>
+      <FilenameWithoutPath>bt_platform.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>8</GroupNumber>
+      <FileNumber>37</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middleware\blue_angel\src\core\hci\bt_hci.c</PathWithFileName>
+      <FilenameWithoutPath>bt_hci.c</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>8</GroupNumber>
+      <FileNumber>38</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middleware\blue_angel\btif\bt_system.h</PathWithFileName>
+      <FilenameWithoutPath>bt_system.h</FilenameWithoutPath>
+      <RteFlg>0</RteFlg>
+      <bShared>0</bShared>
+    </File>
+    <File>
+      <GroupNumber>8</GroupNumber>
+      <FileNumber>39</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\Middleware\blue_angel\btif\bt_config.h</PathWithFileName>
+      <FilenameWithoutPath>bt_config.h</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
@@ -747,13 +839,13 @@
 
   <Group>
     <GroupName>Cunit</GroupName>
-    <tvExp>1</tvExp>
+    <tvExp>0</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>9</GroupNumber>
-      <FileNumber>35</FileNumber>
+      <FileNumber>40</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -765,7 +857,7 @@
     </File>
     <File>
       <GroupNumber>9</GroupNumber>
-      <FileNumber>36</FileNumber>
+      <FileNumber>41</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -777,7 +869,7 @@
     </File>
     <File>
       <GroupNumber>9</GroupNumber>
-      <FileNumber>37</FileNumber>
+      <FileNumber>42</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -789,7 +881,7 @@
     </File>
     <File>
       <GroupNumber>9</GroupNumber>
-      <FileNumber>38</FileNumber>
+      <FileNumber>43</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -801,7 +893,7 @@
     </File>
     <File>
       <GroupNumber>9</GroupNumber>
-      <FileNumber>39</FileNumber>
+      <FileNumber>44</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -813,7 +905,7 @@
     </File>
     <File>
       <GroupNumber>9</GroupNumber>
-      <FileNumber>40</FileNumber>
+      <FileNumber>45</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -825,7 +917,7 @@
     </File>
     <File>
       <GroupNumber>9</GroupNumber>
-      <FileNumber>41</FileNumber>
+      <FileNumber>46</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -837,7 +929,7 @@
     </File>
     <File>
       <GroupNumber>9</GroupNumber>
-      <FileNumber>42</FileNumber>
+      <FileNumber>47</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -857,7 +949,7 @@
     <RteFlg>0</RteFlg>
     <File>
       <GroupNumber>10</GroupNumber>
-      <FileNumber>43</FileNumber>
+      <FileNumber>48</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -869,7 +961,7 @@
     </File>
     <File>
       <GroupNumber>10</GroupNumber>
-      <FileNumber>44</FileNumber>
+      <FileNumber>49</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
@@ -881,7 +973,7 @@
     </File>
     <File>
       <GroupNumber>10</GroupNumber>
-      <FileNumber>45</FileNumber>
+      <FileNumber>50</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>

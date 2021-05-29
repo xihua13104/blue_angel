@@ -38,10 +38,12 @@
 	【串口5】 --- 不做串口用。
 */
 #define	UART1_FIFO_EN	1
-#define	UART2_FIFO_EN	0
-#define	UART3_FIFO_EN	0
+#define	UART2_FIFO_EN	1
+#define	UART3_FIFO_EN	1
 #define	UART4_FIFO_EN	0
 #define	UART5_FIFO_EN	0
+
+#define RS485_ENABLE	0
 
 /* RS485芯片发送使能GPIO, PB2 */
 #define RCC_RS485_TXEN 	 RCC_APB2Periph_GPIOB
@@ -60,7 +62,7 @@ typedef enum
 	COM3 = 2,	/* USART3, PB10, PB11 */
 	COM4 = 3,	/* UART4, PC10, PC11 */
 	COM5 = 4,	/* UART5, PC12, PD2 */
-}COM_PORT_E;
+} COM_PORT_E;
 
 /* 定义串口波特率和FIFO缓冲区大小，分为发送缓冲区和接收缓冲区, 支持全双工 */
 #if UART1_FIFO_EN == 1
@@ -76,7 +78,7 @@ typedef enum
 #endif
 
 #if UART3_FIFO_EN == 1
-	#define UART3_BAUD			9600
+	#define UART3_BAUD			921600
 	#define UART3_TX_BUF_SIZE	1*1024
 	#define UART3_RX_BUF_SIZE	1*1024
 #endif
