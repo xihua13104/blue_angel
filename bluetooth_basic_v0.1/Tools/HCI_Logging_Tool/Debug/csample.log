@@ -1,0 +1,21 @@
+﻿  main.c
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(62): warning C4047: “函数”:“DWORD”与“void *”的间接级别不同
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(62): warning C4024: “OpenMutexA”: 形参和实参 1 的类型不同
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(62): warning C4047: “函数”:“BOOL”与“HANDLE”的间接级别不同
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(62): warning C4024: “OpenMutexA”: 形参和实参 2 的类型不同
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(62): warning C4047: “return”:“BOOL”与“HANDLE”的间接级别不同
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(80): warning C4133: “函数”: 从“char [100]”到“LPCWSTR”的类型不兼容
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(83): warning C4133: “函数”: 从“const char *”到“LPCWSTR”的类型不兼容
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(282): warning C4456: “i”的声明隐藏了上一个本地声明
+  c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(130): note: 参见“i”的声明
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(289): warning C4133: “函数”: 从“char [100]”到“LPCWSTR”的类型不兼容
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(291): warning C4133: “函数”: 从“const char *”到“LPCWSTR”的类型不兼容
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(301): warning C4047: “函数”:“LPDWORD”与“HANDLE *”的间接级别不同
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(301): warning C4024: “CreateThread”: 形参和实参 6 的类型不同
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(301): warning C4047: “=”:“DWORD”与“HANDLE”的间接级别不同
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(449): warning C4459: “hci_log”的声明隐藏了全局声明
+  c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(377): note: 参见“hci_log”的声明
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(104): warning C4716: “available_serial_port_check”: 必须返回一个值
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(469): warning C4701: 使用了可能未初始化的局部变量“hci_data_type”
+c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(469): warning C4701: 使用了可能未初始化的局部变量“hci_log_direction”
+  csample.vcxproj -> C:\Users\heye\Desktop\wireless_bt\ref\logging_tool\HCILoggingTool\HCI_Logging_Tool\Debug\CSample.exe
