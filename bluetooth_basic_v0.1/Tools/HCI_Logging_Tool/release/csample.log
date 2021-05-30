@@ -34,8 +34,8 @@ serial_port.c(142): warning C4189: “status”: 局部变量已初始化但不�
 serial_port.c(174): warning C4057: “函数”:“LPDWORD”与“unsigned int *”在稍微不同的基类型间接寻址上不同
 serial_port.c(171): warning C4189: “status”: 局部变量已初始化但不引用
   正在生成代码...
-c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(469): warning C4701: 使用了可能未初始化的局部变量“hci_data_type”
-c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(469): warning C4701: 使用了可能未初始化的局部变量“hci_log_direction”
-c:\users\heye\desktop\wireless_bt\ref\logging_tool\hciloggingtool\hci_logging_tool\main.c(104): warning C4716: “available_serial_port_check”: 必须返回一个值
-  csample.vcxproj -> C:\Users\heye\Desktop\wireless_bt\ref\logging_tool\HCILoggingTool\HCI_Logging_Tool\Release\CSample.exe
+f:\工作\项目\蓝牙协议栈开发-blue-angel\blue_angel\bluetooth_basic_v0.1\tools\hci_logging_tool\main.c(469): warning C4701: 使用了可能未初始化的局部变量“hci_data_type”
+f:\工作\项目\蓝牙协议栈开发-blue-angel\blue_angel\bluetooth_basic_v0.1\tools\hci_logging_tool\main.c(469): warning C4701: 使用了可能未初始化的局部变量“hci_log_direction”
+f:\工作\项目\蓝牙协议栈开发-blue-angel\blue_angel\bluetooth_basic_v0.1\tools\hci_logging_tool\main.c(104): warning C4716: “available_serial_port_check”: 必须返回一个值
+  csample.vcxproj -> F:\工作\项目\蓝牙协议栈开发-blue-angel\blue_angel\bluetooth_basic_v0.1\Tools\HCI_Logging_Tool\Release\CSample.exe
   csample.vcxproj -> .\Release/csample.pdb (Full PDB)

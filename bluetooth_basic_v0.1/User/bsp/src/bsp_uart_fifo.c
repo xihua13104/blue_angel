@@ -208,6 +208,76 @@ uint8_t comGetChar(COM_PORT_E _ucPort, uint8_t *_pByte)
 
 /*
 *********************************************************************************************************
+*	函 数 名: comGetChar
+*	功能说明: 从串口缓冲区读取1字节，非阻塞。无论有无数据均立即返回
+*	形    参: _ucPort: 端口号(COM1 - COM6)
+*			  _pBuf: 接收到的数据存放在这个地址
+*			  _usLen: 准备读取的数据长度
+*	返 回 值: 实际读到的数据长度，0 表示无数据
+*********************************************************************************************************
+*/
+uint16_t comGetBuf(COM_PORT_E _ucPort, uint8_t *_pBuf, const uint16_t _usLenToRead)
+{
+	UART_T *pUart;
+	uint16_t usCount;
+	uint16_t usRightCount;
+	uint16_t usLeftCount;
+	pUart = ComToUart(_ucPort);
+	if (pUart == 0)
+	{
+		return 0;
+	}
+	/* usRxWrite 变量在中断函数中被改写，主程序读取该变量时，必须进行临界区保护 */
+	DISABLE_INT();
+	usCount = pUart->usRxCount;
+	ENABLE_INT();
+
+	/* 如果读和写索引相同，则返回0 */
+	if (usCount == 0)	/* 已经没有数据 */
+	{
+		return 0;
+	}
+	else if (usCount < _usLenToRead) 
+	{
+		DISABLE_INT();
+		if (pUart->usRxRead < pUart->usRxWrite) {
+			usRightCount = pUart->usRxBufSize - pUart->usRxRead;
+			usLeftCount = usCount - usRightCount;
+			memcpy(_pBuf, &pUart->pRxBuf[pUart->usRxRead], usRightCount);
+			memcpy(_pBuf + usRightCount, pUart->pRxBuf, usLeftCount);
+		}
+		else 
+		{
+			memcpy(_pBuf, &pUart->pRxBuf[pUart->usRxRead], usCount);
+		}
+		pUart->usRxRead = pUart->usRxWrite; /*复位FIFO wptr * rptr指针*/
+		pUart->usRxCount = 0;
+		ENABLE_INT();
+		return usCount;
+	}
+	else
+	{
+		DISABLE_INT();
+		if (pUart->usRxRead < pUart->usRxWrite) {
+			usRightCount = pUart->usRxBufSize - pUart->usRxRead;
+			usLeftCount = _usLenToRead - usRightCount;
+			memcpy(_pBuf, &pUart->pRxBuf[pUart->usRxRead], usRightCount);
+			memcpy(_pBuf + usRightCount, pUart->pRxBuf, usLeftCount);
+			pUart->usRxRead = usLeftCount; /*复位FIFO wptr * rptr指针*/
+		}
+		else 
+		{
+			memcpy(_pBuf, &pUart->pRxBuf[pUart->usRxRead], _usLenToRead);
+			pUart->usRxRead += _usLenToRead; /*复位FIFO wptr * rptr指针*/
+		}
+		pUart->usRxCount -= _usLenToRead;
+		ENABLE_INT();
+		return _usLenToRead;
+	}
+}
+
+/*
+*********************************************************************************************************
 *	函 数 名: comClearTxFifo
 *	功能说明: 清零串口发送缓冲区
 *	形    参: _ucPort: 端口号(COM1 - COM6)
@@ -469,9 +539,9 @@ static void UartVarInit(void)
 	g_tUart3.usRxRead = 0;						/* 接收FIFO读索引 */
 	g_tUart3.usRxCount = 0;						/* 接收到的新数据个数 */
 	g_tUart3.usTxCount = 0;						/* 待发送的数据个数 */
-	g_tUart3.SendBefor = RS485_SendBefor;		/* 发送数据前的回调函数 */
-	g_tUart3.SendOver = RS485_SendOver;			/* 发送完毕后的回调函数 */
-	g_tUart3.ReciveNew = RS485_ReciveNew;		/* 接收到新数据后的回调函数 */
+	g_tUart3.SendBefor = 0;//RS485_SendBefor;		/* 发送数据前的回调函数 */
+	g_tUart3.SendOver = 0;//RS485_SendOver;			/* 发送完毕后的回调函数 */
+	g_tUart3.ReciveNew = 0;//RS485_ReciveNew;		/* 接收到新数据后的回调函数 */
 #endif
 
 #if UART4_FIFO_EN == 1

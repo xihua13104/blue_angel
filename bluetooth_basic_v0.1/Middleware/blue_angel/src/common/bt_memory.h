@@ -8,6 +8,7 @@
 #ifndef __BT_MEMORY_H__
 #define __BT_MEMORY_H__
 #include "bt_type.h"
+#include "bt_linknode.h"
 
 #define BT_MM_HEADER_SIZE  (sizeof(bt_mm_header_t))
 #define BT_MM_FOOTER_SIZE  (4)
@@ -56,9 +57,12 @@ typedef struct {
     bt_mm_header_t *start_mm_h[2];
     bt_mm_header_t *search_mm_h[2];
     uint32_t mm_poll_size[2];
-    //bt_linknode_t rx_queue;
-    //bt_linknode_t tx_all_queue;
+    bt_linknode_t rx_queue;
+    bt_linknode_t cmd_queue;
+    bt_linknode_t acl_queue;
 } bt_mm_poll_ctrl_block_t;
+
+extern bt_mm_poll_ctrl_block_t *p_bt_mm_cb;
 
 void bt_memory_init(bt_memory_type_t type, uint8_t *buf, uint32_t size);
 

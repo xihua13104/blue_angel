@@ -1,0 +1,17 @@
+.\flash\obj\basic.o: ..\..\Middleware\ut_manager\Cunit\Sources\Basic\Basic.c
+.\flash\obj\basic.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\flash\obj\basic.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\flash\obj\basic.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
+.\flash\obj\basic.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\assert.h
+.\flash\obj\basic.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\flash\obj\basic.o: ..\..\Middleware\ut_manager\Cunit\Headers\CUnit.h
+.\flash\obj\basic.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\flash\obj\basic.o: ..\..\Middleware\ut_manager\Cunit\Headers\CUError.h
+.\flash\obj\basic.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\errno.h
+.\flash\obj\basic.o: ..\..\Middleware\ut_manager\Cunit\Headers\CUnit.h
+.\flash\obj\basic.o: ..\..\Middleware\ut_manager\Cunit\Headers\TestDB.h
+.\flash\obj\basic.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\setjmp.h
+.\flash\obj\basic.o: ..\..\Middleware\ut_manager\Cunit\Headers\TestRun.h
+.\flash\obj\basic.o: ..\..\Middleware\ut_manager\Cunit\Headers\Util.h
+.\flash\obj\basic.o: ..\..\Middleware\ut_manager\Cunit\Headers\Basic.h
+.\flash\obj\basic.o: ..\..\Middleware\ut_manager\Cunit\Headers\CUnit_intl.h

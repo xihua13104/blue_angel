@@ -15,7 +15,7 @@ typedef uint8_t bt_linknode_position_t;
 
 typedef struct _link_node {
 	struct _link_node *next;
-} bt_linknode_t;
+} BT_PACKED bt_linknode_t;
 
 typedef bool (*bt_linknode_cmp_t)(const bt_linknode_t *node, const void *data);
 

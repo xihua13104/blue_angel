@@ -37,6 +37,8 @@ typedef uint32_t bt_status_t;
 
 typedef uint32_t bt_msg_type_t;
 
+#define BT_PACKED __attribute__ ((packed))
+
 #endif //__BT_TYPE_H__
 
 

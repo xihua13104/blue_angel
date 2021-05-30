@@ -1,0 +1,44 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.22.0.0
+Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: 11 heye, 11, LIC=21EUH-WGVG0-7RKX3-AL4V0-P01QQ-AQN0S
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Plus  Version: 5.22
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 4 (build 422)
+Assembler:       Armasm.exe V5.06 update 4 (build 422)
+Linker/Locator:  ArmLink.exe V5.06 update 4 (build 422)
+Library Manager: ArmAr.exe V5.06 update 4 (build 422)
+Hex Converter:   FromElf.exe V5.06 update 4 (build 422)
+CPU DLL:         SARMCM3.DLL V5.22
+Dialog DLL:      DARMSTM.DLL V1.67.0.0
+Target DLL:      Segger\JL2CM3.dll V2.99.23.0
+Dialog DLL:      TARMSTM.DLL V1.66.0.0
+ 
+<h2>Project:</h2>
+F:\工作\项目\蓝牙协议栈开发-blue-angel\blue_angel\bluetooth_basic_v0.1\Project\MDK-ARM(uV4)\project.uvproj
+Project File Date:  05/30/2021
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 4 (build 422)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
+Build target 'Flash'
+compiling bt_driver.c...
+..\..\Middleware\blue_angel\driver\bt_driver.c(64): warning:  #177-D: variable "packet"  was declared but never referenced
+  	bt_hci_packet_t *packet = NULL;
+..\..\Middleware\blue_angel\driver\bt_driver.c: 1 warning, 0 errors
+linking...
+Program Size: Code=31658 RO-data=1262 RW-data=460 ZI-data=36676  
+FromELF: creating hex file...
+After Build - User command #1: CopyHex_Flash.bat
+F:\工作\项目\蓝牙协议栈开发-blue-angel\blue_angel\bluetooth_basic_v0.1\Project\MDK-ARM(uV4)>copy Flash\Obj\output.hex ..\output(mdk).hex 
+已复制         1 个文件。
+".\Flash\Obj\output.axf" - 0 Error(s), 1 Warning(s).
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>
