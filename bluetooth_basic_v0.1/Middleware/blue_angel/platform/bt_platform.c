@@ -8,10 +8,18 @@
 #include "bt_platform.h"
 #include "bt_os_layer_api.h"
 #include "bt_timer.h"
-static uint32_t bt_task_mutex = 0;
-static uint32_t bt_task_event = 0;
-static uint32_t bt_task_semaphore = 0;
+#include "bt_driver.h"
+#include "bt_hci.h"
 
+typedef struct {
+	uint32_t event;
+	uint16_t data_length;
+	void *data;
+} bt_task_event_notify_t;
+
+static uint32_t bt_task_mutex = 0;
+static uint32_t bt_task_semaphore = 0;
+static bt_task_event_notify_t notify = {0};
 void bt_task_take_semaphore()
 {
 	if (bt_os_layer_is_isr_active()) {
@@ -35,28 +43,40 @@ void bt_task_event_handler()
 {
 	uint32_t event = 0;
 	bt_os_layer_disable_interrupt();
-	event = bt_task_event;
+	event = notify.event;
+	notify.event = 0;
 	bt_os_layer_enable_interrupt();
 
 	bt_os_layer_take_mutex(bt_task_mutex);
 	if (event & BT_TASK_EVENT_TIMER_EXPIRED) {
 		bt_timer_check_timeout_handler();
-	} else if (event & BT_TASK_EVENT_RX) {
+	}
+	if (event & BT_TASK_EVENT_RX) {
+		bt_driver_rx(notify.data_length);
+		bt_hci_packet_process();
+	}
+	if (event & BT_TASK_EVENT_TX) {
 
-	} else if (event & BT_TASK_EVENT_TX) {
-
-	} else if (event & BT_TASK_EVENT_OOM) {
+	}
+	if (event & BT_TASK_EVENT_OOM) {
 
 	}
 	bt_os_layer_give_mutex(bt_task_mutex);
 }
 
-static void bt_timer_timeout_callback()
+void bt_task_event_notify(uint32_t event, uint16_t data_length, void *data)
 {
 	bt_os_layer_disable_interrupt();
-	bt_task_event |= BT_TASK_EVENT_TIMER_EXPIRED;
+	notify.event |= event;
+	notify.data_length |= data_length;
+	notify.data = data;
 	bt_os_layer_enable_interrupt();
 	bt_task_interrupt_trigger();
+}
+
+static void bt_timer_timeout_callback()
+{
+	bt_task_event_notify(BT_TASK_EVENT_TIMER_EXPIRED, 0, NULL);
 }
 
 void bt_init()

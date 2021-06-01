@@ -57,4 +57,6 @@ void bt_driver_deinit(void);
 void bt_driver_recieve_data_from_controller(uint8_t data);
 
 void bt_driver_send_data_to_controller(uint8_t *buf, uint16_t buf_size);
+
+void bt_driver_rx(uint16_t length);
 #endif//__BT_DRIVER__

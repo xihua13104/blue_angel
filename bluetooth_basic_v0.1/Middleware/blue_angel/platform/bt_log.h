@@ -28,5 +28,5 @@ typedef enum {
 
 #define BT_HCI_LOG_HEADER_LEGNTH 5 //header + direction + sizeof(log_length)
 
-void bt_hci_log(bt_hci_log_type_t type, uint8_t *log, uint16_t log_length);
+void bt_hci_log(uint8_t in_out, uint8_t *log, uint16_t log_length);
 #endif //__BT_LOG_H__

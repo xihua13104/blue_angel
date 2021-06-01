@@ -21,9 +21,9 @@ void vBT_Task(void *pvParameters)
 	cunit_status = cunit_test_start();
 	BT_ASSERT(cunit_status == CUNIT_SUCCESS);
 	bt_driver_init();
-	for (i = 0; i < 2; i ++) {
+	for (i = 0; i < 5; i ++) {
 		bt_driver_send_data_to_controller(reset, sizeof(reset));
-		bt_hci_log(BT_HCI_LOG_CMD, reset+1, sizeof(reset)-1);
+		bt_hci_log(0, reset, sizeof(reset));
 	}	
     while(1)
     {

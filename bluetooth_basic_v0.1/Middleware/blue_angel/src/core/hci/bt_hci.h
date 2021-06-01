@@ -9,4 +9,6 @@
 #define __BT_HCI_H__
 
 
+void bt_hci_packet_process(void);
+
 #endif//__BT_HCI_H__

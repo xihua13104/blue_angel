@@ -6,27 +6,11 @@
 #include "bt_common.h"
 #include "bt_hci_spec.h"
 
-typedef struct {
-	bt_hci_spec_packet_indicator_t ind;
-	union {
-		struct {
-			uint16_t handle;
-			uint16_t length;
-			uint16_t l2cap_channel;
-			uint16_t l2cap_length;
-		} BT_PACKED hci_acl;
-		struct {
-			uint8_t evt_code;
-			uint8_t length;		
-		} BT_PACKED hci_evt;
-	} BT_PACKED hci_header;
-} BT_PACKED bt_driver_rx_t;
-
 static bool bt_driver_is_inited = false;
 static bt_driver_rx_state_t rx_state = BT_DRIVER_WAIT_4_INDICATOR;
-static uint8_t buffer[sizeof(bt_driver_rx_t)] = {0};
+static uint8_t buffer[6] = {0};
 static uint16_t buffer_index = 0;
-static bt_driver_rx_t *rx_struct = (bt_driver_rx_t *)buffer;
+static bt_hci_spec_packet_t *g_packet = (bt_hci_spec_packet_t *)buffer;
 static uint16_t payload_index = 0;
 
 void bt_driver_hardware_reset_controller()
@@ -61,39 +45,44 @@ void bt_driver_deinit()
 
 void bt_driver_recieve_data_from_controller(uint8_t data)
 {
-	bt_hci_packet_t *packet = NULL;
+	uint16_t length = 0;
+
 	if (buffer_index < sizeof(buffer)) {
 		buffer[buffer_index++] = data;	
 	}
 
 	switch (rx_state) {
 		case BT_DRIVER_WAIT_4_INDICATOR: {
-			rx_state = BT_DRIVER_WAIT_4_HEADER;
+			if (data == BT_UART_ACL || data == BT_UART_EVT) {
+				rx_state = BT_DRIVER_WAIT_4_HEADER;			
+			}
 			break;
 		}
 		case BT_DRIVER_WAIT_4_HEADER: {
-			if (rx_struct->ind == BT_UART_ACL && buffer_index >= BT_HCI_ACL_HEADER_SIZE) {
+			if (g_packet->indicator == BT_UART_ACL && buffer_index >= BT_HCI_ACL_HEADER_SIZE) {
 				rx_state = BT_DRIVER_WAIT_4_PAYLOAD;
-			} else if (rx_struct->ind == BT_UART_EVT && buffer_index >= BT_HCI_EVT_HEADER_SIZE) {
+			} else if (g_packet->indicator == BT_UART_EVT && buffer_index >= BT_HCI_EVT_HEADER_SIZE) {
 				rx_state = BT_DRIVER_WAIT_4_PAYLOAD;
 			}
 			break;
 		}
 		case BT_DRIVER_WAIT_4_PAYLOAD: {
 			payload_index++;
-			if (rx_struct->ind == BT_UART_ACL && payload_index >= rx_struct->hci_header.hci_acl.length) {
+			if (g_packet->indicator == BT_UART_ACL && payload_index >= g_packet->value.acl.length) {
 				rx_state = BT_DRIVER_RX_COMPLETE;
-			} else if (rx_struct->ind == BT_UART_EVT && payload_index >= rx_struct->hci_header.hci_evt.length) {
+			} else if (g_packet->indicator == BT_UART_EVT && payload_index >= g_packet->value.evt.length) {
 				rx_state = BT_DRIVER_RX_COMPLETE;
+			} else {
+				break;
 			}
-			break;
 		}	
 		case BT_DRIVER_RX_COMPLETE: {
-			if (rx_struct->ind == BT_UART_ACL) {
-				//packet = BT_ALLOCATE_HCI_PACKET_WITH_NODE(BT_MEMORY_RX, );
-			} else if (rx_struct->ind == BT_UART_EVT) {
-			
+			if (g_packet->indicator == BT_UART_ACL) {
+				length = BT_HCI_ACL_SIZE(g_packet);		
+			} else if (g_packet->indicator == BT_UART_EVT) {
+				length = BT_HCI_EVT_SIZE(g_packet);
 			}
+			bt_task_event_notify(BT_TASK_EVENT_RX, length, NULL);
 			bt_memset(buffer, 0, sizeof(buffer));
 			rx_state = BT_DRIVER_WAIT_4_INDICATOR;
 			buffer_index = 0;
@@ -111,4 +100,13 @@ void bt_driver_send_data_to_controller(uint8_t *buf, uint16_t buf_size)
 	comSendBuf(COM2, buf, buf_size);
 }
 
-
+void bt_driver_rx(uint16_t length)
+{
+	bt_hci_spec_packet_t *hci_spec_packet = NULL;
+	uint16_t acture_length = 0;
+	hci_spec_packet = (bt_hci_spec_packet_t *)BT_ALLOCATE_HCI_PACKET_WITH_NODE(BT_MEMORY_RX, length);
+	BT_ASSERT(hci_spec_packet != NULL);
+	acture_length = comGetBuf(COM2, (uint8_t *)hci_spec_packet, length);
+	BT_ASSERT(acture_length == length);
+	BT_PUSH_NODE_TO_RX_QUEUE_TAIL(BT_GET_NODE_FROM_HCI_SPEC_PACKET(hci_spec_packet));
+}

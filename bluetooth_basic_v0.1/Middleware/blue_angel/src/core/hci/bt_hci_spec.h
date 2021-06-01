@@ -15,38 +15,38 @@
 #define	BT_UART_EVT 0x04
 typedef uint8_t bt_hci_spec_packet_indicator_t;
 
-#define BT_HCI_CMD_HEADER_SIZE	(sizeof(bt_hci_spec_packet_indicator_t) + sizeof(bt_hci_cmd_t) - 1) //5
-#define BT_HCI_ACL_HEADER_SIZE	(sizeof(bt_hci_spec_packet_indicator_t) + sizeof(bt_hci_acl_t) - 1) //5
-#define BT_HCI_EVT_HEADER_SIZE	(sizeof(bt_hci_spec_packet_indicator_t) + sizeof(bt_hci_evt_t) - 1) //3
-#define BT_HCI_CMD_SIZE(p) 		((uint16_t *)((uint8_t *)p + 3) + BT_HCI_CMD_HEADER_SIZE)
-#define BT_HCI_ACL_SIZE(p) 		((uint16_t *)((uint8_t *)p + 3) + BT_HCI_ACL_HEADER_SIZE)
-#define BT_HCI_EVT_SIZE(p) 		((uint8_t *)((uint8_t *)p + 2) + BT_HCI_EVT_HEADER_SIZE)
+#define BT_HCI_CMD_HEADER_SIZE	(sizeof(bt_hci_spec_packet_indicator_t) + sizeof(bt_hci_spec_cmd_t) - 1) //4
+#define BT_HCI_ACL_HEADER_SIZE	(sizeof(bt_hci_spec_packet_indicator_t) + sizeof(bt_hci_spec_acl_t) - 1) //5
+#define BT_HCI_EVT_HEADER_SIZE	(sizeof(bt_hci_spec_packet_indicator_t) + sizeof(bt_hci_spec_evt_t) - 1) //3
+#define BT_HCI_CMD_SIZE(p) 		(*((uint16_t *)((uint8_t *)p + 3)) + BT_HCI_CMD_HEADER_SIZE)
+#define BT_HCI_ACL_SIZE(p) 		(*((uint16_t *)((uint8_t *)p + 3)) + BT_HCI_ACL_HEADER_SIZE)
+#define BT_HCI_EVT_SIZE(p) 		(*((uint8_t *)((uint8_t *)p + 2)) + BT_HCI_EVT_HEADER_SIZE)
 
 typedef struct {
 	uint16_t op_code;
-	uint16_t length;
+	uint8_t length;
 	uint8_t data[1];
-} BT_PACKED bt_hci_cmd_t;
+} BT_PACKED bt_hci_spec_cmd_t;
 
 typedef struct {
 	uint16_t handle;
 	uint16_t length;
 	uint8_t data[1];
-} BT_PACKED bt_hci_acl_t;
+} BT_PACKED bt_hci_spec_acl_t;
 
 typedef struct {
 	uint8_t evt_code;
 	uint8_t length;
 	uint8_t data[1];
-} BT_PACKED bt_hci_evt_t;
+} BT_PACKED bt_hci_spec_evt_t;
 
 typedef struct {
 	bt_hci_spec_packet_indicator_t indicator;
 	union {
-		bt_hci_cmd_t cmd;
-		bt_hci_acl_t acl;
-		bt_hci_evt_t evt;
-	} BT_PACKED vale;
+		bt_hci_spec_cmd_t cmd;
+		bt_hci_spec_acl_t acl;
+		bt_hci_spec_evt_t evt;
+	} BT_PACKED value;
 } BT_PACKED bt_hci_spec_packet_t;
 
 typedef struct {

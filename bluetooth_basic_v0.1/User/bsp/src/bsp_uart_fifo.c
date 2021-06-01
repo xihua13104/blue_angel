@@ -240,7 +240,7 @@ uint16_t comGetBuf(COM_PORT_E _ucPort, uint8_t *_pBuf, const uint16_t _usLenToRe
 	else if (usCount < _usLenToRead) 
 	{
 		DISABLE_INT();
-		if (pUart->usRxRead < pUart->usRxWrite) {
+		if (pUart->usRxRead > pUart->usRxWrite) {
 			usRightCount = pUart->usRxBufSize - pUart->usRxRead;
 			usLeftCount = usCount - usRightCount;
 			memcpy(_pBuf, &pUart->pRxBuf[pUart->usRxRead], usRightCount);
@@ -258,7 +258,7 @@ uint16_t comGetBuf(COM_PORT_E _ucPort, uint8_t *_pBuf, const uint16_t _usLenToRe
 	else
 	{
 		DISABLE_INT();
-		if (pUart->usRxRead < pUart->usRxWrite) {
+		if (pUart->usRxRead > pUart->usRxWrite) {
 			usRightCount = pUart->usRxBufSize - pUart->usRxRead;
 			usLeftCount = _usLenToRead - usRightCount;
 			memcpy(_pBuf, &pUart->pRxBuf[pUart->usRxRead], usRightCount);
@@ -688,6 +688,7 @@ static void InitHardUart(void)
 	USART_Init(USART2, &USART_InitStructure);
 
 	USART_ITConfig(USART2, USART_IT_RXNE, ENABLE);	/* 使能接收中断 */
+	//USART_ITConfig(USART2, USART_IT_TXE, ENABLE);	/* 使能发送中断 */
 	/*
 		USART_ITConfig(USART1, USART_IT_TXE, ENABLE);
 		注意: 不要在此处打开发送中断
