@@ -126,11 +126,15 @@ bt_status_t bt_timer_cancel_and_callback(uint32_t timer_id, const void *param)
 	bt_status_t status = BT_STATUS_SUCCESS;
 	bt_timer_t tmp = {0};
 	bt_timer_t *timer = NULL;
-	bt_linknode_t *pre = bt_linknode_travel_node(&bt_timer_list, bt_timer_cmp_by_timerid, (const void *)&timer_id);
+	/*bt_linknode_t *pre = bt_linknode_travel_node(&bt_timer_list, bt_timer_cmp_by_timerid, (const void *)&timer_id);
 	if (pre == NULL) {
 		return BT_STATUS_TIMER_NOT_FOUND;
 	}
-	timer = (bt_timer_t *)(pre->next);
+	timer = (bt_timer_t *)(pre->next);*/
+	timer = bt_timer_find(timer_id);
+	if (timer == NULL) {
+		return BT_STATUS_TIMER_NOT_FOUND;
+	}
 	bt_memcpy(&tmp, timer, sizeof(bt_timer_t));
 	bt_timer_cancel(timer_id);
 	if (tmp.timeout_cb) {

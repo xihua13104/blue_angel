@@ -11,6 +11,7 @@
 #include "bt_linknode.h"
 #include "bt_memory.h"
 #include "bt_timer.h"
+#include "bt_hci.h"
 
 #define BT_TIMER_BLOCK_SIZE (MEMORY_ALIGN_SIZE(sizeof(bt_timer_t)) + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE)
 __align(4) static uint8_t bt_timer_fixed_memory[BT_TIMER_BLOCK_SIZE * 5] = {0};
@@ -147,4 +148,29 @@ void bt_timer_test(void)
 	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id, 100, 0, timeout));
 	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id+1, 200, 0, timeout1));
 	CU_ASSERT(BT_STATUS_SUCCESS == bt_timer_start(timer_id+2, 300, 0, timeout2));
+}
+
+bt_status_t bt_hci_test_timeout_callback(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param);
+bt_status_t bt_hci_test_timeout_callback(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param)
+{
+	bt_status_t status = BT_STATUS_SUCCESS;
+	bt_hci_cmd_t cmd;
+	cmd.cmd_code = 0x0C03;
+	cmd.length = 0;
+	cmd.param = NULL;
+	if (is_timeout) {
+		status = bt_hci_cmd_send(cmd, 0, bt_hci_test_timeout_callback);
+	}
+	return status;
+}
+
+void bt_hci_test(void)
+{
+	bt_status_t status = BT_STATUS_SUCCESS;
+	bt_hci_cmd_t cmd;
+	cmd.cmd_code = 0x0C03;
+	cmd.length = 0;
+	cmd.param = NULL;
+	status = bt_hci_cmd_send(cmd, 0, bt_hci_test_timeout_callback);
+	BT_ASSERT(status == BT_STATUS_SUCCESS);
 }

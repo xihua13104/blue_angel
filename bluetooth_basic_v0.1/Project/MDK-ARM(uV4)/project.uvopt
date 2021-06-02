@@ -172,9 +172,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>24</LineNumber>
+          <LineNumber>54</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134235286</Address>
+          <Address>134235222</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -183,7 +183,7 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>F:\宸ヤ綔\椤圭洰\钃濈墮鍗忚鏍堝紑鍙?blue-angel\blue_angel\bluetooth_basic_v0.1\Middleware\blue_angel\src\core\hci\bt_hci.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\output\../../Middleware/blue_angel/src/core/hci/bt_hci.c\24</Expression>
+          <Expression>\\output\../../Middleware/blue_angel/src/core/hci/bt_hci.c\54</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>

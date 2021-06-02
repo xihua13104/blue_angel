@@ -33,6 +33,7 @@
 #define BT_STATUS_OUT_OF_MEMORY 	(BT_MODULE_GENERAL | (1 << 5))
 
 #define BT_STATUS_TIMER_NOT_FOUND   (BT_MODULE_TIMER   | (1 << 0))
+#define BT_STATUS_TIMER_EXIST		(BT_MODULE_TIMER   | (1 << 1))
 typedef uint32_t bt_status_t;
 
 typedef uint32_t bt_msg_type_t;
