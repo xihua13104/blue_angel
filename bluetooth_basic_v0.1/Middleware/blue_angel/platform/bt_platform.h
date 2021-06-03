@@ -21,10 +21,11 @@
 #include <stdbool.h>
 #define BT_ASSERT(expr) assert_param(expr)
 
-#define BT_TASK_EVENT_TIMER_EXPIRED	0x01
-#define BT_TASK_EVENT_RX			0x02
-#define BT_TASK_EVENT_TX			0x04
-#define BT_TASK_EVENT_OOM			0x08
+#define BT_TASK_EVENT_TIMER_EXPIRED	0x00
+#define BT_TASK_EVENT_RX			0x01
+#define BT_TASK_EVENT_TX			0x02
+#define BT_TASK_EVENT_OOM			0x03
+#define BT_TASK_EVENT_MAX			0x04
 
 void bt_timer_start_timer(uint32_t timer_length);
 

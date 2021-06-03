@@ -13,8 +13,8 @@
 
 typedef struct {
 	uint32_t event;
-	uint16_t data_length;
-	void *data;
+	uint16_t data_length[BT_TASK_EVENT_MAX];
+	void *data[BT_TASK_EVENT_MAX];
 } bt_task_event_notify_t;
 
 static uint32_t bt_task_mutex = 0;
@@ -42,23 +42,26 @@ static void bt_task_interrupt_trigger()
 void bt_task_event_handler()
 {
 	uint32_t event = 0;
+	uint16_t length_table[BT_TASK_EVENT_MAX] = {0};
 	bt_os_layer_disable_interrupt();
 	event = notify.event;
+	bt_memcpy(length_table, notify.data_length, sizeof(length_table));
 	notify.event = 0;
+	bt_memset(notify.data_length, 0, sizeof(length_table));
 	bt_os_layer_enable_interrupt();
 
 	bt_os_layer_take_mutex(bt_task_mutex);
-	if (event & BT_TASK_EVENT_TIMER_EXPIRED) {
+	if (event & (1 << BT_TASK_EVENT_TIMER_EXPIRED)) {
 		bt_timer_check_timeout_handler();
 	}
-	if (event & BT_TASK_EVENT_RX) {
-		bt_driver_rx(notify.data_length);
+	if (event & (1 << BT_TASK_EVENT_RX)) {
+		bt_driver_rx(length_table[BT_TASK_EVENT_RX]);
 		bt_hci_packet_process();
 	}
-	if (event & BT_TASK_EVENT_TX) {
+	if (event & (1 << BT_TASK_EVENT_TX)) {
 
 	}
-	if (event & BT_TASK_EVENT_OOM) {
+	if (event & (1 << BT_TASK_EVENT_OOM)) {
 
 	}
 	bt_os_layer_give_mutex(bt_task_mutex);
@@ -67,9 +70,9 @@ void bt_task_event_handler()
 void bt_task_event_notify(uint32_t event, uint16_t data_length, void *data)
 {
 	bt_os_layer_disable_interrupt();
-	notify.event |= event;
-	notify.data_length |= data_length;
-	notify.data = data;
+	notify.event |= (1 << event);
+	notify.data_length[event] = data_length;
+	notify.data[event] = data;
 	bt_os_layer_enable_interrupt();
 	bt_task_interrupt_trigger();
 }

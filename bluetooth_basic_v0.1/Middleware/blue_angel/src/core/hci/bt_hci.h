@@ -35,8 +35,8 @@
 		BT_SYSTEM_LOG(format,##__VA_ARGS__);                  \
 }
 
-#define BT_HCI_TIMER_MASK_A	BT_MODULE_HCI
-#define BT_HCI_TIMEOUT_LENGTH	500
+#define BT_HCI_TIMER_MASK_A		BT_MODULE_HCI
+#define BT_HCI_TIMEOUT_LENGTH	1000
 
 typedef struct {
 	bt_hci_cmd_code_t cmd_code;

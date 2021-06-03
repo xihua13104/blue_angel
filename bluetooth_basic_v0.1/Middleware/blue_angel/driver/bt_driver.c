@@ -98,6 +98,7 @@ void bt_driver_recieve_data_from_controller(uint8_t data)
 void bt_driver_send_data_to_controller(uint8_t *buf, uint16_t buf_size)
 {
 	comSendBuf(COM2, buf, buf_size);
+	BT_FREE_HCI_PACKET_WITH_NODE(BT_MEMORY_TX, buf);
 }
 
 void bt_driver_rx(uint16_t length)

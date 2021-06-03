@@ -40,8 +40,8 @@ bt_status_t bt_hci_cmd_send(bt_hci_cmd_t cmd, uint32_t data, bt_hci_timeout_call
 		status = bt_timer_start(timer_id, BT_HCI_TIMEOUT_LENGTH, data, callback);
 		BT_ASSERT(status == BT_STATUS_SUCCESS);
 	}
-	bt_driver_send_data_to_controller((uint8_t *)packet, BT_HCI_CMD_SIZE(packet));
 	bt_hci_log(0, (uint8_t *)packet, BT_HCI_CMD_SIZE(packet));
+	bt_driver_send_data_to_controller((uint8_t *)packet, BT_HCI_CMD_SIZE(packet));
 	return status;
 }
 
