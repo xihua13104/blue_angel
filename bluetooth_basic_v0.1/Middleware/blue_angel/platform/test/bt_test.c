@@ -155,12 +155,13 @@ bt_status_t bt_hci_test_timeout_callback(bool is_timeout, uint32_t timer_id, uin
 {
 	bt_status_t status = BT_STATUS_SUCCESS;
 	bt_hci_cmd_t cmd;
-	cmd.cmd_code = 0x0C03;
+	cmd.cmd_code = BT_HCI_CMD_RESET;
 	cmd.length = 0;
 	cmd.param = NULL;
 	if (is_timeout) {
 		status = bt_hci_cmd_send(cmd, 0, bt_hci_test_timeout_callback);
 	} else {
+		cmd.cmd_code = BT_HCI_CMD_READ_BD_ADDR;
 		//status = bt_hci_cmd_send(cmd, 0, bt_hci_test_timeout_callback);
 	}
 	return status;
@@ -170,7 +171,7 @@ void bt_hci_test(void)
 {
 	bt_status_t status = BT_STATUS_SUCCESS;
 	bt_hci_cmd_t cmd;
-	cmd.cmd_code = 0x0C03;
+	cmd.cmd_code = BT_HCI_CMD_RESET;
 	cmd.length = 0;
 	cmd.param = NULL;
 	status = bt_hci_cmd_send(cmd, 0, bt_hci_test_timeout_callback);

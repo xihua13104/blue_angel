@@ -50,7 +50,7 @@ bt_status_t bt_hci_evt_handler(bt_hci_spec_packet_t *packet)
 	bt_hci_evt_code_t evt_code = packet->value.evt.evt_code;
 	uint32_t timer_id = BT_MODULE_HCI;
 	switch (evt_code) {
-		case 0x0E:
+		case BT_HCI_EVT_COMMAND_COMPLETE:
 			timer_id |= *(bt_hci_cmd_code_t *)((uint8_t *)packet + 4);
 			break;
 		default:
@@ -80,3 +80,96 @@ void bt_hci_packet_process()
 		BT_FREE_HCI_PACKET_WITH_NODE(BT_MEMORY_RX, packet);
 	}
 }
+
+const char * bt_hci_get_error_code(uint8_t error_code) 
+{
+    switch(error_code) {
+        case BT_HCI_ERR_CODE_SUCCESS:
+            return("Success");
+        case BT_HCI_ERR_CODE_UNKNOWN_COMMAND:
+            return("Unknown HCI Command");
+        case BT_HCI_ERR_CODE_NO_CONNECTION:
+            return("No Connection");
+        case BT_HCI_ERR_CODE_HW_FAILURE:
+            return("Hardware Failure");
+        case BT_HCI_ERR_CODE_PAGE_TIMEOUT:
+            return("Page Timeout");
+        case BT_HCI_ERR_CODE_AUTHENTICATION_FAILURE:
+            return("Authentication Failure");
+        case BT_HCI_ERR_CODE_KEY_MISSING:
+            return("Key Missing");
+        case BT_HCI_ERR_CODE_MEMORY_FULL:
+            return("Memory Full");
+        case BT_HCI_ERR_CODE_CONN_TIMEOUT:
+            return("Connection Timeout");
+        case BT_HCI_ERR_CODE_MAX_NUMBER_OF_CONNECTIONS:
+            return("Max Number Of Connections");
+        case BT_HCI_ERR_CODE_MAX_NUMBER_OF_SCO_CONNECTIONS_TO_DEVICE:
+            return("Max Number Of SCO Connections To A Device");
+        case BT_HCI_ERR_CODE_ACL_CONNECTION_EXISTS:
+            return("ACL connection already exists");
+        case BT_HCI_ERR_CODE_COMMAND_DISSALLOWED:
+            return("Command Disallowed");
+        case BT_HCI_ERR_CODE_HOST_REJECTED_DUE_TO_LIMITED_RESOURCES:
+            return("Host Rejected due to limited resources");
+        case BT_HCI_ERR_CODE_HOST_REJECTED_DUE_TO_SECURITY_REASONS:
+            return("Host Rejected due to security reasons");
+        case BT_HCI_ERR_CODE_HOST_REJECTED_DUE_TO_REMOTE_DEVICE_ONLY_PERSONAL_SERVICE:
+            return("Host Rejected due to remote device is only a personal device");
+        case BT_HCI_ERR_CODE_HOST_TIMEOUT:
+            return("Host Timeout");
+        case BT_HCI_ERR_CODE_UNSUPPORTED_FEATURE_OR_PARAMETER_VALUE:
+            return("Unsupported Feature or Parameter Value");
+        case BT_HCI_ERR_CODE_INVALID_COMMAND_PARAMETERS:
+            return("Invalid HCI Command Parameters");
+        case BT_HCI_ERR_CODE_OTHER_END_TERMINATED_CONN_USER_ENDED:
+            return("Other End Terminated Connection: User Ended Connection");
+        case BT_HCI_ERR_CODE_OTHER_END_TERMINATED_CONN_LOW_RESOURCES:
+            return("Other End Terminated Connection: Low Resources");
+        case BT_HCI_ERR_CODE_OTHER_END_TERMINATED_CONN_ABOUT_TO_POWER_OFF:
+            return("Other End Terminated Connection: About to Power Off");
+        case BT_HCI_ERR_CODE_CONN_TERMINATED_BY_LOCAL_HOST:
+            return("Connection Terminated by Local Host");
+        case BT_HCI_ERR_CODE_REPETED_ATTEMPTS:
+            return("Repeated Attempts");
+        case BT_HCI_ERR_CODE_PAIRING_NOT_ALLOWED:
+            return("Pairing Not Allowed");
+        case BT_HCI_ERR_CODE_UNKNOWN_LMP_PDU:
+            return("Unknown LMP PDU");
+        case BT_HCI_ERR_CODE_UNSUPPORTED_REMOTE_FEATURE:
+            return("Unsupported Remote Feature");
+        case BT_HCI_ERR_CODE_SCO_OFFSET_REJECTED:
+            return("SCO Offset Rejected");
+        case BT_HCI_ERR_CODE_SCO_INTERVAL_REJECTED:
+            return("SCO Interval Rejected");
+        case BT_HCI_ERR_CODE_SCO_AIR_MODE_REJECTED:
+            return("SCO Air Mode Rejected");
+        case BT_HCI_ERR_CODE_INVALID_LMP_PARAMETERS:
+            return("Invalid LMP Parameters");
+        case BT_HCI_ERR_CODE_UNSPECIFIED_ERROR:
+            return("Unspecified Error");
+        case BT_HCI_ERR_CODE_UNSUPPORTED_LMP_PARAMETER_VALUE:
+            return("Unsupported LMP Parameter Value");
+        case BT_HCI_ERR_CODE_ROLE_CHANGE_NOT_ALLOWED:
+            return("Role Change Not Allowed");
+        case BT_HCI_ERR_CODE_LMP_RESPONSE_TIMEOUT:
+            return("LMP Response Timeout");
+        case BT_HCI_ERR_CODE_LMP_ERROR_TRANSACTION_COLLISION:
+            return("LMP Error Transaction Collision");
+        case BT_HCI_ERR_CODE_LMP_PDU_NOT_ALLOWED:
+            return("LMP PDU Not Allowed");
+        case BT_HCI_ERR_CODE_ENCRYPTION_MODE_NOT_ACCEPTABLE:
+            return("Encryption Mode Not Acceptable");
+        case BT_HCI_ERR_CODE_UNIT_KEY_USED:
+            return("Unit Key Used");
+        case BT_HCI_ERR_CODE_QOS_NOT_SUPPORTED:
+            return("QoS is Not Supported");
+        case BT_HCI_ERR_CODE_INSTANT_PASSED:
+            return("Instant Passed");
+        case BT_HCI_ERR_CODE_PAIRING_UNIT_KEY_NOT_SUPPORTED:
+            return("Pairing with Unit Key Not Supported");
+        default:
+            return("Error code unknown");
+    }
+}
+
