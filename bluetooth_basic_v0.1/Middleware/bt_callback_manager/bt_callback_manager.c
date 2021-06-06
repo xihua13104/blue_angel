@@ -1,6 +1,6 @@
 /******************************************************************************
   * @file           bt_callback_manager.c
-  * @author         Leonard-y.He(1027901566@qq.com)
+  * @author         leon
   * @version        V0.1
   * @date           2021-05-16
   * @brief

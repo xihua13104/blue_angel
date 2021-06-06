@@ -1,6 +1,6 @@
 /******************************************************************************
   * @file           bt_timer.h
-  * @author         Leonard-y.He(1027901556@qq.com)
+  * @author         leon
   * @version        V0.1
   * @date           2021-05-19
   * @brief
@@ -13,11 +13,11 @@
 typedef bt_status_t (*bt_timer_timeout_callback_t)(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param);
 
 typedef struct _bt_timer {
-	struct _bt_timer *next;
-	uint32_t timer_id;
-	uint32_t data;
-	uint32_t time_ms;
-	bt_timer_timeout_callback_t timeout_cb;
+    struct _bt_timer *next;
+    uint32_t timer_id;
+    uint32_t data;
+    uint32_t time_ms;
+    bt_timer_timeout_callback_t timeout_cb;
 } bt_timer_t;
 
 bt_status_t bt_timer_start(uint32_t timer_id, uint32_t timer_length, uint32_t data, bt_timer_timeout_callback_t cb);

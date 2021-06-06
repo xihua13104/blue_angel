@@ -1,6 +1,6 @@
 /******************************************************************************
   * @file           bt_test.c
-  * @author         Leonard-y.He(1027901566@qq.com)
+  * @author         leon
   * @version        V0.1
   * @date           2021-05-19
   * @brief
@@ -159,7 +159,7 @@ bt_status_t bt_hci_test_timeout_callback(bool is_timeout, uint32_t timer_id, uin
 	cmd.length = 0;
 	cmd.param = NULL;
 	if (is_timeout) {
-		status = bt_hci_cmd_send(cmd, 0, bt_hci_test_timeout_callback);
+		status = bt_hci_cmd_send(cmd, 0, 500, bt_hci_test_timeout_callback);
 	} else {
 		cmd.cmd_code = BT_HCI_CMD_READ_BD_ADDR;
 		//status = bt_hci_cmd_send(cmd, 0, bt_hci_test_timeout_callback);
@@ -174,6 +174,6 @@ void bt_hci_test(void)
 	cmd.cmd_code = BT_HCI_CMD_RESET;
 	cmd.length = 0;
 	cmd.param = NULL;
-	status = bt_hci_cmd_send(cmd, 0, bt_hci_test_timeout_callback);
+	status = bt_hci_cmd_send(cmd, 0, 500, bt_hci_test_timeout_callback);
 	BT_ASSERT(status == BT_STATUS_SUCCESS);
 }

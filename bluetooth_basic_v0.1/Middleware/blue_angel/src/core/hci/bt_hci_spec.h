@@ -1,6 +1,6 @@
 /******************************************************************************
   * @file           bt_hci_spec.h
-  * @author         Leonard-y.He(1027901556@qq.com)
+  * @author         leon
   * @version        V0.1
   * @date           2021-05-19
   * @brief
@@ -76,7 +76,7 @@ typedef uint16_t bt_hci_cmd_code_t;
 #define BT_HCI_CMD_READ_REMOTE_VERSION_INFORMATION			(0x001D | BT_HCI_GRP_LINK_CTL_CMDS)//Command to determine the version information of the connected device.
 #define BT_HCI_CMD_READ_CLOCK_OFFSET						(0x001F | BT_HCI_GRP_LINK_CTL_CMDS)//Command to read the clock offset of the remote device.
 
-/*HCI Policy Command (OGF=(0x02)*/			
+/*HCI Policy Command (OGF=(0x02)*/
 #define BT_HCI_CMD_HOLD_MODE								(0x0001 | BT_HCI_GRP_LINK_PLY_CMDS)//Command to place the current or remote device into the Hold mode state.
 #define BT_HCI_CMD_SNIFF_MODE								(0x0003 | BT_HCI_GRP_LINK_PLY_CMDS)//Command to place the current or remote device into the Sniff mode state.
 #define BT_HCI_CMD_EXIT_SNIFF_MODE							(0x0004 | BT_HCI_GRP_LINK_PLY_CMDS)//Command to exit the current or remote device from the Sniff mode state.
@@ -349,40 +349,42 @@ typedef uint8_t  bt_hci_evt_code_t;
 #define BT_HCI_ERR_CODE_INSTANT_PASSED                                           0x28
 #define BT_HCI_ERR_CODE_PAIRING_UNIT_KEY_NOT_SUPPORTED                           0x29
 
+typedef uint16_t bt_handle_t;
+
 typedef struct {
-	bt_hci_cmd_code_t cmd_code;
-	uint8_t length;
-	uint8_t data[1];
+    bt_hci_cmd_code_t cmd_code;
+    uint8_t length;
+    uint8_t data[1];
 } BT_PACKED bt_hci_spec_cmd_t;
 
 typedef struct {
-	uint16_t handle;
-	uint16_t length;
-	uint8_t data[1];
+    bt_handle_t handle;
+    uint16_t length;
+    uint8_t data[1];
 } BT_PACKED bt_hci_spec_acl_t;
 
 typedef struct {
-	bt_hci_evt_code_t evt_code;
-	uint8_t length;
-	uint8_t data[1];
+    bt_hci_evt_code_t evt_code;
+    uint8_t length;
+    uint8_t data[1];
 } BT_PACKED bt_hci_spec_evt_t;
 
 typedef struct {
-	bt_hci_spec_packet_indicator_t indicator;
-	union {
-		bt_hci_spec_cmd_t cmd;
-		bt_hci_spec_acl_t acl;
-		bt_hci_spec_evt_t evt;
-	} BT_PACKED value;
+    bt_hci_spec_packet_indicator_t indicator;
+    union {
+        bt_hci_spec_cmd_t cmd;
+        bt_hci_spec_acl_t acl;
+        bt_hci_spec_evt_t evt;
+    } BT_PACKED value;
 } BT_PACKED bt_hci_spec_packet_t;
 
 typedef struct {
-	bt_linknode_t node;
+    bt_linknode_t node;
 } BT_PACKED bt_hci_packet_header_t;
 
 typedef struct {
-	bt_hci_packet_header_t header;
-	bt_hci_spec_packet_t hci_spec_packet;
+    bt_hci_packet_header_t header;
+    bt_hci_spec_packet_t hci_spec_packet;
 } BT_PACKED bt_hci_packet_t;
 
 #endif//__BT_HCI_SPEC_H__

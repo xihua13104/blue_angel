@@ -1,6 +1,6 @@
 /******************************************************************************
   * @file           bt_linknode.h
-  * @author         Leonard-y.He(1027901556@qq.com)
+  * @author         leon
   * @version        V0.0.1
   * @date           2020-12-05
   * @brief
@@ -14,7 +14,7 @@
 typedef uint8_t bt_linknode_position_t;
 
 typedef struct _link_node {
-	struct _link_node *next;
+    struct _link_node *next;
 } BT_PACKED bt_linknode_t;
 
 typedef bool (*bt_linknode_cmp_t)(const bt_linknode_t *node, const void *data);

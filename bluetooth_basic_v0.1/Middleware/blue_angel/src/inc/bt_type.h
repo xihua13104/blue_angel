@@ -1,6 +1,6 @@
 /******************************************************************************
   * @file           bt_type.h
-  * @author         Leonard-y.He(1027901556@qq.com)
+  * @author         leon
   * @version        V0.1
   * @date           2021-05-16
   * @brief          bt type define for internal use
