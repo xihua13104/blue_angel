@@ -12,9 +12,10 @@
 #include "bt_memory.h"
 #include "bt_timer.h"
 #include "bt_hci.h"
+#include "bt_config.h"
 
-#define BT_TIMER_BLOCK_SIZE (MEMORY_ALIGN_SIZE(sizeof(bt_timer_t)) + BT_MM_HEADER_SIZE + BT_MM_FOOTER_SIZE)
-__align(4) static uint8_t bt_timer_fixed_memory[BT_TIMER_BLOCK_SIZE * 5] = {0};
+#if BT_CUNIT_ENABLE == 1
+__align(4) static uint8_t bt_timer_fixed_memory[BT_TIMER_BLOCK_SIZE * 10] = {0};
 __align(4) static uint8_t bt_tx_buf[1024 *4] = {0};
 __align(4) static uint8_t bt_rx_buf[1024 *4] = {0};
 
@@ -177,3 +178,5 @@ void bt_hci_test(void)
 	status = bt_hci_cmd_send(cmd, 0, 500, bt_hci_test_timeout_callback);
 	BT_ASSERT(status == BT_STATUS_SUCCESS);
 }
+
+#endif

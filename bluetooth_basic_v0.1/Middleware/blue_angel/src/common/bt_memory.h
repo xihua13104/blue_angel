@@ -9,6 +9,7 @@
 #define __BT_MEMORY_H__
 #include "bt_type.h"
 #include "bt_linknode.h"
+#include "bt_system.h"
 
 #define BT_MM_HEADER_SIZE  (sizeof(bt_mm_header_t))
 #define BT_MM_FOOTER_SIZE  (4)
@@ -42,16 +43,6 @@ bit29-bit0 indicats the memory block size
 typedef struct {
     uint32_t info;
 } bt_mm_header_t;
-
-typedef enum {
-    BT_MEMORY_TX = 0,
-    BT_MEMORY_RX = 1
-} bt_memory_type_t;
-
-typedef enum {
-    BT_FIXED_MM_TIMER = 0,
-    BT_FIXED_MM_MAX
-} bt_fixed_memory_type_t;
 
 typedef struct {
     bt_mm_header_t *start_mm_h[2];

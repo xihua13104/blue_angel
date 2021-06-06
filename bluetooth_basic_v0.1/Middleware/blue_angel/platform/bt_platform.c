@@ -83,8 +83,9 @@ static void bt_timer_timeout_callback()
     bt_task_event_notify(BT_TASK_EVENT_TIMER_EXPIRED, 0, NULL);
 }
 
-void bt_init()
+void bt_task_init()
 {
+	bt_driver_init();
     bt_os_layer_init_timer();
     bt_os_layer_register_timer_callback(bt_timer_timeout_callback);
     if (bt_task_mutex == 0) {
@@ -98,7 +99,7 @@ void bt_init()
     //bt_driver_init();
 }
 
-void bt_deinit()
+void bt_task_deinit()
 {
     bt_os_layer_deinit_timer();
     if (bt_task_mutex) {

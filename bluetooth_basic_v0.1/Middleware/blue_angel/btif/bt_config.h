@@ -28,4 +28,7 @@
 /*HCI LOG Config*/
 #define BT_HCI_LOG_MIX_SYSTEM_LOG 0
 
+/*BT CUNIT*/
+#define BT_CUNIT_ENABLE			  1
+
 #endif//__BT_CONFIG__

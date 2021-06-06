@@ -9,19 +9,18 @@
 #include "bt_test.h"
 #include "bt_driver.h"
 #include "bt_log.h"
+#include "bt_config.h"
 
 void vBT_Task(void *pvParameters)
 {
-    cunit_status_t cunit_status;
-    //uint32_t i = 0;
-    //uint8_t reset[] = {0x01, 0x03, 0x0c, 0x00};
-    bt_driver_init();
+    bt_task_init();
+#if BT_CUNIT_ENABLE == 1
     BT_ASSERT(CUNIT_SUCCESS == cunit_add_test_case("bt_linknode_test", bt_linknode_test));
-    BT_ASSERT(CUNIT_SUCCESS == cunit_add_test_case("bt_memory_test", bt_memory_test));
+    //BT_ASSERT(CUNIT_SUCCESS == cunit_add_test_case("bt_memory_test", bt_memory_test));
     //BT_ASSERT(CUNIT_SUCCESS == cunit_add_test_case("bt_timer_test", bt_timer_test));
     BT_ASSERT(CUNIT_SUCCESS == cunit_add_test_case("bt_hci_test", bt_hci_test));
-    cunit_status = cunit_test_start();
-    BT_ASSERT(cunit_status == CUNIT_SUCCESS);
+    BT_ASSERT(cunit_test_start() == CUNIT_SUCCESS);
+#endif
     while (1) {
         bt_task_take_semaphore();
         bt_task_event_handler();

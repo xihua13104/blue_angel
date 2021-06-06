@@ -45,7 +45,7 @@ void bt_task_event_handler(void);
 
 void bt_task_event_notify(uint32_t event, uint16_t data_length, void *data);
 
-void bt_init(void);
+void bt_task_init(void);
 
-void bt_deinit(void);
+void bt_task_deinit(void);
 #endif
