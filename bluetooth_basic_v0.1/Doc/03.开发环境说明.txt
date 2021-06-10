@@ -134,5 +134,5 @@
 	在 project 下面，有编译好的 hex 文件，用户可以用仿真器直接下载 output(flash).hex 到CPU内部flash	
 	\Project\output(mdk).hex - 采用KEIL MDK编译好的文件，定位在CPU 内部Flash	
 	\Project\output(iar).hex - 采用IAR编译好的文件，定位在CPU 内部Flash	
-	\Project\MDK-ARM(uV4)\Flash\List\output.map  - 这是编译链接文件，文本格式，可以查看每个函数、变量的地址和空间分配情况。
+	\Project\MDK-ARM(uV4)\Flash\List\output.map  - 这是编译链接文件，文本格式，可以查看每个函数、变量的地址和空间分配情况。    
 
