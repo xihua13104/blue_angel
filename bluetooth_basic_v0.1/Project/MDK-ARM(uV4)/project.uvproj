@@ -653,6 +653,11 @@
               <FileType>5</FileType>
               <FilePath>..\..\Middleware\blue_angel\btif\bt_config.h</FilePath>
             </File>
+            <File>
+              <FileName>bt_gap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middleware\blue_angel\src\core\gap\bt_gap.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

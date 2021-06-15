@@ -83,7 +83,7 @@ void bt_driver_recieve_data_from_controller(uint8_t data)
             } else if (g_packet->indicator == BT_UART_EVT) {
                 length = BT_HCI_EVT_SIZE(g_packet);
             }
-            bt_task_event_notify(BT_TASK_EVENT_RX, 0, NULL);
+            bt_task_event_notify(BT_TASK_EVENT_RX, length, NULL);
             bt_memset(buffer, 0, sizeof(buffer));
             rx_state = BT_DRIVER_WAIT_4_INDICATOR;
             buffer_index = 0;
