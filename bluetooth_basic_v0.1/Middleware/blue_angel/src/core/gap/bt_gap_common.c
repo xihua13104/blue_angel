@@ -70,7 +70,7 @@ bt_status_t bt_gap_init_process(bool is_timeout, uint32_t timer_id, uint32_t dat
 	
 	switch (timer_id) {
 		case BT_HCI_TIMER_ID_TYPE_A(BT_HCI_CMD_READ_BD_ADDR):
-			bt_memcpy(&blue_angel.local_public_addr, ((bt_hci_command_complete_t *)((uint8_t *)param + BT_HCI_EVT_HEADER_SIZE))->data, sizeof(bt_bd_addr_t));
+			bt_memcpy(&blue_angel.local_public_addr, &BT_HCI_GET_EVT_PARAM(param, bt_hci_command_complete_t)->data, sizeof(bt_bd_addr_t));
 			break;
 		case BT_HCI_TIMER_ID_TYPE_A(BT_HCI_CMD_READ_BUFFER_SIZE):
 			break;

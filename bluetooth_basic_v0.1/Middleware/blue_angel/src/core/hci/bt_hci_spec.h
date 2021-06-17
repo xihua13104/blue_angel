@@ -350,7 +350,9 @@ typedef uint8_t  bt_hci_evt_code_t;
 #define BT_HCI_ERR_CODE_PAIRING_UNIT_KEY_NOT_SUPPORTED                           0x29
 typedef uint8_t bt_hci_err_code_t;
 
-#define BT_HCI_SPEC_PACKET_TO_
+#define BT_HCI_GET_EVT_PARAM(packet, _evt_struct_)		((_evt_struct_ *)((uint8_t *)packet + BT_HCI_EVT_HEADER_SIZE))
+#define BT_HCI_GET_CMD_COMPLETE_EVT_PARAM(cmd_complete) ((uint8_t *)&(cmd_complete->data))
+#define BT_HCI_GET_NOCP_EVT_PARAM(nocp)					(0)
 
 typedef struct {
 	uint8_t lenght;
