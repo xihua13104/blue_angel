@@ -9,9 +9,11 @@
 #include "bsp.h"
 #include "bt_memory.h"
 #include "bt_hci_spec.h"
+#include "bt_config.h"
 
 void bt_hci_log(uint8_t in_out, uint8_t *log, uint16_t log_length)
 {
+#if BT_HCI_LOG_ENABLE
 #if BT_HCI_LOG_MIX_SYSTEM_LOG
     return;
 #endif
@@ -56,4 +58,5 @@ void bt_hci_log(uint8_t in_out, uint8_t *log, uint16_t log_length)
     comSendBuf(COM3, buf, data_tatal_length);
 
     bt_memory_free_packet(BT_MEMORY_TX, buf);
+#endif
 }

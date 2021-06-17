@@ -348,6 +348,20 @@ typedef uint8_t  bt_hci_evt_code_t;
 #define BT_HCI_ERR_CODE_QOS_NOT_SUPPORTED                                        0x27
 #define BT_HCI_ERR_CODE_INSTANT_PASSED                                           0x28
 #define BT_HCI_ERR_CODE_PAIRING_UNIT_KEY_NOT_SUPPORTED                           0x29
+typedef uint8_t bt_hci_err_code_t;
+
+#define BT_HCI_SPEC_PACKET_TO_
+
+typedef struct {
+	uint8_t lenght;
+} BT_PACKED bt_hci_number_of_complete_packet_t;
+
+typedef struct {
+	uint8_t num_hci_command_packet;
+	bt_hci_cmd_code_t cmd_code;
+	bt_hci_err_code_t status;
+	uint8_t data[1];
+} BT_PACKED bt_hci_command_complete_t;
 
 typedef uint16_t bt_handle_t;
 

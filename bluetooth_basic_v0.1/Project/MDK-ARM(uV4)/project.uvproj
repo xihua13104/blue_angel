@@ -374,7 +374,7 @@
               <MiscControls>--diag_suppress=870</MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F10X_HD,NDEBUG</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Libraries\CMSIS\Device\ST\STM32F10x\Include;..\..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\..\User\bsp;..\..\User\bsp\inc;..\..\User;..\..\Libraries\CMSIS\Include;..\..\FreeRTOS\include;..\..\FreeRTOS\portable\RVDS\ARM_CM3;..\..\Middleware\blue_angel\inc;..\..\Middleware\bt_callback_manager;..\..\Middleware\blue_angel\btif;..\..\Middleware\blue_angel\common;..\..\Middleware\blue_angel\platform;..\..\Middleware\blue_angel\src\common;..\..\Middleware\blue_angel\src\inc;..\..\Middleware\blue_angel\platform;..\..\Middleware\blue_angel\platform\rtos;..\..\Middleware\blue_angel\platform;..\..\Middleware\ut_manager\Cunit\Headers;..\..\Middleware\ut_manager\Cunit\interface;..\..\Middleware\blue_angel\platform\test;..\..\Middleware\blue_angel\driver;..\..\Middleware\blue_angel\src\core\hci;..\..\User\bt\inc</IncludePath>
+              <IncludePath>..\..\Libraries\CMSIS\Device\ST\STM32F10x\Include;..\..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\..\User\bsp;..\..\User\bsp\inc;..\..\User;..\..\Libraries\CMSIS\Include;..\..\FreeRTOS\include;..\..\FreeRTOS\portable\RVDS\ARM_CM3;..\..\Middleware\blue_angel\inc;..\..\Middleware\bt_callback_manager;..\..\Middleware\blue_angel\btif;..\..\Middleware\blue_angel\common;..\..\Middleware\blue_angel\platform;..\..\Middleware\blue_angel\src\common;..\..\Middleware\blue_angel\src\inc;..\..\Middleware\blue_angel\platform;..\..\Middleware\blue_angel\platform\rtos;..\..\Middleware\blue_angel\platform;..\..\Middleware\ut_manager\Cunit\Headers;..\..\Middleware\ut_manager\Cunit\interface;..\..\Middleware\blue_angel\platform\test;..\..\Middleware\blue_angel\driver;..\..\Middleware\blue_angel\src\core\hci;..\..\User\bt\inc;..\..\Middleware\bt_callback_manager</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -644,6 +644,26 @@
               <FilePath>..\..\Middleware\blue_angel\src\core\hci\bt_hci.c</FilePath>
             </File>
             <File>
+              <FileName>bt_gap_classic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middleware\blue_angel\src\core\gap\bt_gap_classic.c</FilePath>
+            </File>
+            <File>
+              <FileName>bt_gap_common.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middleware\blue_angel\src\core\gap\bt_gap_common.c</FilePath>
+            </File>
+            <File>
+              <FileName>bt_gap_le.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middleware\blue_angel\src\core\gap\bt_gap_le.c</FilePath>
+            </File>
+            <File>
+              <FileName>bt_callback_manager.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middleware\bt_callback_manager\bt_callback_manager.c</FilePath>
+            </File>
+            <File>
               <FileName>bt_system.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\Middleware\blue_angel\btif\bt_system.h</FilePath>
@@ -652,11 +672,6 @@
               <FileName>bt_config.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\Middleware\blue_angel\btif\bt_config.h</FilePath>
-            </File>
-            <File>
-              <FileName>bt_gap.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\Middleware\blue_angel\src\core\gap\bt_gap.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -13,10 +13,10 @@
 
 typedef enum {
     BT_SYS_LOG_OFF,
-    BT_SYS_LOG_INFO,
-    BT_SYS_LOG_DEBUG,
+    BT_SYS_LOG_ERROR,
     BT_SYS_LOG_WARNING,
-    BT_SYS_LOG_ERROR
+    BT_SYS_LOG_DEBUG,
+    BT_SYS_LOG_INFO,
 } bt_system_log_level_t;
 
 typedef enum {

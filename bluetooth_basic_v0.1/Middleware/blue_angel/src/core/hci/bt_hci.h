@@ -38,8 +38,9 @@
 #define BT_HCI_TIMER_MASK_A		0x00000000	/*host主动发hci cmd而产生的event*/
 #define BT_HCI_TIMER_MASK_B		0x00010000	/*controller主动上报的event，不是由host发送hci            cmd产生的evt */
 
-#define BT_HCI_CMD_TIMEOUT	2000
-
+#define BT_HCI_TIMER_ID_TYPE_A(cmd_code) (cmd_code | BT_MODULE_HCI | BT_HCI_TIMER_MASK_A)
+#define BT_HCI_TIMER_ID_TYPE_B(evt_code) (evt_code | BT_MODULE_HCI | BT_HCI_TIMER_MASK_B)
+	
 typedef struct {
     bt_hci_cmd_code_t cmd_code;
     uint8_t length;

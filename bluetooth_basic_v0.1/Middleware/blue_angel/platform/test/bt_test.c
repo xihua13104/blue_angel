@@ -15,6 +15,7 @@
 #include "bt_config.h"
 
 #if BT_CUNIT_ENABLE
+#if 0
 __align(4) static uint8_t bt_timer_fixed_memory[BT_TIMER_BLOCK_SIZE * 10] = {0};
 __align(4) static uint8_t bt_tx_buf[1024 *4] = {0};
 __align(4) static uint8_t bt_rx_buf[1024 *4] = {0};
@@ -178,5 +179,11 @@ void bt_hci_test(void)
 	status = bt_hci_cmd_send(cmd, 0, 500, bt_hci_test_timeout_callback);
 	BT_ASSERT(status == BT_STATUS_SUCCESS);
 }
+#endif
 
+extern bt_status_t bt_power_on();
+void bt_gap_test(void)
+{
+	bt_power_on();
+}
 #endif

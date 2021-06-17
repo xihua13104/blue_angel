@@ -23,4 +23,6 @@ void bt_memory_test(void);
 void bt_timer_test(void); 
 
 void bt_hci_test(void);
+
+void bt_gap_test(void);
 #endif

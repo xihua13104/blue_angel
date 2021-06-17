@@ -32,11 +32,11 @@ typedef uint32_t bt_callback_module_mask_t;
 
 typedef bt_status_t (*bt_callback_manager_cb_t)(bt_msg_type_t msg, bt_status_t status, void *buf);
 
-bt_status_t bt_callback_manager_register_callback(bt_callback_type_t type, bt_callback_module_mask_t module_mask, void *callback);
+bt_status_t bt_callback_manager_register_callback(bt_callback_type_t type, bt_callback_module_mask_t module_mask, bt_callback_manager_cb_t callback);
 
-bt_status_t bt_callback_manager_deregister_callback(bt_callback_type_t type, bt_callback_manager_module_mask_t module_mask, void *callback);
+bt_status_t bt_callback_manager_deregister_callback(bt_callback_type_t type, bt_callback_module_mask_t module_mask, bt_callback_manager_cb_t callback);
 
-bt_status_t bt_app_event_callback(bt_msg_type_t msg, bt_status_t status, void *buf);
+void bt_app_event_callback(bt_msg_type_t msg, bt_status_t status, void *buf);
 #endif //__BT_CALLBACK_MANAGER_H__
 
 
