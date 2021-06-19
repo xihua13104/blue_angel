@@ -236,6 +236,9 @@ typedef uint16_t bt_hci_cmd_code_t;
 #define BT_HCI_CMD_BLE_LTK_REQ_NEG_REPLY       				(0x001B | BT_HCI_GRP_BLE_CMDS)
 #define BT_HCI_CMD_BLE_READ_SUPPORTED_STATES   				(0x001C | BT_HCI_GRP_BLE_CMDS)
 
+/*Vendor cmd for CSR8x11*/
+#define BT_HCI_CMD_VENDOR_CSR8X11							0xFC00
+
 typedef uint8_t  bt_hci_evt_code_t;
 
 #define	BT_HCI_EVT_INQUIRY_COMPLETE							0x01	//Indicates the Inquiry has finished.

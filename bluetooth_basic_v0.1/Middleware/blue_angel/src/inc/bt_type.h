@@ -42,11 +42,7 @@ typedef uint32_t bt_msg_type_t;
 
 #define BD_ADDR_LENGTH	6
 
-typedef struct {
-	uint8_t addr[BD_ADDR_LENGTH];
-} BT_PACKED bt_bd_addr_t;
-
-
+typedef uint8_t bt_bd_addr_t[BD_ADDR_LENGTH];
 
 #endif //__BT_TYPE_H__
 

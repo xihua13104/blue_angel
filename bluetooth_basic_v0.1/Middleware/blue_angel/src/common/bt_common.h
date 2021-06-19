@@ -35,5 +35,6 @@
 #define BT_POP_NODE_FROM_RX_QUEUE_TAIL()		 BT_POP_NODE_FROM_QUEUE(BT_RX_QUEUE, BT_NODE_TAIL)
 
 #define BT_QUEUE_IS_EMPTY(q) 					 (q->next == NULL)
+
 #endif
 
