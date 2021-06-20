@@ -20,8 +20,8 @@
 #define BT_ALLOCATE_HCI_PACKET_WITH_NODE(memory_type, size) (bt_memory_allocate_packet(memory_type, sizeof(bt_hci_packet_header_t) + size) + sizeof(bt_hci_packet_header_t))
 #define BT_FREE_HCI_PACKET_WITH_NODE(memory_type, p)  		(bt_memory_free_packet(memory_type, (uint8_t *)p - sizeof(bt_hci_packet_header_t)))
 
-#define BT_GET_NODE_FROM_HCI_SPEC_PACKET(p)    ((bt_linknode_t *)((uint8_t *)p - sizeof(bt_hci_packet_header_t)))
-#define BT_GET_HCI_SPEC_PACKET_FROM_NODE(node) ((bt_hci_spec_packet_t *)((uint8_t *)node + sizeof(bt_hci_packet_header_t)))
+#define BT_GET_NODE_FROM_HCI_SPEC_PACKET(p)     ((bt_linknode_t *)((uint8_t *)p - sizeof(bt_hci_packet_header_t)))
+#define BT_GET_HCI_SPEC_PACKET_FROM_NODE(node)  ((bt_hci_spec_packet_t *)((uint8_t *)node + sizeof(bt_hci_packet_header_t)))
 
 #define BT_RX_QUEUE  (&p_bt_mm_cb->rx_queue)
 #define BT_CMD_QUEUE (&p_bt_mm_cb->cmd_queue)
@@ -35,6 +35,8 @@
 #define BT_POP_NODE_FROM_RX_QUEUE_TAIL()		 BT_POP_NODE_FROM_QUEUE(BT_RX_QUEUE, BT_NODE_TAIL)
 
 #define BT_QUEUE_IS_EMPTY(q) 					 (q->next == NULL)
+
+#define BT_EXPAND_ADDR(addr) 					 addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]
 
 #endif
 

@@ -35,6 +35,9 @@
             BT_SYSTEM_LOG(format,##__VA_ARGS__);                  \
     }
 
+#define BT_HCI_CMD_TIMEOUT_SPECIAL	100
+#define BT_HCI_CMD_TIMEOUT			1000	
+	
 #define BT_HCI_TIMER_MASK_A		0x00000000	/*host主动发hci cmd而产生的event*/
 #define BT_HCI_TIMER_MASK_B		0x00010000	/*controller主动上报的event，不是由host发送hci            cmd产生的evt */
 

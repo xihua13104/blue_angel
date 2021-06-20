@@ -1,5 +1,5 @@
 /******************************************************************************
-  * @file           bt_gap_le.c
+  * @file           bt_gap_classic.c
   * @author         leon
   * @version        V0.1
   * @date           2021-05-19
@@ -21,5 +21,13 @@ bt_status_t bt_gap_write_eir(uint8_t *eir_data, uint8_t length)
 	bt_memcpy(write_eir.eir, eir_data, length);
 	hci_cmd.length = sizeof(bt_gap_write_eir_t);
 	hci_cmd.param = (void *)&write_eir;
-	return bt_hci_cmd_send(hci_cmd, 0, 5000, NULL);
+	return bt_hci_cmd_send(hci_cmd, 0, BT_HCI_CMD_TIMEOUT, NULL);
+}
+
+bt_status_t bt_gap_set_scan_mode(bt_gap_scan_mode_t scan_mode)
+{
+	bt_hci_cmd_t hci_cmd = {BT_HCI_CMD_WRITE_SCAN_ENABLE, 0, NULL};
+	hci_cmd.length = sizeof(bt_gap_scan_mode_t);
+	hci_cmd.param = (void *)&scan_mode;
+	return bt_hci_cmd_send(hci_cmd, 0, BT_HCI_CMD_TIMEOUT, NULL);
 }

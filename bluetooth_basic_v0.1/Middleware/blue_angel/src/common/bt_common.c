@@ -1,10 +1,9 @@
 /******************************************************************************
   * @file           bt_common.c
-  * @author         Yu-ZhongJun(124756828@qq.com)
-  * @Taobao link    https://shop220811498.taobao.com/
-  * @version        V0.0.1
-  * @date           2020-4-14
-  * @brief          bt common source file
+  * @author         leon
+  * @version        V0.1
+  * @date           2021-05-19
+  * @brief
 ******************************************************************************/
 
 #include "bt_common.h"

@@ -55,6 +55,8 @@ bt_status_t bt_hci_evt_handler(bt_hci_spec_packet_t *packet)
 			timer_id |= BT_HCI_GET_EVT_PARAM(packet, bt_hci_command_complete_t)->cmd_code;
             break;
         case BT_HCI_EVT_COMMAND_STATUS:
+			status = BT_HCI_GET_EVT_PARAM(packet, bt_hci_command_status_t)->status;
+			return status;
             break;
         case BT_HCI_EVT_NUMBER_OF_COMPLETED_PACKETS:
             break;

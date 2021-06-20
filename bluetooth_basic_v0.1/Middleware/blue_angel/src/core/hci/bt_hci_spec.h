@@ -358,6 +358,12 @@ typedef uint8_t bt_hci_err_code_t;
 #define BT_HCI_GET_NOCP_EVT_PARAM(nocp)					(0)
 
 typedef struct {
+	bt_hci_err_code_t status;
+	uint8_t num_hci_command_packet;
+	bt_hci_cmd_code_t cmd_code;
+} BT_PACKED bt_hci_command_status_t;
+
+typedef struct {
 	uint8_t lenght;
 } BT_PACKED bt_hci_number_of_complete_packet_t;
 

@@ -1,5 +1,5 @@
 /******************************************************************************
-  * @file           bt_gap.c
+  * @file           bt_gap_common.c
   * @author         leon
   * @version        V0.1
   * @date           2021-05-19
@@ -18,7 +18,7 @@
 
 #define BT_GAP_CMD_TIMEOUT_ASSERT	0x01
 #define BT_GAP_CMD_TIMEOUT_RETRY	0x02
-#define BT_GAP_CMD_TIMEOUT_IGNORE	0x04
+#define BT_GAP_CMD_TIMEOUT_IGNORE	0x03
 
 typedef struct {
 	uint8_t attribute;
@@ -162,16 +162,17 @@ bt_status_t bt_gap_init_process(bool is_timeout, uint32_t timer_id, uint32_t dat
 
 	if (is_timeout) {
 		init_cmd = (bt_gap_init_cmd_t *)data;
-		BT_GAP_LOG_ERROR("[BT_GAP_COMMON] init cmd timeout, timer_id = 0x%x, init_table_index = %d\r\n,", timer_id, bt_gap_init_table_index);
-		if (init_cmd->attribute & BT_GAP_CMD_TIMEOUT_ASSERT) {
+		BT_GAP_LOG_ERROR("[BT_GAP_COMMON] init cmd timeout, timer_id = 0x%x, init_table_index = %d\r\n", timer_id, bt_gap_init_table_index);
+		if (init_cmd->attribute == BT_GAP_CMD_TIMEOUT_ASSERT) {
 			BT_ASSERT(0);
-		} else if (init_cmd->attribute & BT_GAP_CMD_TIMEOUT_RETRY) {
-			return bt_hci_cmd_send(init_cmd->hci_cmd, (uint32_t)init_cmd, 100, bt_gap_init_process);
+		} else if (init_cmd->attribute == BT_GAP_CMD_TIMEOUT_RETRY) {
+			return bt_hci_cmd_send(init_cmd->hci_cmd, (uint32_t)init_cmd, BT_HCI_CMD_TIMEOUT_SPECIAL, bt_gap_init_process);
 		}
 	}
 	switch (timer_id) {
 		case BT_HCI_TIMER_ID_TYPE_A(BT_HCI_CMD_READ_BD_ADDR):
 			bt_memcpy(&blue_angel.local_public_addr, &BT_HCI_GET_EVT_PARAM(param, bt_hci_command_complete_t)->data, sizeof(bt_bd_addr_t));
+			BT_GAP_LOG_INFO("[BT_GAP_COMMON] Local public addr = %2x-%2x-%2x-%2x-%2x-%2x\r\n", BT_EXPAND_ADDR(blue_angel.local_public_addr));
 			break;
 		case BT_HCI_TIMER_ID_TYPE_A(BT_HCI_CMD_READ_BUFFER_SIZE):
 			break;
@@ -181,7 +182,7 @@ bt_status_t bt_gap_init_process(bool is_timeout, uint32_t timer_id, uint32_t dat
 		
 	init_cmd = bt_gap_init_cmd_pop();
 	if (init_cmd != NULL) {
-		status = bt_hci_cmd_send(init_cmd->hci_cmd, (uint32_t)init_cmd, 2000, bt_gap_init_process);
+		status = bt_hci_cmd_send(init_cmd->hci_cmd, (uint32_t)init_cmd, BT_HCI_CMD_TIMEOUT, bt_gap_init_process);
 	} else {
 		blue_angel.power_status = BT_POWER_ON;
 		bt_app_event_callback(0,0,0);
