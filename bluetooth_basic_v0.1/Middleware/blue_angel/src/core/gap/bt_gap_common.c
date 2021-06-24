@@ -155,7 +155,7 @@ static bt_gap_init_cmd_t *bt_gap_init_cmd_pop()
 	return init_cmd;
 }
 
-bt_status_t bt_gap_init_process(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param)
+static bt_status_t bt_gap_power_on_process(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param)
 {
 	bt_status_t status = BT_STATUS_SUCCESS;
 	bt_gap_init_cmd_t *init_cmd = NULL;
@@ -166,7 +166,7 @@ bt_status_t bt_gap_init_process(bool is_timeout, uint32_t timer_id, uint32_t dat
 		if (init_cmd->attribute == BT_GAP_CMD_TIMEOUT_ASSERT) {
 			BT_ASSERT(0);
 		} else if (init_cmd->attribute == BT_GAP_CMD_TIMEOUT_RETRY) {
-			return bt_hci_cmd_send(init_cmd->hci_cmd, (uint32_t)init_cmd, BT_HCI_CMD_TIMEOUT_SPECIAL, bt_gap_init_process);
+			return bt_hci_cmd_send(init_cmd->hci_cmd, (uint32_t)init_cmd, BT_HCI_CMD_TIMEOUT_SPECIAL, bt_gap_power_on_process);
 		}
 	}
 	switch (timer_id) {
@@ -182,7 +182,7 @@ bt_status_t bt_gap_init_process(bool is_timeout, uint32_t timer_id, uint32_t dat
 		
 	init_cmd = bt_gap_init_cmd_pop();
 	if (init_cmd != NULL) {
-		status = bt_hci_cmd_send(init_cmd->hci_cmd, (uint32_t)init_cmd, BT_HCI_CMD_TIMEOUT, bt_gap_init_process);
+		status = bt_hci_cmd_send(init_cmd->hci_cmd, (uint32_t)init_cmd, BT_HCI_CMD_TIMEOUT, bt_gap_power_on_process);
 	} else {
 		blue_angel.power_status = BT_POWER_ON;
 		bt_app_event_callback(0,0,0);
@@ -195,15 +195,18 @@ bt_status_t bt_power_on()
 	bt_memset(&blue_angel, 0, sizeof(blue_angel));
 	blue_angel.power_status = BT_POWER_SWITCHING_ON;
 
-	return bt_gap_init_process(false, BT_GAP_INVALID_TIMER_ID, 0, NULL);
+	return bt_gap_power_on_process(false, BT_GAP_INVALID_TIMER_ID, 0, NULL);
+}
+
+static bt_status_t bt_gap_power_off_process(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param)
+{
+
 }
 
 bt_status_t bt_power_off()
 {
+	bt_gap_init_table_index = 0;
+	bt_gap_power_off_process(false, BT_GAP_INVALID_TIMER_ID, 0, NULL);
 	return BT_STATUS_SUCCESS;
 }
 
-bt_status_t bt_power_reset()
-{
-	return BT_STATUS_SUCCESS;
-}
