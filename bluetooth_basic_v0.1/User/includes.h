@@ -38,6 +38,7 @@
 #include "bt_system.h"
 #include "bt_init.h"
 #include "bt_config.h"
+#include "at_command.h"
 /*
 *********************************************************************************************************
 *                                           OS

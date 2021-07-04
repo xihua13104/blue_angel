@@ -37,7 +37,6 @@
 											函数声明
 **********************************************************************************************************
 */
-static void vTaskTaskUserIF(void *pvParameters);
 static void AppTaskCreate (void);
 
 /*
@@ -45,7 +44,7 @@ static void AppTaskCreate (void);
 											变量声明
 **********************************************************************************************************
 */
-static TaskHandle_t xHandleTaskUserIF = NULL;
+static TaskHandle_t vHandleTaskATCommand = NULL;
 static TaskHandle_t xHandleTaskBT = NULL;
 extern void vBT_Task(void *pvParameters);
 /*
@@ -74,6 +73,8 @@ int main(void)
 	
 	bt_init();
 	
+	at_command_init();
+
 	cunit_init();
 	/* 创建任务 */
 	AppTaskCreate();
@@ -91,24 +92,6 @@ int main(void)
 
 /*
 *********************************************************************************************************
-*	函 数 名: vTaskTaskUserIF
-*	功能说明: 接口消息处理，这里用作LED闪烁	
-*	形    参: pvParameters 是在创建该任务时传递的形参
-*	返 回 值: 无
-*   优 先 级: 1  (数值越小优先级越低，这个跟uCOS相反)
-*********************************************************************************************************
-*/
-static void vTaskTaskUserIF(void *pvParameters)
-{
-    while(1)
-    {
-		bsp_LedToggle(1);
-		vTaskDelay(100);
-	}
-}
-
-/*
-*********************************************************************************************************
 *	函 数 名: AppTaskCreate
 *	功能说明: 创建应用任务
 *	形    参：无
@@ -117,19 +100,19 @@ static void vTaskTaskUserIF(void *pvParameters)
 */
 static void AppTaskCreate (void)
 {
-    xTaskCreate( vTaskTaskUserIF,   	/* 任务函数  */
-                 "vTaskUserIF",     	/* 任务名    */
+    xTaskCreate( vTaskATCommand,   	/* 任务函数  */
+                 "vTaskATCommand",     	/* 任务名    */
                  512,               	/* 任务栈大小，单位word，也就是4字节 */
                  NULL,              	/* 任务参数  */
                  1,                 	/* 任务优先级*/
-                 &xHandleTaskUserIF );  /* 任务句柄  */
+                 &vHandleTaskATCommand );  /* 任务句柄  */
 	
-    xTaskCreate( vBT_Task,	      	    /* 任务函数  */
-                 "vBT_Task",     	    /* 任务名    */
-                 512,               	/* 任务栈大小，单位word，也就是4字节 */
-                 NULL,              	/* 任务参数  */
-                 1,                 	/* 任务优先级*/
-                 &xHandleTaskBT );      /* 任务句柄  */	
+    xTaskCreate( vBT_Task,	      	    
+                 "vBT_Task",     	    
+                 512,               	
+                 NULL,              	
+                 1,                 	
+                 &xHandleTaskBT );
 }
 
 /***************************** 安富莱电子 www.armfly.com (END OF FILE) *********************************/

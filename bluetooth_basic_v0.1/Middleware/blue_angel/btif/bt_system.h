@@ -8,6 +8,7 @@
 #ifndef __BT_SYSTEM__
 #define __BT_SYSTEM__
 #include "stdint.h"
+#include "bt_type.h"
 
 typedef enum {
     BT_MEMORY_TX = 0,
@@ -24,4 +25,9 @@ typedef enum {
 void bt_memory_init(bt_memory_type_t type, uint8_t *buf, uint32_t size);
 
 void bt_fixed_memory_init(bt_fixed_memory_type_t type, uint8_t *buf, uint32_t size);
+
+bt_status_t bt_power_on(void);
+
+bt_status_t bt_power_off(void);
+
 #endif//__BT_SYSTEM__

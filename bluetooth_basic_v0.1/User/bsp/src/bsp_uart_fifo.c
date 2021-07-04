@@ -491,6 +491,7 @@ void RS485_ReciveNew(uint8_t _byte)
 *********************************************************************************************************
 */
 extern void bt_driver_recieve_data_from_controller(uint8_t data);
+extern void at_command_parsing(uint8_t data);
 static void UartVarInit(void)
 {
 #if UART1_FIFO_EN == 1
@@ -507,7 +508,7 @@ static void UartVarInit(void)
 	g_tUart1.usTxCount = 0;						/* 待发送的数据个数 */
 	g_tUart1.SendBefor = 0;						/* 发送数据前的回调函数 */
 	g_tUart1.SendOver = 0;						/* 发送完毕后的回调函数 */
-	g_tUart1.ReciveNew = 0;						/* 接收到新数据后的回调函数 */
+	g_tUart1.ReciveNew = at_command_parsing;	/* 接收到新数据后的回调函数 */
 #endif
 
 #if UART2_FIFO_EN == 1
