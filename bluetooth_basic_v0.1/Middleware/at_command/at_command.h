@@ -28,7 +28,7 @@
 
 #define AT_COMMAND_HEADER_LENGTH 2
 #define AT_COMMAND_TAIL_LENGTH	 2
-#define AT_COMMAND_PARSE_TIMEOUT_LENGTH 20
+#define AT_COMMAND_PARSE_TIMEOUT_LENGTH 100
 
 typedef enum {
 	AT_COMMAND_EXECUTE_TIMEOUT = -4,
@@ -41,7 +41,8 @@ typedef enum {
 typedef void (*at_command_handler_t)(void *param, uint8_t param_length);
 
 typedef struct {
-	const char name[AT_COMMAND_NAME_MAX_LENGTH];
+	//const char name[AT_COMMAND_NAME_MAX_LENGTH];
+	const char *name;
 	at_command_handler_t handler;
 	//uint32_t timeout;
 } at_command_item_t;
@@ -85,9 +86,9 @@ typedef struct {
 
 at_command_status_t at_command_init(void);
 
-at_command_status_t at_command_register_handler(const char *at_command_name, at_command_handler_t handler);
+at_command_status_t at_command_register_handler(at_command_item_t *item);
 
-at_command_status_t at_command_deregister_handler(const char *at_command_name, at_command_handler_t handler);
+at_command_status_t at_command_deregister_handler(at_command_item_t *item);
 
 at_command_status_t at_command_deinit(void);
 

@@ -22,6 +22,12 @@ typedef struct {
 #define BT_GAP_SCAN_MODE_GENERAL_ACCESSABLE	3
 typedef uint8_t bt_gap_scan_mode_t;
 
+typedef struct {
+	bt_linknode_t next;
+	bt_bd_addr_t address;
+	bt_hci_connection_link_type_t link_type;
+} bt_gap_classic_connection_t;
+
 #define BT_DT_FLAGS											     0x01
 #define BT_DT_INCOMPLETE_LIST_OF_16_BIT_SERVICE_CLASS_UUIDS      0x02
 #define BT_DT_COMPLETE_LIST_OF_16_BIT_SERVICE_CLASS_UUIDS        0x03

@@ -131,6 +131,11 @@ static bt_gap_init_cmd_t bt_gap_init_cmd_table[] = {
 	{BT_GAP_CMD_TIMEOUT_ASSERT, {BT_HCI_CMD_WRITE_SCAN_ENABLE, sizeof(bt_scan_mode), &bt_scan_mode}},
 };
 
+static bt_gap_evt_handler_table_t bt_gap_evt_handler_table[] = {
+	{BT_HCI_TIMER_ID_TYPE_B(BT_HCI_EVT_CONNECTION_REQUEST), bt_gap_connection_handler},
+	{BT_HCI_TIMER_ID_TYPE_B(BT_HCI_EVT_CONNECTION_COMPLETE), bt_gap_connection_handler},
+};
+
 static bt_gap_init_cmd_t *bt_gap_init_cmd_pop()
 {
     bt_gap_init_cmd_t *init_cmd = NULL;
@@ -162,7 +167,7 @@ static bt_status_t bt_gap_power_on_process(bool is_timeout, uint32_t timer_id, u
 
 	if (is_timeout) {
 		init_cmd = (bt_gap_init_cmd_t *)data;
-		BT_GAP_LOG_ERROR("[BT_GAP_COMMON] init cmd timeout, timer_id = 0x%x, init_table_index = %d\r\n", timer_id, bt_gap_init_table_index);
+		BT_GAP_LOG_ERROR("[BT_GAP][COMMON] init cmd timeout, timer_id = 0x%x, init_table_index = %d\r\n", timer_id, bt_gap_init_table_index);
 		if (init_cmd->attribute == BT_GAP_CMD_TIMEOUT_ASSERT) {
 			BT_ASSERT(0);
 		} else if (init_cmd->attribute == BT_GAP_CMD_TIMEOUT_RETRY) {
@@ -172,7 +177,7 @@ static bt_status_t bt_gap_power_on_process(bool is_timeout, uint32_t timer_id, u
 	switch (timer_id) {
 		case BT_HCI_TIMER_ID_TYPE_A(BT_HCI_CMD_READ_BD_ADDR):
 			bt_memcpy(&blue_angel.local_public_addr, &BT_HCI_GET_EVT_PARAM(param, bt_hci_command_complete_t)->data, sizeof(bt_bd_addr_t));
-			BT_GAP_LOG_INFO("[BT_GAP_COMMON] Local public addr = %2x-%2x-%2x-%2x-%2x-%2x\r\n", BT_EXPAND_ADDR(blue_angel.local_public_addr));
+			BT_GAP_LOG_INFO("[BT_GAP][COMMON] Local public addr = %2x-%2x-%2x-%2x-%2x-%2x\r\n", BT_EXPAND_ADDR(blue_angel.local_public_addr));
 			break;
 		case BT_HCI_TIMER_ID_TYPE_A(BT_HCI_CMD_READ_BUFFER_SIZE):
 			break;
@@ -192,6 +197,9 @@ static bt_status_t bt_gap_power_on_process(bool is_timeout, uint32_t timer_id, u
 
 bt_status_t bt_power_on()
 {
+	if (BT_POWER_OFF != blue_angel.power_status) {
+		return BT_STATUS_FAIL;
+	}
 	bt_memset(&blue_angel, 0, sizeof(blue_angel));
 	blue_angel.power_status = BT_POWER_SWITCHING_ON;
 
@@ -200,13 +208,33 @@ bt_status_t bt_power_on()
 
 static bt_status_t bt_gap_power_off_process(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param)
 {
-
+	if (is_timeout) {
+		BT_ASSERT(0);	
+	}
+	bt_memset(&blue_angel, 0, sizeof(blue_angel));
+	bt_gap_init_table_index = 0;
+	bt_app_event_callback(0,0,0);
+	return BT_STATUS_SUCCESS;
 }
 
 bt_status_t bt_power_off()
 {
-	bt_gap_init_table_index = 0;
-	bt_gap_power_off_process(false, BT_GAP_INVALID_TIMER_ID, 0, NULL);
-	return BT_STATUS_SUCCESS;
+	bt_hci_cmd_t reset_cmd = {BT_HCI_CMD_RESET, 0, NULL};
+	if (BT_POWER_ON != blue_angel.power_status) {
+		return BT_STATUS_FAIL;
+	}
+	return bt_hci_cmd_send(reset_cmd, 0, BT_HCI_CMD_TIMEOUT, bt_gap_power_off_process);
 }
 
+bt_status_t bt_gap_evt_handler(uint32_t timer_id, void *packet)
+{
+	uint32_t index = 0;
+	bt_status_t status = BT_STATUS_FAIL;
+	for (index = 0; index < sizeof(bt_gap_evt_handler_table)/sizeof(bt_gap_evt_handler_table_t); index++) {
+		if (timer_id == bt_gap_evt_handler_table[index].timer_id && bt_gap_evt_handler_table[index].handler != NULL) {
+			status = bt_gap_evt_handler_table[index].handler(false, timer_id, 0, packet);
+			break;
+		}
+	}
+	return status;
+}

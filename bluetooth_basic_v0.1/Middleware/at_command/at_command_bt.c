@@ -21,7 +21,7 @@ void at_command_bt_system_it_handler(void *param, uint8_t param_length)
 {
 	at_command_response_t response = {0};
 
-	if (param == NULL || param_length == 0) {
+	if (param_length == 0 || param == NULL) {
 		return;
 	}
 	if (0 == strncmp((char *)param, "POWER_ON", param_length)) {

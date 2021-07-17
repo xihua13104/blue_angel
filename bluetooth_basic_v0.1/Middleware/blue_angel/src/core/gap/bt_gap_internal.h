@@ -53,6 +53,20 @@ typedef struct {
 		uint16_t acl_credit;
 		uint16_t acl_length;
 	} bt_hci_flow_control;
+	bt_linknode_t bt_gap_classic_connection;
+	bt_linknode_t bt_gap_le_connection;
 } bt_blue_angel_t;
 
+typedef bt_timer_timeout_callback_t bt_gap_evt_handler_t;
+
+typedef struct {
+	uint32_t timer_id;
+	bt_gap_evt_handler_t handler;
+} bt_gap_evt_handler_table_t;
+
+extern bt_blue_angel_t blue_angel;
+
+bt_status_t bt_gap_evt_handler(uint32_t timer_id, void *packet);
+
+bt_status_t bt_gap_connection_handler(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param);
 #endif//__BT_GAP_INTERNAL_H__

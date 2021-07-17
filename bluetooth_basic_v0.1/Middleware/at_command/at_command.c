@@ -25,7 +25,7 @@ static at_command_item_t at_cmd_item_table[AT_COMMAND_ITEM_MAX_COUNT] = {
     {"AT+BTSYSIT", at_command_bt_system_it_handler},
 };
 
-static void at_command_timer_stop(void);
+static at_command_status_t at_command_timer_stop(void);
 
 static void at_command_timeout_callback(TimerHandle_t handle)
 {
@@ -35,38 +35,52 @@ static void at_command_timeout_callback(TimerHandle_t handle)
             g_parse_index = 0;
             memset((void *)&g_message, 0, sizeof(at_command_queue_message_t));
             comClearRxFifo(COM1);
-            AT_COMMAND_LOG_INFO("[AT_COMMAND] parse timeout, Unknown AT command\r\n");
+            AT_COMMAND_LOG_INFO("[AT_COMMAND] error\r\n");
         } else if (AT_COMMAND_STATE_EXECUTING == g_state) {
             AT_COMMAND_LOG_INFO("[AT_COMMAND] execute timeout\r\n");
         }
     }
 }
 
-static void at_command_timer_stop()
+static at_command_status_t at_command_timer_stop()
 {
     if (bt_os_layer_is_isr_active()) {
-        xTimerStopFromISR(at_command_timer_handle, 0);
+        if (pdFALSE == xTimerStopFromISR(at_command_timer_handle, 0)) {
+			return AT_COMMAND_FAIL;
+		}
     } else {
-        xTimerStop(at_command_timer_handle, 0);
+        if (pdFALSE == xTimerStop(at_command_timer_handle, 0)) {
+			return AT_COMMAND_FAIL;
+		}
     }
+	return AT_COMMAND_OK;
 }
 
-static void at_command_timer_start(uint32_t timer_length)
+static at_command_status_t at_command_timer_start(uint32_t timer_length)
 {
     uint32_t time = timer_length / portTICK_PERIOD_MS;
     if (bt_os_layer_is_isr_active()) {
         /*if (xTimerIsTimerActive(at_command_timer_handle) != pdFALSE) {
             return;
         }*/
-        xTimerChangePeriodFromISR(at_command_timer_handle, time, 0);
-        xTimerResetFromISR(at_command_timer_handle, 0);
+        if (pdFALSE == xTimerChangePeriodFromISR(at_command_timer_handle, time, 0)) {
+			return AT_COMMAND_FAIL;
+		}
+        if (pdFALSE == xTimerResetFromISR(at_command_timer_handle, 0)) {
+			return AT_COMMAND_FAIL;
+		}
     } else {
         /*if (xTimerIsTimerActive(at_command_timer_handle) != pdFALSE) {
         	return;
         }**/
-        xTimerChangePeriod(at_command_timer_handle, time, 0);
-        xTimerReset(at_command_timer_handle, 0);
+        if (pdFALSE == xTimerChangePeriod(at_command_timer_handle, time, 0)) {
+			return AT_COMMAND_FAIL;
+		}
+        if (pdFALSE == xTimerReset(at_command_timer_handle, 0)) {
+			return AT_COMMAND_FAIL;
+		}
     }
+	return AT_COMMAND_OK;
 }
 
 at_command_status_t at_command_init(void)
@@ -97,44 +111,38 @@ at_command_status_t at_command_deinit(void)
         at_command_timer_handle = NULL;
     }
 	g_state = AT_COMMAND_STATE_IDLE;
-	memset(at_cmd_item_table, 0, sizeof(at_cmd_item_table));
+
     return AT_COMMAND_OK;
 }
 
-at_command_status_t at_command_register_handler(const char *at_command_name, at_command_handler_t handler)
+at_command_status_t at_command_register_handler(at_command_item_t *item)
 {
     uint8_t i = 0;
-    if (NULL == at_command_name || NULL == handler) {
+    if (NULL == item || NULL == item->name || NULL == item->handler) {
         return AT_COMMAND_INVALID_PARAM;
     }
-    if (strlen(at_command_name) >= AT_COMMAND_NAME_MAX_LENGTH - 1) {
-        return AT_COMMAND_INVALID_PARAM;
-    }
+
     for (i = 0; i < AT_COMMAND_ITEM_MAX_COUNT; i++) {
         if (at_cmd_item_table[i].handler == NULL) {
-            at_cmd_item_table[i].handler = handler;
-            memset((void *)at_cmd_item_table[i].name, 0, AT_COMMAND_NAME_MAX_LENGTH);
-            strncpy((char *)at_cmd_item_table[i].name, at_command_name, strlen(at_command_name));
+            at_cmd_item_table[i].handler = item->handler;
+			at_cmd_item_table[i].name = item->name;
             return AT_COMMAND_OK;;
         }
     }
     return AT_COMMAND_FAIL;
 }
 
-at_command_status_t at_command_deregister_handler(const char *at_command_name, at_command_handler_t handler)
+at_command_status_t at_command_deregister_handler(at_command_item_t *item)
 {
     uint8_t i = 0;
-    if (NULL == at_command_name || NULL == handler) {
-        return AT_COMMAND_INVALID_PARAM;
-    }
-    if (strlen(at_command_name) >= AT_COMMAND_NAME_MAX_LENGTH - 1) {
+    if (NULL == item || NULL == item->name || NULL == item->handler) {
         return AT_COMMAND_INVALID_PARAM;
     }
     for (i = 0; i < AT_COMMAND_ITEM_MAX_COUNT; i++) {
-        if (at_cmd_item_table[i].handler == handler &&
-                0 == strncmp((const char *)at_cmd_item_table[i].name, at_command_name, strlen(at_command_name))) {
+        if (at_cmd_item_table[i].handler == item->handler &&
+                0 == strncmp((const char *)at_cmd_item_table[i].name, item->name, strlen(item->name))) {
             at_cmd_item_table[i].handler = NULL;
-            memset((void *)at_cmd_item_table[i].name, 0, AT_COMMAND_NAME_MAX_LENGTH);
+			at_cmd_item_table[i].name = NULL;
             return AT_COMMAND_OK;
         }
     }
@@ -152,6 +160,7 @@ void vTaskATCommand(void *pvParameters)
             g_state = AT_COMMAND_STATE_EXECUTING;
             ptr = (char *)pvPortMalloc(queue_message.at_cmd_tatal_length);
             AT_COMMAND_ASSERT(ptr);
+			memset(ptr, 0, queue_message.at_cmd_tatal_length);
             acture_length = comGetBuf(COM1, (uint8_t *)ptr, queue_message.at_cmd_tatal_length);
             AT_COMMAND_ASSERT(acture_length == queue_message.at_cmd_tatal_length);
 			AT_COMMAND_LOG_INFO("[AT_COMMAND] %s", ptr);
@@ -163,9 +172,10 @@ void vTaskATCommand(void *pvParameters)
                     break;
                 }
             }
-        }
-        if (ptr) {
-            vPortFree(ptr);
+			if (ptr) {
+				vPortFree(ptr);
+				ptr = NULL;
+			}
         }
         memset((void *)&queue_message, 0, sizeof(at_command_queue_message_t));
     }
@@ -182,11 +192,12 @@ void at_command_send_response(at_command_response_t *response)
 void at_command_parsing(uint8_t data)
 {
     BaseType_t pxHigherPriorityTaskWoken;
+	at_command_status_t status = AT_COMMAND_OK;
 
     switch (g_parse_state) {
         case AT_COMMAND_WAIT_4_HEADER_A: {  //'A'
             if (data == AT_COMMAND_HEADER_A) {
-                at_command_timer_start(AT_COMMAND_PARSE_TIMEOUT_LENGTH);
+                status = at_command_timer_start(AT_COMMAND_PARSE_TIMEOUT_LENGTH);
                 g_state = AT_COMAND_STATE_PARSING;
                 g_parse_index++;
                 g_parse_state = AT_COMMAND_WAIT_4_HEADER_T;

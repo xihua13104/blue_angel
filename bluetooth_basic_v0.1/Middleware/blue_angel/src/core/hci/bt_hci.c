@@ -11,6 +11,7 @@
 #include "bt_log.h"
 #include "bt_platform.h"
 #include "bt_driver.h"
+#include "bt_gap_internal.h"
 
 bt_status_t bt_hci_cmd_send(bt_hci_cmd_t cmd, uint32_t data, uint32_t timeout, bt_hci_timeout_callback_t callback)
 {
@@ -57,7 +58,6 @@ bt_status_t bt_hci_evt_handler(bt_hci_spec_packet_t *packet)
         case BT_HCI_EVT_COMMAND_STATUS:
 			status = BT_HCI_GET_EVT_PARAM(packet, bt_hci_command_status_t)->status;
 			return status;
-            break;
         case BT_HCI_EVT_NUMBER_OF_COMPLETED_PACKETS:
             break;
         case BT_HCI_EVT_LE_META:
@@ -66,12 +66,12 @@ bt_status_t bt_hci_evt_handler(bt_hci_spec_packet_t *packet)
 			timer_id |= BT_HCI_CMD_VENDOR_CSR8X11;
             break;
         default:
-        	timer_id |= BT_HCI_TIMER_MASK_B;
+        	timer_id |= BT_HCI_TIMER_MASK_B | evt_code;
             break;
     }
     status = bt_timer_cancel_and_callback(timer_id, (void *)packet);
     if (BT_STATUS_TIMER_NOT_FOUND == status) {
-
+		status = bt_gap_evt_handler(timer_id, (void *)packet);
     }
     return status;
 }

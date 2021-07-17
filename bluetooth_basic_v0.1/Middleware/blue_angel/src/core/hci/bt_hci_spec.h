@@ -353,6 +353,30 @@ typedef uint8_t  bt_hci_evt_code_t;
 #define BT_HCI_ERR_CODE_PAIRING_UNIT_KEY_NOT_SUPPORTED                           0x29
 typedef uint8_t bt_hci_err_code_t;
 
+
+#define BT_SCO_CONNECTION  0x00
+#define BT_ACL_CONNECTION  0x01
+#define BT_ESCO_CONNECTION 0x02
+typedef uint8_t bt_hci_connection_link_type_t;
+
+/*BT_HCI_EVT_CONNECTION_REQUEST*/
+typedef struct {
+	bt_bd_addr_t address;
+	uint32_t cod:24;
+	uint32_t link_type;
+} BT_PACKED bt_hci_connection_request_t;
+
+#define BT_ROLE_MASTER  0x00
+#define BT_ROLE_SLAVE   0x01
+typedef uint8_t bt_role_t;
+
+/*BT_HCI_CMD_ACCEPT_CONNECTION_REQUEST*/
+typedef struct {
+	bt_bd_addr_t address;
+	bt_role_t role;
+} BT_PACKED bt_hci_accept_connection_request_t;
+
+
 #define BT_HCI_GET_EVT_PARAM(packet, _evt_struct_)		((_evt_struct_ *)((uint8_t *)packet + BT_HCI_EVT_HEADER_SIZE))
 #define BT_HCI_GET_CMD_COMPLETE_EVT_PARAM(cmd_complete) ((uint8_t *)&(cmd_complete->data))
 #define BT_HCI_GET_NOCP_EVT_PARAM(nocp)					(0)

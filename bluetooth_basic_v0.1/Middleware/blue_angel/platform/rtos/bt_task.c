@@ -18,9 +18,9 @@ void vBT_Task(void *pvParameters)
     /*BT_ASSERT(CUNIT_SUCCESS == cunit_add_test_case("bt_linknode_test", bt_linknode_test));
     BT_ASSERT(CUNIT_SUCCESS == cunit_add_test_case("bt_memory_test", bt_memory_test));
     BT_ASSERT(CUNIT_SUCCESS == cunit_add_test_case("bt_timer_test", bt_timer_test));
-    BT_ASSERT(CUNIT_SUCCESS == cunit_add_test_case("bt_hci_test", bt_hci_test));
+    BT_ASSERT(CUNIT_SUCCESS == cunit_add_test_case("bt_hci_test", bt_hci_test));*/
 	BT_ASSERT(CUNIT_SUCCESS == cunit_add_test_case("bt_gap_test", bt_gap_test));
-    BT_ASSERT(cunit_test_start() == CUNIT_SUCCESS);*/
+    BT_ASSERT(cunit_test_start() == CUNIT_SUCCESS);
 #endif
     while (1) {
         bt_task_take_semaphore();
