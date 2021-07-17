@@ -209,7 +209,7 @@ uint8_t comGetChar(COM_PORT_E _ucPort, uint8_t *_pByte)
 /*
 *********************************************************************************************************
 *	函 数 名: comGetChar
-*	功能说明: 从串口缓冲区读取1字节，非阻塞。无论有无数据均立即返回
+*	功能说明: 从串口缓冲区读取n字节，非阻塞。无论有无数据均立即返回
 *	形    参: _ucPort: 端口号(COM1 - COM6)
 *			  _pBuf: 接收到的数据存放在这个地址
 *			  _usLen: 准备读取的数据长度
@@ -274,6 +274,26 @@ uint16_t comGetBuf(COM_PORT_E _ucPort, uint8_t *_pBuf, const uint16_t _usLenToRe
 		ENABLE_INT();
 		return _usLenToRead;
 	}
+}
+
+/*
+*********************************************************************************************************
+*	函 数 名: comClearTxFifo
+*	功能说明: 获取串口缓冲区available buffer length
+*	形    参: _ucPort: 端口号(COM1 - COM6)
+*	返 回 值: 无
+*********************************************************************************************************
+*/
+uint16_t comGetRxFifoAvailableBufferLength(COM_PORT_E _ucPort)
+{
+	UART_T *pUart;
+
+	pUart = ComToUart(_ucPort);
+	if (pUart == 0)
+	{
+		return 0;
+	}
+	return pUart->usRxCount;
 }
 
 /*
@@ -491,7 +511,7 @@ void RS485_ReciveNew(uint8_t _byte)
 *********************************************************************************************************
 */
 extern void bt_driver_recieve_data_from_controller(uint8_t data);
-extern void at_command_parsing(uint8_t data);
+extern void at_command_uart_rx_isr_handler(uint8_t data);
 static void UartVarInit(void)
 {
 #if UART1_FIFO_EN == 1
@@ -508,7 +528,7 @@ static void UartVarInit(void)
 	g_tUart1.usTxCount = 0;						/* 待发送的数据个数 */
 	g_tUart1.SendBefor = 0;						/* 发送数据前的回调函数 */
 	g_tUart1.SendOver = 0;						/* 发送完毕后的回调函数 */
-	g_tUart1.ReciveNew = at_command_parsing;	/* 接收到新数据后的回调函数 */
+	g_tUart1.ReciveNew = at_command_uart_rx_isr_handler;	/* 接收到新数据后的回调函数 */
 #endif
 
 #if UART2_FIFO_EN == 1

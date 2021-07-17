@@ -172,101 +172,41 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>74</LineNumber>
+          <LineNumber>156</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134237548</Address>
+          <Address>134240554</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\..\Middleware\blue_angel\src\core\hci\bt_hci.c</Filename>
+          <Filename>..\..\Middleware\at_command\at_command.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\output\../../Middleware/blue_angel/src/core/hci/bt_hci.c\74</Expression>
+          <Expression>\\output\../../Middleware/at_command/at_command.c\156</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>50</LineNumber>
+          <LineNumber>149</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134236130</Address>
+          <Address>134240484</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>..\..\Middleware\blue_angel\src\core\gap\bt_gap_connection.c</Filename>
+          <Filename>..\..\Middleware\at_command\at_command.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\output\../../Middleware/blue_angel/src/core/gap/bt_gap_connection.c\50</Expression>
+          <Expression>\\output\../../Middleware/at_command/at_command.c\149</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>bt_fixed_mm_size_table</ItemText>
-        </Ww>
-        <Ww>
-          <count>1</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>bt_fixed_mm_header_list[BT_FIXED_MM_MAX]</ItemText>
-        </Ww>
-        <Ww>
-          <count>2</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>bt_timer_fixed_memory[(sizeof(bt_timer_t)) * 5]</ItemText>
-        </Ww>
-        <Ww>
-          <count>3</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>bt_fixed_mm_cb_list</ItemText>
-        </Ww>
-        <Ww>
-          <count>4</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>bt_tx_buf</ItemText>
-        </Ww>
-        <Ww>
-          <count>5</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>bt_timer_list</ItemText>
-        </Ww>
-        <Ww>
-          <count>6</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>g_tUart2</ItemText>
-        </Ww>
-        <Ww>
-          <count>7</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>buffer[buffer_index++]</ItemText>
-        </Ww>
-        <Ww>
-          <count>8</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>data_length</ItemText>
-        </Ww>
-        <Ww>
-          <count>9</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>blue_angel</ItemText>
-        </Ww>
-        <Ww>
-          <count>10</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>blue_angel</ItemText>
-        </Ww>
-        <Ww>
-          <count>11</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>g_message</ItemText>
-        </Ww>
-        <Ww>
-          <count>12</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>g_parse_state</ItemText>
+          <ItemText>g_parse_context</ItemText>
         </Ww>
       </WatchWindow1>
       <WatchWindow2>

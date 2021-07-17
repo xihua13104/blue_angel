@@ -17,7 +17,7 @@
 
 #define AT_COMMAND_NAME_MAX_LENGTH	20
 #define AT_COMMAND_ITEM_MAX_COUNT	20
-#define AT_COMMAND_QUEUE_LENGTH		10
+#define AT_COMMAND_MAX_LENGTH		50
 
 #define AT_COMMAND_HEADER_A	   'A'
 #define AT_COMMAND_HEADER_T    'T'
@@ -26,8 +26,8 @@
 #define AT_COMMAND_TAIL_R	   0x0D
 #define AT_COMMAND_TAIL_N      0x0A
 
-#define AT_COMMAND_HEADER_LENGTH 2
-#define AT_COMMAND_TAIL_LENGTH	 2
+#define AT_COMMAND_HEADER_LENGTH 3 //"AT+"
+#define AT_COMMAND_TAIL_LENGTH	 2 //"\r\n"
 #define AT_COMMAND_PARSE_TIMEOUT_LENGTH 100
 
 typedef enum {
@@ -41,24 +41,14 @@ typedef enum {
 typedef void (*at_command_handler_t)(void *param, uint8_t param_length);
 
 typedef struct {
-	//const char name[AT_COMMAND_NAME_MAX_LENGTH];
 	const char *name;
 	at_command_handler_t handler;
-	//uint32_t timeout;
 } at_command_item_t;
 
-
+#if 0
 #define AT_COMMAND_ACTIVE    0
 #define AT_COMMAND_EXECUTION 1
 typedef uint8_t at_command_mode_t;
-
-typedef struct {
-	at_command_mode_t mode;
-	uint8_t at_cmd_tatal_length;
-	uint8_t at_cmd_name_length;
-	uint8_t at_cmd_param_offset;
-	uint8_t at_cmd_param_length;
-} at_command_queue_message_t;
 
 typedef enum {
     AT_COMMAND_WAIT_4_HEADER_A,
@@ -69,6 +59,15 @@ typedef enum {
 	AT_COMMAND_WAIT_4_TAIL_R,
 	AT_COMMAND_WAIT_4_TAIL_N,
 } at_command_parse_state_t;
+#endif
+
+typedef struct {
+	uint8_t *buffer;
+	uint8_t at_cmd_tatal_length;
+	uint8_t at_cmd_name_length;
+	uint8_t at_cmd_param_offset;
+	uint8_t at_cmd_param_length;
+} at_command_parse_t;
 
 typedef enum {
 	AT_COMMAND_STATE_IDLE = 0,
@@ -94,7 +93,7 @@ at_command_status_t at_command_deinit(void);
 
 void vTaskATCommand(void *pvParameters);
 
-void at_command_parsing(uint8_t data);
+void at_command_uart_rx_isr_handler(uint8_t data);
 
 void at_command_send_response(at_command_response_t *response);
 

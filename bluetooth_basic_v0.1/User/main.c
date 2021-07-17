@@ -104,14 +104,14 @@ static void AppTaskCreate (void)
                  "vTaskATCommand",     	/* 任务名    */
                  512,               	/* 任务栈大小，单位word，也就是4字节 */
                  NULL,              	/* 任务参数  */
-                 1,                 	/* 任务优先级*/
+                 2,                 	/* 任务优先级*/
                  &vHandleTaskATCommand );  /* 任务句柄  */
 	
     xTaskCreate( vBT_Task,	      	    
                  "vBT_Task",     	    
                  512,               	
                  NULL,              	
-                 1,                 	
+                 4,                 	
                  &xHandleTaskBT );
 }
 
