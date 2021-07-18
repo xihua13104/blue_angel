@@ -157,6 +157,50 @@ void bt_os_layer_give_semaphore_from_isr(uint32_t semaphore)
     xSemaphoreGiveFromISR((SemaphoreHandle_t)semaphore, &pxHigherPriorityTaskWoken);
 }
 
+uint32_t bt_os_layer_create_queue(uint32_t queue_length, uint32_t item_size)
+{
+	return (uint32_t)xQueueCreate(queue_length, item_size);
+}
+
+void bt_os_layer_delete_queue(uint32_t queue_handle)
+{
+	vQueueDelete((QueueHandle_t)queue_handle);
+}
+
+void bt_os_layer_queue_send(uint32_t queue_handle, const void * const item_to_queue, uint32_t block_time)
+{
+    if (xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED) {
+        return;
+    }
+	xQueueSend((QueueHandle_t)queue_handle, item_to_queue, block_time);
+}
+
+void bt_os_layer_queue_send_from_isr(uint32_t queue_handle, const void * const item_to_queue)
+{
+    BaseType_t pxHigherPriorityTaskWoken;
+    if (xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED) {
+        return;
+    }
+	xQueueSendFromISR((QueueHandle_t)queue_handle, item_to_queue, &pxHigherPriorityTaskWoken);
+}
+
+void bt_os_layer_queue_receive(uint32_t queue_handle, void * const buffer, uint32_t block_time)
+{
+    if (xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED) {
+        return;
+    }
+	xQueueReceive((QueueHandle_t)queue_handle, buffer, block_time);
+}
+
+void bt_os_layer_queue_receive_from_isr(uint32_t queue_handle, void * const buffer)
+{
+    BaseType_t pxHigherPriorityTaskWoken;
+    if (xTaskGetSchedulerState() == taskSCHEDULER_NOT_STARTED) {
+        return;
+    }
+	xQueueReceiveFromISR((QueueHandle_t)queue_handle, buffer, &pxHigherPriorityTaskWoken);
+}
+
 bool bt_os_layer_is_isr_active()
 {
     /*

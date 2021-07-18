@@ -10,16 +10,19 @@
 #include "bt_timer.h"
 #include "bt_driver.h"
 #include "bt_hci.h"
-
+#if 0
 typedef struct {
     uint32_t event;
     uint16_t data_length[BT_TASK_EVENT_MAX];
     void *data[BT_TASK_EVENT_MAX];
 } bt_task_event_notify_t;
+static bt_task_event_notify_t notify = {0};
+#endif
 
 static uint32_t bt_task_mutex = 0;
 static uint32_t bt_task_semaphore = 0;
-static bt_task_event_notify_t notify = {0};
+static uint32_t bt_task_queue = 0;
+static uint32_t bt_task_event = 0;
 void bt_task_take_semaphore()
 {
     if (bt_os_layer_is_isr_active()) {
@@ -42,12 +45,9 @@ static void bt_task_interrupt_trigger()
 void bt_task_event_handler()
 {
     uint32_t event = 0;
-    uint16_t length_table[BT_TASK_EVENT_MAX] = {0};
+    uint16_t rx_data_length = 0;
     bt_os_layer_disable_interrupt();
-    event = notify.event;
-    bt_memcpy(length_table, notify.data_length, sizeof(length_table));
-    notify.event = 0;
-    bt_memset(notify.data_length, 0, sizeof(length_table));
+    event = bt_task_event;
     bt_os_layer_enable_interrupt();
 
     bt_os_layer_take_mutex(bt_task_mutex);
@@ -55,7 +55,8 @@ void bt_task_event_handler()
         bt_timer_check_timeout_handler();
     }
     if (event & (1 << BT_TASK_EVENT_RX)) {
-        bt_driver_rx(length_table[BT_TASK_EVENT_RX]);
+        bt_os_layer_queue_receive(bt_task_queue, &rx_data_length, 10);
+        bt_driver_rx(rx_data_length);
         bt_hci_packet_process();
     }
     if (event & (1 << BT_TASK_EVENT_TX)) {
@@ -71,11 +72,17 @@ void bt_task_event_notify(uint32_t event, uint16_t data_length, void *data)
 {
     BT_ASSERT(event < BT_TASK_EVENT_MAX);
     bt_os_layer_disable_interrupt();
-    notify.event |= (1 << event);
-    notify.data_length[event] = data_length;
-    notify.data[event] = data;
+    bt_task_event = 1 << event;
     bt_os_layer_enable_interrupt();
     bt_task_interrupt_trigger();
+    if (BT_TASK_EVENT_RX == event) {
+        BT_ASSERT(bt_task_queue);
+        if (bt_os_layer_is_isr_active()) {
+            bt_os_layer_queue_send_from_isr(bt_task_queue, &data_length);
+        } else {
+            bt_os_layer_queue_send(bt_task_queue, &data_length, 10);
+        }
+    }
 }
 
 static void bt_timer_timeout_callback()
@@ -85,7 +92,7 @@ static void bt_timer_timeout_callback()
 
 void bt_task_init()
 {
-	bt_driver_init();
+    bt_driver_init();
     bt_os_layer_init_timer();
     bt_os_layer_register_timer_callback(bt_timer_timeout_callback);
     if (bt_task_mutex == 0) {
@@ -95,6 +102,10 @@ void bt_task_init()
     if (bt_task_semaphore == 0) {
         bt_task_semaphore = bt_os_layer_create_semaphore();
         BT_ASSERT(bt_task_semaphore);
+    }
+    if (bt_task_queue == 0) {
+        bt_task_queue = bt_os_layer_create_queue(20, sizeof(uint16_t));
+        BT_ASSERT(bt_task_queue);
     }
     //bt_driver_init();
 }
@@ -109,6 +120,10 @@ void bt_task_deinit()
     if (bt_task_semaphore) {
         bt_os_layer_delete_semaphore(bt_task_semaphore);
         bt_task_semaphore = 0;
+    }
+    if (bt_task_queue) {
+        bt_os_layer_delete_queue(bt_task_queue);
+        bt_task_queue = 0;
     }
 }
 

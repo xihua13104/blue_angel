@@ -106,6 +106,9 @@ void bt_driver_rx(uint16_t length)
 {
     bt_hci_spec_packet_t *hci_spec_packet = NULL;
     uint16_t acture_length = 0;
+	if (length == 0) {
+		return;
+	}
     hci_spec_packet = (bt_hci_spec_packet_t *)BT_ALLOCATE_HCI_PACKET_WITH_NODE(BT_MEMORY_RX, length);
     BT_ASSERT(hci_spec_packet != NULL);
 	/*假如这里RX OOM了要如何处理？？？*/

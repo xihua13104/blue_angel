@@ -52,6 +52,18 @@ void bt_os_layer_give_semaphore(uint32_t semaphore);
 
 void bt_os_layer_give_semaphore_from_isr(uint32_t semaphore);
 
+uint32_t bt_os_layer_create_queue(uint32_t queue_length, uint32_t item_size);
+
+void bt_os_layer_delete_queue(uint32_t queue_handle);
+
+void bt_os_layer_queue_send(uint32_t queue_handle, const void * const item_to_queue, uint32_t block_time);
+
+void bt_os_layer_queue_send_from_isr(uint32_t queue_handle, const void * const item_to_queue);
+
+void bt_os_layer_queue_receive(uint32_t queue_handle, void * const buffer, uint32_t block_time);
+
+void bt_os_layer_queue_receive_from_isr(uint32_t queue_handle, void * const buffer);
+
 bool bt_os_layer_is_isr_active(void);
 
 bool bt_os_layer_is_os_scheduler_start(void);

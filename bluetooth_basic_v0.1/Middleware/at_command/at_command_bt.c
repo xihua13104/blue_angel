@@ -32,7 +32,7 @@ void at_command_bt_system_it_handler(void *param, uint8_t param_length)
 		bt_power_off();
 		strcpy(response.buffer, "OK");
 	} else if (0 == strncmp((char *)param, "INQ", param_length)) {
-		bt_gap_inquiry(0x009E8B33, 30, 20);
+		bt_gap_inquiry(0x009E8B33, 10, 20);
 		strcpy(response.buffer, "OK");
 	} else {
 		strcpy(response.buffer, "Error, Unknown AT command");
