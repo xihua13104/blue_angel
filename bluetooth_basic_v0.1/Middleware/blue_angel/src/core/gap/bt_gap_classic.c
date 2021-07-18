@@ -31,3 +31,15 @@ bt_status_t bt_gap_set_scan_mode(bt_gap_scan_mode_t scan_mode)
 	hci_cmd.param = (void *)&scan_mode;
 	return bt_hci_cmd_send(hci_cmd, 0, BT_HCI_CMD_TIMEOUT, NULL);
 }
+
+bt_status_t bt_gap_inquiry(bt_hci_lap_t lap, uint8_t length, uint8_t max_response_number)
+{
+	bt_gap_inquiry_t inquiry;
+	bt_hci_cmd_t hci_cmd = {BT_HCI_CMD_INQUIRY, 0, NULL};
+	inquiry.lap = lap;
+	inquiry.length = length;
+	inquiry.max_response_number = max_response_number;
+	hci_cmd.length = sizeof(bt_gap_inquiry_t);
+	hci_cmd.param = (void *)&inquiry;
+	return bt_hci_cmd_send(hci_cmd, 0, BT_HCI_CMD_TIMEOUT, NULL);
+}

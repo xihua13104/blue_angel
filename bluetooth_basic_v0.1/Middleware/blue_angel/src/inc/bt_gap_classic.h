@@ -16,6 +16,12 @@ typedef struct {
 	uint8_t eir[240];
 } BT_PACKED bt_gap_write_eir_t;
 
+typedef struct {
+	uint32_t lap:24;
+	uint32_t length:8;
+	uint8_t max_response_number;
+} BT_PACKED bt_gap_inquiry_t;
+
 #define BT_GAP_SCAN_MODE_NOT_ACCESSIABLE 	0
 #define BT_GAP_SCAN_MODE_DISCOVERABLE_ONLY	1
 #define BT_GAP_SCAN_MODE_CONNECTABLE_ONLY	2
@@ -69,5 +75,7 @@ typedef struct {
 #define BT_DT_SIMPLE_PAIRING_RANDOMIZER_R_256                    0x1E
 #define BT_DT_3D_INFORMATION_DATA                                0x3D
 #define BT_DT_MANUFACTURER_SPECIFIC_DATA                         0xFF
+
+bt_status_t bt_gap_inquiry(bt_hci_lap_t lap, uint8_t length, uint8_t max_response_number);
 
 #endif//__BT_CLASSIC_H__

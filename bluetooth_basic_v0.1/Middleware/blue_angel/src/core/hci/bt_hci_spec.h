@@ -376,6 +376,9 @@ typedef struct {
 	bt_role_t role;
 } BT_PACKED bt_hci_accept_connection_request_t;
 
+#define BT_HCI_LAP_GIAC	0x009E8B33
+#define BT_HCI_LAP_LIAC	0x00000000
+typedef uint32_t bt_hci_lap_t;
 
 #define BT_HCI_GET_EVT_PARAM(packet, _evt_struct_)		((_evt_struct_ *)((uint8_t *)packet + BT_HCI_EVT_HEADER_SIZE))
 #define BT_HCI_GET_CMD_COMPLETE_EVT_PARAM(cmd_complete) ((uint8_t *)&(cmd_complete->data))
