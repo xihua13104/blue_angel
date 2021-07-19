@@ -172,9 +172,9 @@
         <Bp>
           <Number>0</Number>
           <Type>0</Type>
-          <LineNumber>156</LineNumber>
+          <LineNumber>221</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134240554</Address>
+          <Address>134228820</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -183,14 +183,14 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\..\Middleware\at_command\at_command.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\output\../../Middleware/at_command/at_command.c\156</Expression>
+          <Expression>\\output\../../Middleware/at_command/at_command.c\221</Expression>
         </Bp>
         <Bp>
           <Number>1</Number>
           <Type>0</Type>
-          <LineNumber>149</LineNumber>
+          <LineNumber>157</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>134240484</Address>
+          <Address>134241102</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
@@ -199,7 +199,23 @@
           <BreakIfRCount>1</BreakIfRCount>
           <Filename>..\..\Middleware\at_command\at_command.c</Filename>
           <ExecCommand></ExecCommand>
-          <Expression>\\output\../../Middleware/at_command/at_command.c\149</Expression>
+          <Expression>\\output\../../Middleware/at_command/at_command.c\157</Expression>
+        </Bp>
+        <Bp>
+          <Number>2</Number>
+          <Type>0</Type>
+          <LineNumber>204</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>134228724</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>..\..\Middleware\at_command\at_command.c</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\output\../../Middleware/at_command/at_command.c\204</Expression>
         </Bp>
       </Breakpoint>
       <WatchWindow1>
@@ -400,7 +416,7 @@
 
   <Group>
     <GroupName>MDK-ARM</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <RteFlg>0</RteFlg>

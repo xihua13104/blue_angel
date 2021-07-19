@@ -197,13 +197,16 @@ static bt_status_t bt_gap_power_on_process(bool is_timeout, uint32_t timer_id, u
 
 bt_status_t bt_power_on()
 {
+	bt_status_t status;
 	if (BT_POWER_OFF != blue_angel.power_status) {
 		return BT_STATUS_FAIL;
 	}
+	BT_MUTEX_LOCK();
 	bt_memset(&blue_angel, 0, sizeof(blue_angel));
 	blue_angel.power_status = BT_POWER_SWITCHING_ON;
-
-	return bt_gap_power_on_process(false, BT_GAP_INVALID_TIMER_ID, 0, NULL);
+	status = bt_gap_power_on_process(false, BT_GAP_INVALID_TIMER_ID, 0, NULL);
+	BT_MUTEX_UNLOCK();
+	return status;
 }
 
 static bt_status_t bt_gap_power_off_process(bool is_timeout, uint32_t timer_id, uint32_t data, const void *param)
@@ -219,11 +222,16 @@ static bt_status_t bt_gap_power_off_process(bool is_timeout, uint32_t timer_id, 
 
 bt_status_t bt_power_off()
 {
+	bt_status_t status;
 	bt_hci_cmd_t reset_cmd = {BT_HCI_CMD_RESET, 0, NULL};
 	if (BT_POWER_ON != blue_angel.power_status) {
 		return BT_STATUS_FAIL;
 	}
-	return bt_hci_cmd_send(reset_cmd, 0, BT_HCI_CMD_TIMEOUT, bt_gap_power_off_process);
+	BT_MUTEX_LOCK();
+	status = bt_hci_cmd_send(reset_cmd, 0, BT_HCI_CMD_TIMEOUT, bt_gap_power_off_process);
+	BT_MUTEX_UNLOCK();
+
+	return status;
 }
 
 bt_status_t bt_gap_evt_handler(uint32_t timer_id, void *packet)

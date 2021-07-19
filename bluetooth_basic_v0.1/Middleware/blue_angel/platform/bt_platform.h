@@ -21,11 +21,22 @@
 #include <stdbool.h>
 #define BT_ASSERT(expr) assert_param(expr)
 
+#if 0
 #define BT_TASK_EVENT_TIMER_EXPIRED	0x00
 #define BT_TASK_EVENT_RX			0x01
 #define BT_TASK_EVENT_TX			0x02
 #define BT_TASK_EVENT_OOM			0x03
 #define BT_TASK_EVENT_MAX			0x04
+#endif
+
+#define BT_TASK_EVENT_TIMER_EXPIRED	0x01
+#define BT_TASK_EVENT_RX			0x02
+#define BT_TASK_EVENT_TX			0x04
+#define BT_TASK_EVENT_OOM			0x08
+
+#define BT_MUTEX_LOCK() bt_task_mutex_lock()
+
+#define BT_MUTEX_UNLOCK() bt_task_mutex_unlock()
 
 void bt_timer_start_timer(uint32_t timer_length);
 
@@ -43,9 +54,14 @@ void bt_task_take_semaphore(void);
 
 void bt_task_event_handler(void);
 
-void bt_task_event_notify(uint32_t event, uint16_t data_length, void *data);
+void bt_task_rx_nofity(uint16_t data_length);
 
 void bt_task_init(void);
 
 void bt_task_deinit(void);
+
+void bt_task_mutex_lock(void);
+
+void bt_task_mutex_unlock(void);
+
 #endif

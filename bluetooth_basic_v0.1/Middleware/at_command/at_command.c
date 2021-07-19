@@ -71,9 +71,6 @@ at_command_status_t at_command_init(void)
         if (0 == at_command_semaphore) {
             return AT_COMMAND_FAIL;
         }
-        if (xTaskGetSchedulerState() == taskSCHEDULER_RUNNING) {
-            xSemaphoreGive((SemaphoreHandle_t)at_command_semaphore);;
-        }
     }
     if (at_command_timer_handle == NULL) {
         at_command_timer_handle = xTimerCreate("AT_CMD_Timer", 0xffff, pdFALSE, NULL, at_command_timeout_callback);

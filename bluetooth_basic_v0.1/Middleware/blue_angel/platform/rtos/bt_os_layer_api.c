@@ -77,14 +77,26 @@ uint32_t bt_os_layer_get_system_tick()
 
 void bt_os_layer_disable_interrupt()
 {
+	if (bt_os_layer_is_isr_active()) {
+		taskENTER_CRITICAL_FROM_ISR();
+	} else {
+		taskENTER_CRITICAL();
+	}
+
     //taskENTER_CRITICAL();
-    __set_PRIMASK(1);
+    //__set_PRIMASK(1);
 }
 
 void bt_os_layer_enable_interrupt()
 {
-    //taskEXIT_CRITICAL();
-    __set_PRIMASK(0);
+	if (bt_os_layer_is_isr_active()) {
+		taskEXIT_CRITICAL_FROM_ISR(0);
+	} else {
+		taskEXIT_CRITICAL();
+	}
+
+	//taskEXIT_CRITICAL();
+    //__set_PRIMASK(0);
 }
 
 uint32_t bt_os_layer_create_mutex()
@@ -138,6 +150,7 @@ void bt_os_layer_take_semaphore_from_isr(uint32_t semaphore)
         return;
     }
     xSemaphoreTakeFromISR((SemaphoreHandle_t)semaphore, &pxHigherPriorityTaskWoken);
+	portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
 }
 
 void bt_os_layer_give_semaphore(uint32_t semaphore)
@@ -155,6 +168,7 @@ void bt_os_layer_give_semaphore_from_isr(uint32_t semaphore)
         return;
     }
     xSemaphoreGiveFromISR((SemaphoreHandle_t)semaphore, &pxHigherPriorityTaskWoken);
+	portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
 }
 
 uint32_t bt_os_layer_create_queue(uint32_t queue_length, uint32_t item_size)
@@ -182,6 +196,7 @@ void bt_os_layer_queue_send_from_isr(uint32_t queue_handle, const void * const i
         return;
     }
 	xQueueSendFromISR((QueueHandle_t)queue_handle, item_to_queue, &pxHigherPriorityTaskWoken);
+	portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
 }
 
 void bt_os_layer_queue_receive(uint32_t queue_handle, void * const buffer, uint32_t block_time)
@@ -199,6 +214,7 @@ void bt_os_layer_queue_receive_from_isr(uint32_t queue_handle, void * const buff
         return;
     }
 	xQueueReceiveFromISR((QueueHandle_t)queue_handle, buffer, &pxHigherPriorityTaskWoken);
+	portYIELD_FROM_ISR(pxHigherPriorityTaskWoken);
 }
 
 bool bt_os_layer_is_isr_active()

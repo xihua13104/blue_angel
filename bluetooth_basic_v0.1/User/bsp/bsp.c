@@ -17,8 +17,8 @@
 *********************************************************************************************************
 */
 #include "bsp.h"
-
-
+#include "stdbool.h"
+extern bool bt_os_layer_is_isr_active(void);
 /*
 *********************************************************************************************************
 *	函 数 名: bsp_Init
@@ -46,4 +46,21 @@ void bsp_Init(void)
 	
 }
 
+void bsp_enable_interrupt()
+{
+	if (bt_os_layer_is_isr_active()) {
+		taskEXIT_CRITICAL_FROM_ISR(0);
+	} else {
+		taskEXIT_CRITICAL();
+	}
+}
+
+void bsp_disable_interrupt()
+{
+	if (bt_os_layer_is_isr_active()) {
+		taskENTER_CRITICAL_FROM_ISR();
+	} else {
+		taskENTER_CRITICAL();
+	}
+}
 /***************************** 安富莱电子 www.armfly.com (END OF FILE) *********************************/

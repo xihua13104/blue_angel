@@ -15,31 +15,43 @@
 
 bt_status_t bt_gap_write_eir(uint8_t *eir_data, uint8_t length)
 {
+	bt_status_t status;
 	bt_gap_write_eir_t write_eir;
 	bt_hci_cmd_t hci_cmd = {BT_HCI_CMD_WRITE_EXT_INQ_RESPONSE, 0, NULL};
+	BT_MUTEX_LOCK();
 	write_eir.fec_required = 1;
 	bt_memcpy(write_eir.eir, eir_data, length);
 	hci_cmd.length = sizeof(bt_gap_write_eir_t);
 	hci_cmd.param = (void *)&write_eir;
-	return bt_hci_cmd_send(hci_cmd, 0, BT_HCI_CMD_TIMEOUT, NULL);
+	status = bt_hci_cmd_send(hci_cmd, 0, BT_HCI_CMD_TIMEOUT, NULL);
+	BT_MUTEX_UNLOCK();
+	return status;
 }
 
 bt_status_t bt_gap_set_scan_mode(bt_gap_scan_mode_t scan_mode)
 {
+	bt_status_t status;
 	bt_hci_cmd_t hci_cmd = {BT_HCI_CMD_WRITE_SCAN_ENABLE, 0, NULL};
+	BT_MUTEX_LOCK();
 	hci_cmd.length = sizeof(bt_gap_scan_mode_t);
 	hci_cmd.param = (void *)&scan_mode;
-	return bt_hci_cmd_send(hci_cmd, 0, BT_HCI_CMD_TIMEOUT, NULL);
+	status = bt_hci_cmd_send(hci_cmd, 0, BT_HCI_CMD_TIMEOUT, NULL);
+	BT_MUTEX_UNLOCK();
+	return status;
 }
 
 bt_status_t bt_gap_inquiry(bt_hci_lap_t lap, uint8_t length, uint8_t max_response_number)
 {
+	bt_status_t status;
 	bt_gap_inquiry_t inquiry;
 	bt_hci_cmd_t hci_cmd = {BT_HCI_CMD_INQUIRY, 0, NULL};
+	BT_MUTEX_LOCK();
 	inquiry.lap = lap;
 	inquiry.length = length;
 	inquiry.max_response_number = max_response_number;
 	hci_cmd.length = sizeof(bt_gap_inquiry_t);
 	hci_cmd.param = (void *)&inquiry;
-	return bt_hci_cmd_send(hci_cmd, 0, BT_HCI_CMD_TIMEOUT, NULL);
+	status = bt_hci_cmd_send(hci_cmd, 0, BT_HCI_CMD_TIMEOUT, NULL);
+	BT_MUTEX_UNLOCK();
+	return status;
 }

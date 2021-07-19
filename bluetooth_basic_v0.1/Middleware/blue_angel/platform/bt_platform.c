@@ -23,6 +23,19 @@ static uint32_t bt_task_mutex = 0;
 static uint32_t bt_task_semaphore = 0;
 static uint32_t bt_task_queue = 0;
 static uint32_t bt_task_event = 0;
+
+void bt_task_mutex_lock()
+{
+	BT_ASSERT(bt_task_mutex);
+	bt_os_layer_take_mutex(bt_task_mutex);
+}
+
+void bt_task_mutex_unlock()
+{
+	BT_ASSERT(bt_task_mutex);
+	bt_os_layer_give_mutex(bt_task_mutex);
+}
+
 void bt_task_take_semaphore()
 {
     if (bt_os_layer_is_isr_active()) {
@@ -51,43 +64,43 @@ void bt_task_event_handler()
     bt_os_layer_enable_interrupt();
 
     bt_os_layer_take_mutex(bt_task_mutex);
-    if (event & (1 << BT_TASK_EVENT_TIMER_EXPIRED)) {
+    if (event & (BT_TASK_EVENT_TIMER_EXPIRED)) {
         bt_timer_check_timeout_handler();
     }
-    if (event & (1 << BT_TASK_EVENT_RX)) {
+    if (event & (BT_TASK_EVENT_RX)) {
         bt_os_layer_queue_receive(bt_task_queue, &rx_data_length, 10);
         bt_driver_rx(rx_data_length);
         bt_hci_packet_process();
     }
-    if (event & (1 << BT_TASK_EVENT_TX)) {
+    if (event & (BT_TASK_EVENT_TX)) {
 
     }
-    if (event & (1 << BT_TASK_EVENT_OOM)) {
+    if (event & (BT_TASK_EVENT_OOM)) {
 
     }
     bt_os_layer_give_mutex(bt_task_mutex);
 }
 
-void bt_task_event_notify(uint32_t event, uint16_t data_length, void *data)
+void bt_task_rx_nofity(uint16_t data_length)
 {
-    BT_ASSERT(event < BT_TASK_EVENT_MAX);
     bt_os_layer_disable_interrupt();
-    bt_task_event = 1 << event;
+    bt_task_event |= BT_TASK_EVENT_RX;
     bt_os_layer_enable_interrupt();
     bt_task_interrupt_trigger();
-    if (BT_TASK_EVENT_RX == event) {
-        BT_ASSERT(bt_task_queue);
-        if (bt_os_layer_is_isr_active()) {
-            bt_os_layer_queue_send_from_isr(bt_task_queue, &data_length);
-        } else {
-            bt_os_layer_queue_send(bt_task_queue, &data_length, 10);
-        }
+    BT_ASSERT(bt_task_queue);
+    if (bt_os_layer_is_isr_active()) {
+        bt_os_layer_queue_send_from_isr(bt_task_queue, &data_length);
+    } else {
+        bt_os_layer_queue_send(bt_task_queue, &data_length, 10);
     }
 }
 
 static void bt_timer_timeout_callback()
 {
-    bt_task_event_notify(BT_TASK_EVENT_TIMER_EXPIRED, 0, NULL);
+    bt_os_layer_disable_interrupt();
+    bt_task_event |= BT_TASK_EVENT_TIMER_EXPIRED;
+    bt_os_layer_enable_interrupt();
+    bt_task_interrupt_trigger();
 }
 
 void bt_task_init()

@@ -33,8 +33,8 @@
 #if USE_FreeRTOS == 1
 	#include "FreeRTOS.h"
 	#include "task.h"
-	#define DISABLE_INT()    //taskENTER_CRITICAL()
-	#define ENABLE_INT()     //taskEXIT_CRITICAL()
+	#define DISABLE_INT()    bsp_disable_interrupt() //taskENTER_CRITICAL()
+	#define ENABLE_INT()     bsp_enable_interrupt() //taskEXIT_CRITICAL()
 #else
 	/* 开关全局中断的宏 */
 	#define ENABLE_INT()	__set_PRIMASK(0)	/* 使能全局中断 */
