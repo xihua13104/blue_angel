@@ -44,6 +44,8 @@ typedef uint32_t bt_msg_type_t;
 
 typedef uint8_t bt_bd_addr_t[BD_ADDR_LENGTH];
 
+typedef uint8_t bt_data_t[1];
+
 #endif //__BT_TYPE_H__
 
 

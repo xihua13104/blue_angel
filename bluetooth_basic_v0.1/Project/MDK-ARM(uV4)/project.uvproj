@@ -374,7 +374,7 @@
               <MiscControls>--diag_suppress=870</MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F10X_HD,NDEBUG</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\Libraries\CMSIS\Device\ST\STM32F10x\Include;..\..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\..\User\bsp;..\..\User\bsp\inc;..\..\User;..\..\Libraries\CMSIS\Include;..\..\FreeRTOS\include;..\..\FreeRTOS\portable\RVDS\ARM_CM3;..\..\Middleware\blue_angel\inc;..\..\Middleware\bt_callback_manager;..\..\Middleware\blue_angel\btif;..\..\Middleware\blue_angel\common;..\..\Middleware\blue_angel\platform;..\..\Middleware\blue_angel\src\common;..\..\Middleware\blue_angel\src\inc;..\..\Middleware\blue_angel\platform;..\..\Middleware\blue_angel\platform\rtos;..\..\Middleware\blue_angel\platform;..\..\Middleware\ut_manager\Cunit\Headers;..\..\Middleware\ut_manager\Cunit\interface;..\..\Middleware\blue_angel\platform\test;..\..\Middleware\blue_angel\driver;..\..\Middleware\blue_angel\src\core\hci;..\..\User\bt\inc;..\..\Middleware\bt_callback_manager;..\..\Middleware\at_command;..\..\Middleware\blue_angel\src\core\gap</IncludePath>
+              <IncludePath>..\..\Libraries\CMSIS\Device\ST\STM32F10x\Include;..\..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\..\User\bsp;..\..\User\bsp\inc;..\..\User;..\..\Libraries\CMSIS\Include;..\..\FreeRTOS\include;..\..\FreeRTOS\portable\RVDS\ARM_CM3;..\..\Middleware\blue_angel\inc;..\..\Middleware\bt_callback_manager;..\..\Middleware\blue_angel\btif;..\..\Middleware\blue_angel\common;..\..\Middleware\blue_angel\platform;..\..\Middleware\blue_angel\src\common;..\..\Middleware\blue_angel\src\inc;..\..\Middleware\blue_angel\platform;..\..\Middleware\blue_angel\platform\rtos;..\..\Middleware\blue_angel\platform;..\..\Middleware\ut_manager\Cunit\Headers;..\..\Middleware\ut_manager\Cunit\interface;..\..\Middleware\blue_angel\platform\test;..\..\Middleware\blue_angel\driver;..\..\Middleware\blue_angel\src\core\hci;..\..\User\bt\inc;..\..\Middleware\bt_callback_manager;..\..\Middleware\at_command;..\..\Middleware\blue_angel\src\core\gap;..\..\Middleware\blue_angel\src\core\l2cap</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -672,6 +672,16 @@
               <FileName>bt_config.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\Middleware\blue_angel\btif\bt_config.h</FilePath>
+            </File>
+            <File>
+              <FileName>bt_l2cap.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middleware\blue_angel\src\core\l2cap\bt_l2cap.c</FilePath>
+            </File>
+            <File>
+              <FileName>bt_l2cap_state_machine.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\Middleware\blue_angel\src\core\l2cap\bt_l2cap_state_machine.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -48,11 +48,7 @@ typedef struct {
 	bt_power_status_t power_status;
 	bt_bd_addr_t local_public_addr;
 	bt_bd_addr_t random_addr;
-	struct {
-		uint8_t cmd_credit;
-		uint16_t acl_credit;
-		uint16_t acl_length;
-	} bt_hci_flow_control;
+	bt_hci_flow_control_t hci_flow_control;
 	bt_linknode_t bt_gap_classic_connection;
 	bt_linknode_t bt_gap_le_connection;
 } bt_blue_angel_t;

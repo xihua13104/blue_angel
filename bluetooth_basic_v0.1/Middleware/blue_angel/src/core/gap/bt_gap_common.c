@@ -164,6 +164,7 @@ static bt_status_t bt_gap_power_on_process(bool is_timeout, uint32_t timer_id, u
 {
 	bt_status_t status = BT_STATUS_SUCCESS;
 	bt_gap_init_cmd_t *init_cmd = NULL;
+	bt_hci_read_buffer_size_evt_t *read_buffer_size_evt = NULL;
 
 	if (is_timeout) {
 		init_cmd = (bt_gap_init_cmd_t *)data;
@@ -180,6 +181,12 @@ static bt_status_t bt_gap_power_on_process(bool is_timeout, uint32_t timer_id, u
 			BT_GAP_LOG_INFO("[BT_GAP][COMMON] Local public addr = %2x-%2x-%2x-%2x-%2x-%2x\r\n", BT_EXPAND_ADDR(blue_angel.local_public_addr));
 			break;
 		case BT_HCI_TIMER_ID_TYPE_A(BT_HCI_CMD_READ_BUFFER_SIZE):
+			read_buffer_size_evt = (bt_hci_read_buffer_size_evt_t *)&BT_HCI_GET_EVT_PARAM(param, bt_hci_command_complete_t)->data;
+			blue_angel.hci_flow_control.acl_credit = read_buffer_size_evt->acl_credit;
+			blue_angel.hci_flow_control.acl_length = read_buffer_size_evt->acl_packet_length;
+			blue_angel.hci_flow_control.cmd_credit = 1;
+			blue_angel.hci_flow_control.is_acl_flow_controled = false;
+			blue_angel.hci_flow_control.is_cmd_flow_controled = false;
 			break;
 		default:
 			break;

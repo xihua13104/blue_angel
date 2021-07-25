@@ -14,8 +14,8 @@
 #include "bt_memory.h"
 #include "bt_hci_spec.h"
 
-#define BT_SHARE_BUFFER_LOCK()   taskENTER_CRITICAL()
-#define BT_SHARE_BUFFER_UNLOCK() taskEXIT_CRITICAL()
+#define BT_SHARE_BUFFER_LOCK()   bt_os_layer_disable_interrupt() //taskENTER_CRITICAL()
+#define BT_SHARE_BUFFER_UNLOCK() bt_os_layer_enable_interrupt() //taskEXIT_CRITICAL()
 
 #define BT_ALLOCATE_HCI_PACKET_WITH_NODE(memory_type, size) (bt_memory_allocate_packet(memory_type, sizeof(bt_hci_packet_header_t) + size) + sizeof(bt_hci_packet_header_t))
 #define BT_FREE_HCI_PACKET_WITH_NODE(memory_type, p)  		(bt_memory_free_packet(memory_type, (uint8_t *)p - sizeof(bt_hci_packet_header_t)))

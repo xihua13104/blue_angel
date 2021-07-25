@@ -12,6 +12,7 @@
 #include "bt_platform.h"
 #include "bt_driver.h"
 #include "bt_gap_internal.h"
+#include "bt_l2cap.h"
 
 bt_status_t bt_hci_cmd_send(bt_hci_cmd_t cmd, uint32_t data, uint32_t timeout, bt_hci_timeout_callback_t callback)
 {
@@ -43,6 +44,7 @@ bt_status_t bt_hci_cmd_send(bt_hci_cmd_t cmd, uint32_t data, uint32_t timeout, b
     }
     bt_hci_log(0, (uint8_t *)packet, BT_HCI_CMD_SIZE(packet));
     bt_driver_send_data_to_controller((uint8_t *)packet, BT_HCI_CMD_SIZE(packet));
+    BT_FREE_HCI_PACKET_WITH_NODE(BT_MEMORY_TX, packet);
     return status;
 }
 
@@ -53,32 +55,32 @@ bt_status_t bt_hci_evt_handler(bt_hci_spec_packet_t *packet)
     uint32_t timer_id = BT_MODULE_HCI | BT_HCI_TIMER_MASK_A;
     switch (evt_code) {
         case BT_HCI_EVT_COMMAND_COMPLETE:
-			timer_id |= BT_HCI_GET_EVT_PARAM(packet, bt_hci_command_complete_t)->cmd_code;
+            timer_id |= BT_HCI_GET_EVT_PARAM(packet, bt_hci_command_complete_t)->cmd_code;
             break;
         case BT_HCI_EVT_COMMAND_STATUS:
-			status = BT_HCI_GET_EVT_PARAM(packet, bt_hci_command_status_t)->status;
-			return status;
+            status = BT_HCI_GET_EVT_PARAM(packet, bt_hci_command_status_t)->status;
+            return status;
         case BT_HCI_EVT_NUMBER_OF_COMPLETED_PACKETS:
             break;
         case BT_HCI_EVT_LE_META:
-			break;
+            break;
         case BT_HCI_EVT_VENDOR_SPEC:
-			timer_id |= BT_HCI_CMD_VENDOR_CSR8X11;
+            timer_id |= BT_HCI_CMD_VENDOR_CSR8X11;
             break;
         default:
-        	timer_id |= BT_HCI_TIMER_MASK_B | evt_code;
+            timer_id |= BT_HCI_TIMER_MASK_B | evt_code;
             break;
     }
     status = bt_timer_cancel_and_callback(timer_id, (void *)packet);
     if (BT_STATUS_TIMER_NOT_FOUND == status) {
-		status = bt_gap_evt_handler(timer_id, (void *)packet);
+        status = bt_gap_evt_handler(timer_id, (void *)packet);
     }
     return status;
 }
 
 bt_status_t bt_hci_acl_handler(bt_hci_spec_packet_t *packet)
 {
-    return 0;
+    return bt_l2cap_rx_process(packet);
 }
 
 void bt_hci_packet_process()

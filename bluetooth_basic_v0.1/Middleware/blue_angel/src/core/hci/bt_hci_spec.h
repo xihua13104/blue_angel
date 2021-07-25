@@ -361,9 +361,9 @@ typedef uint8_t bt_hci_connection_link_type_t;
 
 /*BT_HCI_EVT_CONNECTION_REQUEST*/
 typedef struct {
-	bt_bd_addr_t address;
-	uint32_t cod:24;
-	uint32_t link_type;
+    bt_bd_addr_t address;
+    uint32_t cod: 24;
+    uint32_t link_type;
 } BT_PACKED bt_hci_connection_request_t;
 
 #define BT_ROLE_MASTER  0x00
@@ -372,33 +372,40 @@ typedef uint8_t bt_role_t;
 
 /*BT_HCI_CMD_ACCEPT_CONNECTION_REQUEST*/
 typedef struct {
-	bt_bd_addr_t address;
-	bt_role_t role;
+    bt_bd_addr_t address;
+    bt_role_t role;
 } BT_PACKED bt_hci_accept_connection_request_t;
 
 #define BT_HCI_LAP_GIAC	0x009E8B33
 #define BT_HCI_LAP_LIAC	0x00000000
 typedef uint32_t bt_hci_lap_t;
 
+typedef struct {
+	uint16_t acl_packet_length;
+	uint8_t sco_packet_length;
+	uint16_t acl_credit;
+	uint16_t sco_credit;
+} BT_PACKED bt_hci_read_buffer_size_evt_t;
+
 #define BT_HCI_GET_EVT_PARAM(packet, _evt_struct_)		((_evt_struct_ *)((uint8_t *)packet + BT_HCI_EVT_HEADER_SIZE))
 #define BT_HCI_GET_CMD_COMPLETE_EVT_PARAM(cmd_complete) ((uint8_t *)&(cmd_complete->data))
 #define BT_HCI_GET_NOCP_EVT_PARAM(nocp)					(0)
 
 typedef struct {
-	bt_hci_err_code_t status;
-	uint8_t num_hci_command_packet;
-	bt_hci_cmd_code_t cmd_code;
+    bt_hci_err_code_t status;
+    uint8_t num_hci_command_packet;
+    bt_hci_cmd_code_t cmd_code;
 } BT_PACKED bt_hci_command_status_t;
 
 typedef struct {
-	uint8_t lenght;
+    uint8_t lenght;
 } BT_PACKED bt_hci_number_of_complete_packet_t;
 
 typedef struct {
-	uint8_t num_hci_command_packet;
-	bt_hci_cmd_code_t cmd_code;
-	bt_hci_err_code_t status;
-	uint8_t data[1];
+    uint8_t num_hci_command_packet;
+    bt_hci_cmd_code_t cmd_code;
+    bt_hci_err_code_t status;
+    bt_data_t data;
 } BT_PACKED bt_hci_command_complete_t;
 
 typedef uint16_t bt_handle_t;
@@ -406,19 +413,19 @@ typedef uint16_t bt_handle_t;
 typedef struct {
     bt_hci_cmd_code_t cmd_code;
     uint8_t length;
-    uint8_t data[1];
+    bt_data_t data;
 } BT_PACKED bt_hci_spec_cmd_t;
 
 typedef struct {
     bt_handle_t handle;
     uint16_t length;
-    uint8_t data[1];
+    bt_data_t data;
 } BT_PACKED bt_hci_spec_acl_t;
 
 typedef struct {
     bt_hci_evt_code_t evt_code;
     uint8_t length;
-    uint8_t data[1];
+    bt_data_t data;
 } BT_PACKED bt_hci_spec_evt_t;
 
 typedef struct {

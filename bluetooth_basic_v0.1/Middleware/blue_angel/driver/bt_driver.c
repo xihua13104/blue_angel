@@ -99,19 +99,18 @@ void bt_driver_recieve_data_from_controller(uint8_t data)
 void bt_driver_send_data_to_controller(uint8_t *buf, uint16_t buf_size)
 {
     comSendBuf(COM2, buf, buf_size);
-    BT_FREE_HCI_PACKET_WITH_NODE(BT_MEMORY_TX, buf);
 }
 
 void bt_driver_rx(uint16_t length)
 {
     bt_hci_spec_packet_t *hci_spec_packet = NULL;
     uint16_t acture_length = 0;
-	if (length == 0) {
-		return;
-	}
+    if (length == 0) {
+        return;
+    }
     hci_spec_packet = (bt_hci_spec_packet_t *)BT_ALLOCATE_HCI_PACKET_WITH_NODE(BT_MEMORY_RX, length);
     BT_ASSERT(hci_spec_packet != NULL);
-	/*假如这里RX OOM了要如何处理？？？*/
+    /*假如这里RX OOM了要如何处理？？？*/
     acture_length = comGetBuf(COM2, (uint8_t *)hci_spec_packet, length);
     BT_ASSERT(acture_length == length);
     BT_PUSH_NODE_TO_RX_QUEUE_TAIL(BT_GET_NODE_FROM_HCI_SPEC_PACKET(hci_spec_packet));

@@ -8,13 +8,9 @@
 #ifndef __BT_CONFIG__
 #define __BT_CONFIG__
 
-#define BT_BR_BLE_COMBINATION	    0
+#define BT_CLASSIC_ENABLE	1
 
-#if BT_BR_BLE_COMBINATION
-	#define BT_BLE_ONLY				0
-#else
-	#define BT_BLE_ONLY				1
-#endif
+#define BT_LE_ENABLE		0
 
 /*System log config*/
 #define BT_TIMER_LOG_LEVEL	BT_SYS_LOG_INFO

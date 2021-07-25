@@ -46,6 +46,7 @@ void bsp_Init(void)
 	
 }
 
+#if USE_FreeRTOS == 1
 void bsp_enable_interrupt()
 {
 	if (bt_os_layer_is_isr_active()) {
@@ -63,4 +64,5 @@ void bsp_disable_interrupt()
 		taskENTER_CRITICAL();
 	}
 }
+#endif
 /***************************** 安富莱电子 www.armfly.com (END OF FILE) *********************************/

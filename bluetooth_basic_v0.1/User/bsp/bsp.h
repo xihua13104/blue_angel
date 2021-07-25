@@ -33,6 +33,8 @@
 #if USE_FreeRTOS == 1
 	#include "FreeRTOS.h"
 	#include "task.h"
+	void bsp_enable_interrupt(void);
+	void bsp_disable_interrupt(void);
 	#define DISABLE_INT()    bsp_disable_interrupt() //taskENTER_CRITICAL()
 	#define ENABLE_INT()     bsp_enable_interrupt() //taskEXIT_CRITICAL()
 #else

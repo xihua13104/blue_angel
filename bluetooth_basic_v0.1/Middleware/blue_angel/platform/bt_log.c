@@ -10,6 +10,7 @@
 #include "bt_memory.h"
 #include "bt_hci_spec.h"
 #include "bt_config.h"
+#include "bt_os_layer_api.h"
 
 void bt_hci_log(uint8_t in_out, uint8_t *log, uint16_t log_length)
 {
@@ -39,7 +40,7 @@ void bt_hci_log(uint8_t in_out, uint8_t *log, uint16_t log_length)
     log++;
     log_length--;
     data_tatal_length = BT_HCI_LOG_HEADER_LEGNTH + log_length + 1;//1:check sum
-    buf = (uint8_t *)bt_memory_allocate_packet(BT_MEMORY_TX, data_tatal_length);
+    buf = (uint8_t *)bt_os_layer_malloc(data_tatal_length);
     BT_ASSERT(buf);
 
     buf[index++] = 0xF5;
@@ -57,6 +58,9 @@ void bt_hci_log(uint8_t in_out, uint8_t *log, uint16_t log_length)
 
     comSendBuf(COM3, buf, data_tatal_length);
 
-    bt_memory_free_packet(BT_MEMORY_TX, buf);
+    bt_os_layer_free(buf);
 #endif
 }
+
+
+

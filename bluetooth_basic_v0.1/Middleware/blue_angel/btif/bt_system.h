@@ -15,7 +15,7 @@ typedef enum {
     BT_MEMORY_RX = 1
 } bt_memory_type_t;
 
-typedef enum {
+typedef enum { 
     BT_FIXED_MM_TIMER = 0,
     BT_FIXED_MM_MAX
 } bt_fixed_memory_type_t;

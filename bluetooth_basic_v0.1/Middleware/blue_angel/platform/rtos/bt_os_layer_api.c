@@ -243,3 +243,14 @@ bool bt_os_layer_is_os_scheduler_start()
 {
     return taskSCHEDULER_RUNNING == xTaskGetSchedulerState();
 }
+
+uint8_t *bt_os_layer_malloc(uint32_t size)
+{
+	return (uint8_t *) pvPortMalloc(size);
+}
+
+void bt_os_layer_free(uint8_t *ptr)
+{
+	BT_ASSERT(ptr);
+	vPortFree((void *)ptr);
+}

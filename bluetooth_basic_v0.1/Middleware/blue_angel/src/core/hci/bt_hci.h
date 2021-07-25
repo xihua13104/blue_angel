@@ -50,6 +50,14 @@ typedef struct {
     void *param;
 } bt_hci_cmd_t;
 
+typedef struct {
+	uint8_t cmd_credit;
+	uint16_t acl_credit;
+	uint16_t acl_length;
+	bool is_cmd_flow_controled;
+	bool is_acl_flow_controled;
+} bt_hci_flow_control_t;
+	
 typedef bt_timer_timeout_callback_t bt_hci_timeout_callback_t;
 
 bt_status_t bt_hci_cmd_send(bt_hci_cmd_t cmd, uint32_t data, uint32_t timeout, bt_hci_timeout_callback_t callback);

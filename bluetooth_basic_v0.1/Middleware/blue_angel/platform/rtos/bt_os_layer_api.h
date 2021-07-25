@@ -67,5 +67,10 @@ void bt_os_layer_queue_receive_from_isr(uint32_t queue_handle, void * const buff
 bool bt_os_layer_is_isr_active(void);
 
 bool bt_os_layer_is_os_scheduler_start(void);
+
+uint8_t *bt_os_layer_malloc(uint32_t size);
+
+void bt_os_layer_free(uint8_t *ptr);
+
 #endif//__BT_OS_LAYER_API_H
 
